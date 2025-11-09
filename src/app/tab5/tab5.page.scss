@@ -352,6 +352,30 @@
     ion-input {
       --padding-start: 0;
       --padding-end: 0;
+      --placeholder-color: #004d40;
+      --placeholder-opacity: 0.9;
+      --placeholder-font-weight: 500;
+      --color: #1a1a1a;
+    }
+
+    // Force placeholder styling for Tracking ID
+    ::ng-deep .native-input::placeholder {
+      color: #004d40 !important;
+      opacity: 0.9 !important;
+      font-weight: 500 !important;
+    }
+
+    // Make the label more visible
+    ::ng-deep .input-label {
+      color: #004d40 !important;
+      font-weight: 600 !important;
+      opacity: 0.9 !important;
+    }
+
+    // Ensure input text is visible
+    ::ng-deep .native-input {
+      color: #1a1a1a !important;
+      font-weight: 500 !important;
     }
   }
 }

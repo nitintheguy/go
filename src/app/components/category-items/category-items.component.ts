@@ -13,6 +13,15 @@ interface CategoryItem {
   ratingCount: number;
   discount?: number;
   isFavorite?: boolean;
+  isBestseller?: boolean;
+  isExpress?: boolean;
+  isFresh?: boolean;
+}
+
+interface Filter {
+  name: string;
+  active: boolean;
+  icon?: string;
 }
 
 @Component({
@@ -25,6 +34,20 @@ interface CategoryItem {
 export class CategoryItemsComponent implements OnInit {
   categoryName: string | null = null;
   items: CategoryItem[] = [];
+  filteredItems: CategoryItem[] = [];
+  hasMoreItems: boolean = true;
+  
+  filters: Filter[] = [
+    { name: 'All', active: true, icon: 'grid-outline' },
+    { name: 'Popular', active: false, icon: 'flame-outline' },
+    { name: 'Discount', active: false, icon: 'pricetag-outline' },
+    { name: 'New', active: false, icon: 'sparkles-outline' },
+    { name: 'Budget', active: false, icon: 'wallet-outline' },
+    { name: 'Express', active: false, icon: 'flash-outline' },
+    { name: 'Fresh', active: false, icon: 'leaf-outline' }
+  ];
+
+  currentSort: string = 'recommended';
 
   constructor(private route: ActivatedRoute) { }
 
@@ -44,7 +67,9 @@ export class CategoryItemsComponent implements OnInit {
         weight: '500ml',
         rating: 4.5,
         ratingCount: 234,
-        discount: 8
+        discount: 8,
+        isFresh: true,
+        isExpress: true
       },
       { 
         name: 'Britannia Bread', 
@@ -54,7 +79,8 @@ export class CategoryItemsComponent implements OnInit {
         weight: '400g',
         rating: 4.3,
         ratingCount: 189,
-        discount: 11
+        discount: 11,
+        isBestseller: true
       },
       { 
         name: 'Farm Fresh Eggs', 
@@ -63,7 +89,9 @@ export class CategoryItemsComponent implements OnInit {
         weight: '6 pcs',
         rating: 4.7,
         ratingCount: 312,
-        isFavorite: true
+        isFavorite: true,
+        isFresh: true,
+        isBestseller: true
       },
       { 
         name: 'Organic Banana', 
@@ -71,7 +99,8 @@ export class CategoryItemsComponent implements OnInit {
         image: 'assets/banana.jpeg', 
         weight: '1kg',
         rating: 4.4,
-        ratingCount: 156
+        ratingCount: 156,
+        isFresh: true
       },
       { 
         name: 'Coca Cola', 
@@ -81,7 +110,8 @@ export class CategoryItemsComponent implements OnInit {
         weight: '2L',
         rating: 4.6,
         ratingCount: 278,
-        discount: 9
+        discount: 9,
+        isBestseller: true
       },
       { 
         name: 'Lays Potato Chips', 
@@ -89,7 +119,8 @@ export class CategoryItemsComponent implements OnInit {
         image: 'assets/chips.jpeg', 
         weight: '50g',
         rating: 4.2,
-        ratingCount: 421
+        ratingCount: 421,
+        isBestseller: true
       },
       { 
         name: 'Basmati Rice', 
@@ -99,7 +130,8 @@ export class CategoryItemsComponent implements OnInit {
         weight: '1kg',
         rating: 4.5,
         ratingCount: 134,
-        discount: 14
+        discount: 14,
+        isExpress: true
       },
       { 
         name: 'Aashirvaad Atta', 
@@ -110,16 +142,112 @@ export class CategoryItemsComponent implements OnInit {
         ratingCount: 298
       }
     ];
+    
+    this.filteredItems = [...this.items];
+  }
+
+  toggleFilter(filter: Filter) {
+    // Reset all filters
+    this.filters.forEach(f => f.active = false);
+    
+    // Activate the clicked filter
+    filter.active = true;
+    
+    // Apply filter logic
+    this.applyFilters();
+  }
+
+  applyFilters() {
+    const activeFilter = this.filters.find(f => f.active);
+    
+    if (!activeFilter || activeFilter.name === 'All') {
+      this.filteredItems = [...this.items];
+      return;
+    }
+
+    switch (activeFilter.name) {
+      case 'Popular':
+        this.filteredItems = this.items.filter(item => item.rating >= 4.5);
+        break;
+      case 'Discount':
+        this.filteredItems = this.items.filter(item => item.discount && item.discount > 0);
+        break;
+      case 'New':
+        this.filteredItems = this.items.slice(0, 4); // Simulate new items
+        break;
+      case 'Budget':
+        this.filteredItems = this.items.filter(item => {
+          const price = parseInt(item.price.replace('₹', ''));
+          return price < 100;
+        });
+        break;
+      case 'Express':
+        this.filteredItems = this.items.filter(item => item.isExpress);
+        break;
+      case 'Fresh':
+        this.filteredItems = this.items.filter(item => item.isFresh);
+        break;
+      default:
+        this.filteredItems = [...this.items];
+    }
+  }
+
+  clearFilters() {
+    this.filters.forEach(f => f.active = false);
+    this.filters[0].active = true; // Activate "All" filter
+    this.filteredItems = [...this.items];
+  }
+
+  getCurrentSortText(): string {
+    const sortOptions: { [key: string]: string } = {
+      'recommended': 'Recommended',
+      'price-low': 'Price: Low to High',
+      'price-high': 'Price: High to Low',
+      'rating': 'Highest Rated',
+      'popular': 'Most Popular'
+    };
+    return sortOptions[this.currentSort] || 'Recommended';
+  }
+
+  openSortModal() {
+    // In a real app, this would open a modal with sort options
+    console.log('Open sort modal');
+  }
+
+  calculateSaveAmount(item: CategoryItem): string {
+    if (!item.originalPrice) return '';
+    const current = parseInt(item.price.replace('₹', ''));
+    const original = parseInt(item.originalPrice.replace('₹', ''));
+    const save = original - current;
+    return `₹${save}`;
+  }
+
+  toggleFavorite(item: CategoryItem, event: Event) {
+    event.stopPropagation();
+    item.isFavorite = !item.isFavorite;
+    console.log(`${item.name} ${item.isFavorite ? 'added to' : 'removed from'} favorites`);
+  }
+
+  quickView(item: CategoryItem, event: Event) {
+    event.stopPropagation();
+    console.log('Quick view:', item.name);
+    // Open quick view modal
   }
 
   viewItem(item: CategoryItem) {
     console.log('Viewing item:', item.name);
-    // Navigate to item detail page or show modal
+    // Navigate to item detail page
   }
 
   addToCart(item: CategoryItem, event: Event) {
     event.stopPropagation();
     console.log('Added to cart:', item.name);
     // Add cart logic here
+  }
+
+  loadMoreItems() {
+    // Simulate loading more items
+    console.log('Loading more items...');
+    // In real app, this would fetch more data from API
   }
 }

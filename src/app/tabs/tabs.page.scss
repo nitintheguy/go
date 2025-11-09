@@ -1,5 +1,211 @@
+// Define color variables for each tab
+:root {
+  --tab-grocery: linear-gradient(135deg, #00aa13 0%, #00c853 100%);
+  --tab-food: linear-gradient(135deg, #ff6f00 0%, #ff8f00 100%);
+  --tab-ride: linear-gradient(135deg, #4a00e0 0%, #8e2de2 100%);
+  --tab-pay: linear-gradient(135deg, #d32f2f 0%, #ff5252 100%);
+  --tab-logistics: linear-gradient(135deg, #004d40 0%, #00897b 100%);
+}
 
-ion-tab-bar{
-    --background: #fff;
-    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+// Base tab bar styles
+ion-tab-bar {
+  --background: #fff;
+  --border: none;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.4s ease;
+  
+  // Default text colors
+  ion-label, ion-icon {
+    color: var(--ion-color-medium);
+  }
+}
+
+// Custom selected colors for each tab
+ion-tab-button.tab-selected {
+  // Grocery Tab - Green
+  &[tab="tab1"] {
+    ion-icon, ion-label {
+      color: #00aa13 !important;
+    }
+    
+    &::part(native) {
+      background: rgba(0, 170, 19, 0.1);
+    }
+  }
+  
+  // Food Tab - Orange
+  &[tab="tab2"] {
+    ion-icon, ion-label {
+      color: #ff6f00 !important;
+    }
+    
+    &::part(native) {
+      background: rgba(255, 111, 0, 0.1);
+    }
+  }
+  
+  // Ride Tab - Purple
+  &[tab="tab3"] {
+    ion-icon, ion-label {
+      color: #4a00e0 !important;
+    }
+    
+    &::part(native) {
+      background: rgba(74, 0, 224, 0.1);
+    }
+  }
+  
+  // Pay Tab - Red
+  &[tab="tab4"] {
+    ion-icon, ion-label {
+      color: #d32f2f !important;
+    }
+    
+    &::part(native) {
+      background: rgba(211, 47, 47, 0.1);
+    }
+  }
+  
+  // Logistics Tab - Teal
+  &[tab="tab5"] {
+    ion-icon, ion-label {
+      color: #004d40 !important;
+    }
+    
+    &::part(native) {
+      background: rgba(0, 77, 64, 0.1);
+    }
+  }
+}
+
+// Color classes for each tab background
+.tab-grocery {
+  --background: var(--tab-grocery);
+  background: var(--tab-grocery);
+  
+  ion-tab-button {
+    --color: rgba(255, 255, 255, 0.7);
+    --color-selected: white;
+    
+    ion-label, ion-icon {
+      color: rgba(255, 255, 255, 0.7);
+    }
+    
+    &.tab-selected {
+      ion-label, ion-icon {
+        color: white;
+      }
+    }
+  }
+}
+
+.tab-food {
+  --background: var(--tab-food);
+  background: var(--tab-food);
+  
+  ion-tab-button {
+    --color: rgba(255, 255, 255, 0.7);
+    --color-selected: white;
+    
+    ion-label, ion-icon {
+      color: rgba(255, 255, 255, 0.7);
+    }
+    
+    &.tab-selected {
+      ion-label, ion-icon {
+        color: white;
+      }
+    }
+  }
+}
+
+.tab-ride {
+  --background: var(--tab-ride);
+  background: var(--tab-ride);
+  
+  ion-tab-button {
+    --color: rgba(255, 255, 255, 0.7);
+    --color-selected: white;
+    
+    ion-label, ion-icon {
+      color: rgba(255, 255, 255, 0.7);
+    }
+    
+    &.tab-selected {
+      ion-label, ion-icon {
+        color: white;
+      }
+    }
+  }
+}
+
+.tab-pay {
+  --background: var(--tab-pay);
+  background: var(--tab-pay);
+  
+  ion-tab-button {
+    --color: rgba(255, 255, 255, 0.7);
+    --color-selected: white;
+    
+    ion-label, ion-icon {
+      color: rgba(255, 255, 255, 0.7);
+    }
+    
+    &.tab-selected {
+      ion-label, ion-icon {
+        color: white;
+      }
+    }
+  }
+}
+
+.tab-logistics {
+  --background: var(--tab-logistics);
+  background: var(--tab-logistics);
+  
+  ion-tab-button {
+    --color: rgba(255, 255, 255, 0.7);
+    --color-selected: white;
+    
+    ion-label, ion-icon {
+      color: rgba(255, 255, 255, 0.7);
+    }
+    
+    &.tab-selected {
+      ion-label, ion-icon {
+        color: white;
+      }
+    }
+  }
+}
+
+// Enhanced selected state with animations
+ion-tab-button.tab-selected {
+  ion-icon {
+    transform: scale(1.1);
+    transition: transform 0.3s ease;
+  }
+  
+  ion-label {
+    font-weight: 700;
+    transition: font-weight 0.3s ease;
+  }
+}
+
+// Ensure the tab bar has proper height and positioning
+ion-tab-bar {
+  min-height: 60px;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+// Add a subtle border radius to the top
+ion-tab-bar::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 0;
+  right: 0;
+  height: 8px;
+  border-radius: 16px 16px 0 0;
+  background: inherit;
 }
