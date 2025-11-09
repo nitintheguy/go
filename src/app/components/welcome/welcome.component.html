@@ -1,0 +1,19 @@
+<ion-content [fullscreen]="true" class="welcome-content">
+  <div class="container">
+    <!-- Animated Lottie Section -->
+    <div class="logo-section">
+      <div class="animated-lottie-container">
+        <div id="lottie-container" class="lottie-animation"></div>
+        <div class="animation-label">{{ currentAnimation.label }}</div>
+      </div>
+      
+      <img src="assets/go.png" alt="App Logo" class="app-logo" />
+      <p class="tagline">Your everyday, everything app</p>
+    </div>
+
+    <!-- Loading text instead of dots -->
+    <div class="loading-section">
+      <p class="loading-text">Loading amazing experiences...</p>
+    </div>
+  </div>
+</ion-content>

@@ -1,0 +1,192 @@
+<ion-content [fullscreen]="true" class="food-delivery-content">
+  <!-- Enhanced Header Section -->
+  <div class="header-section">
+    <div class="header-background">
+      <div class="floating-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+      </div>
+    </div>
+    
+    <div class="header-top">
+      <div class="header-left">
+        <div class="go-text">GO</div>
+        <div class="delivery-time">30-45 minutes • Free Delivery</div>
+        <div class="location">
+          <ion-icon name="location" class="location-icon"></ion-icon>
+          Home - Floor 1st, ASG • 2.5 km away
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="avatar-container">
+          <ion-avatar class="profile-avatar">
+            <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face" />
+          </ion-avatar>
+          <div class="online-indicator"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Enhanced Search Bar -->
+    <div class="search-section">
+      <div class="search-container">
+        <ion-searchbar
+          [placeholder]="currentPlaceholder"
+          animated="true"
+          class="custom-searchbar"
+          debounce="500"
+          (ionInput)="onSearchInput($event)">
+        </ion-searchbar>
+        <div class="search-decoration">
+          <div class="pulse-dot"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Enhanced Categories -->
+    <div class="categories-section">
+      <div class="categories-scroll">
+        <ion-chip 
+          *ngFor="let category of categories" 
+          [class.active]="category.name === 'All'"
+          class="category-chip"
+          (click)="filterByCategory(category.name)">
+          <div class="chip-icon-wrapper">
+            <ion-icon [name]="category.icon"></ion-icon>
+          </div>
+          <ion-label>{{ category.name }}</ion-label>
+        </ion-chip>
+      </div>
+    </div>
+  </div>
+
+  <!-- Promo Banner -->
+  <div class="promo-banner">
+    <div class="banner-content">
+      <div class="banner-text">
+        <div class="banner-title">Free Delivery!</div>
+        <div class="banner-subtitle">On orders above ₹199 • Use code: GOFOOD</div>
+      </div>
+      <div class="banner-icon">
+        <ion-icon name="rocket"></ion-icon>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hero Section - Top Restaurants -->
+  <div class="hero-section">
+    <div class="section-header">
+      <h2>🔥 Top Restaurants</h2>
+      <button class="see-all-btn" (click)="viewAllTopRestaurants()">
+        See All
+        <ion-icon name="chevron-forward"></ion-icon>
+      </button>
+    </div>
+    <div class="restaurants-scroll">
+      <div *ngFor="let restaurant of topRestaurants" class="restaurant-card featured">
+        <div class="restaurant-badge">Popular</div>
+        <img [src]="restaurant.image" class="restaurant-image" />
+        <div class="restaurant-info">
+          <div class="restaurant-header">
+            <div class="restaurant-name">{{ restaurant.name }}</div>
+            <div class="restaurant-rating">
+              <ion-icon name="star" class="rating-icon"></ion-icon>
+              {{ restaurant.rating }}
+            </div>
+          </div>
+          <div class="restaurant-details">
+            <div class="detail-item">
+              <ion-icon name="time"></ion-icon>
+              {{ restaurant.deliveryTime }}
+            </div>
+            <div class="detail-item">
+              <ion-icon name="cash"></ion-icon>
+              ₹{{ restaurant.minOrder }}
+            </div>
+          </div>
+          <div class="restaurant-cuisine">{{ restaurant.cuisine }}</div>
+          <div class="restaurant-tags">
+            <span class="tag" *ngIf="restaurant.freeDelivery">Free Delivery</span>
+            <span class="tag" *ngIf="restaurant.pureVeg">Pure Veg</span>
+            <span class="tag" *ngIf="restaurant.discount">{{ restaurant.discount }}% OFF</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Categories -->
+  <div class="quick-categories">
+    <div class="section-header">
+      <h3>🍕 Quick Bites</h3>
+    </div>
+    <div class="categories-grid">
+      <div *ngFor="let quickCat of quickCategories" class="quick-category" (click)="filterByCategory(quickCat.name)">
+        <div class="category-icon" [style.background]="quickCat.color">
+          <ion-icon [name]="quickCat.icon"></ion-icon>
+        </div>
+        <div class="category-name">{{ quickCat.name }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- All Restaurants -->
+  <div class="main-categories">
+    <div class="category-section">
+      <div class="section-header">
+        <h3>🍴 All Restaurants</h3>
+        <button class="see-all-btn" (click)="viewAllRestaurants()">
+          View All
+          <ion-icon name="chevron-forward"></ion-icon>
+        </button>
+      </div>
+      <div class="restaurants-grid">
+        <div *ngFor="let restaurant of allRestaurants" class="restaurant-card">
+          <img [src]="restaurant.image" class="restaurant-image" />
+          <div class="restaurant-info">
+            <div class="restaurant-header">
+              <div class="restaurant-name">{{ restaurant.name }}</div>
+              <div class="restaurant-rating">
+                <ion-icon name="star" class="rating-icon"></ion-icon>
+                {{ restaurant.rating }}
+              </div>
+            </div>
+            <div class="restaurant-details">
+              <div class="detail-item">
+                <ion-icon name="time"></ion-icon>
+                {{ restaurant.deliveryTime }}
+              </div>
+              <div class="detail-item">
+                <ion-icon name="cash"></ion-icon>
+                ₹{{ restaurant.minOrder }}
+              </div>
+            </div>
+            <div class="restaurant-cuisine">{{ restaurant.cuisine }}</div>
+            <div class="restaurant-tags">
+              <span class="tag" *ngIf="restaurant.freeDelivery">Free Delivery</span>
+              <span class="tag" *ngIf="restaurant.pureVeg">Pure Veg</span>
+              <span class="tag" *ngIf="restaurant.discount">{{ restaurant.discount }}% OFF</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Enhanced Footer -->
+  <div class="footer">
+    <div class="footer-content">
+      <div class="footer-logo">
+        <div class="go-text-small">GO</div>
+        <div class="footer-tagline">Delivering Happiness</div>
+      </div>
+      <div class="footer-links">
+        <a href="#" class="footer-link">About</a>
+        <a href="#" class="footer-link">Contact</a>
+        <a href="#" class="footer-link">Support</a>
+      </div>
+    </div>
+    <p class="footer-copyright">Made with ❤️ by Go Food Team</p>
+  </div>
+</ion-content>

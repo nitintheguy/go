@@ -1,0 +1,7 @@
+{
+  "name": "go",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}

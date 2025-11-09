@@ -1,0 +1,139 @@
+<ion-content [fullscreen]="true" class="ride-content">
+  <!-- Header Section -->
+  <div class="header-section">
+    <div class="header-background">
+      <div class="floating-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+      </div>
+    </div>
+    
+    <div class="header-top">
+      <div class="header-left">
+        <div class="go-text">GO</div>
+        <div class="delivery-time">Finding rides near you</div>
+        <div class="location">
+          <ion-icon name="location" class="location-icon"></ion-icon>
+          Current Location • 2 min away
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="avatar-container">
+          <ion-avatar class="profile-avatar">
+            <img [src]="profileAvatarUrl" />
+          </ion-avatar>
+          <div class="online-indicator"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="search-section">
+      <div class="search-container">
+        <ion-searchbar
+          [placeholder]="currentPlaceholder"
+          animated="true"
+          class="custom-searchbar"
+          debounce="500">
+        </ion-searchbar>
+        <div class="search-decoration">
+          <div class="pulse-dot"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Categories Horizontal Scroll -->
+    <div class="categories-section">
+      <div class="categories-scroll">
+        <ion-chip 
+          *ngFor="let category of categories" 
+          [class.active]="category.name === 'All'"
+          class="category-chip">
+          <div class="chip-icon-wrapper">
+            <ion-icon [name]="category.icon"></ion-icon>
+          </div>
+          <ion-label>{{ category.name }}</ion-label>
+        </ion-chip>
+      </div>
+    </div>
+  </div>
+
+  <!-- Map Container with proper spacing -->
+  <div class="map-section">
+    <div class="map-container">
+      <!-- Lottie animation container -->
+      <div #mapContainer class="map-placeholder"></div>
+      <div class="map-overlay">
+        <div class="current-location-marker">
+          <div class="pulse-ring"></div>
+          <div class="marker-center"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ride Options -->
+  <div class="ride-options">
+    <div class="options-header">
+      <h2>Choose your ride</h2>
+      <div class="price-estimate">Estimated prices</div>
+    </div>
+
+    <ion-segment [(ngModel)]="rideType" (ionChange)="segmentChanged($event)" class="ride-segment">
+      <ion-segment-button value="uberx" class="segment-btn">
+        <div class="segment-content">
+          <ion-icon name="car-sport" class="segment-icon"></ion-icon>
+          <ion-label>UberX</ion-label>
+          <div class="segment-price">₹149</div>
+        </div>
+      </ion-segment-button>
+      <ion-segment-button value="uberblack" class="segment-btn">
+        <div class="segment-content">
+          <ion-icon name="diamond" class="segment-icon"></ion-icon>
+          <ion-label>Uber Black</ion-label>
+          <div class="segment-price">₹249</div>
+        </div>
+      </ion-segment-button>
+      <ion-segment-button value="uberxl" class="segment-btn">
+        <div class="segment-content">
+          <ion-icon name="people" class="segment-icon"></ion-icon>
+          <ion-label>UberXL</ion-label>
+          <div class="segment-price">₹199</div>
+        </div>
+      </ion-segment-button>
+    </ion-segment>
+
+    <div class="location-inputs">
+      <div class="input-group">
+        <div class="input-icon pickup">
+          <div class="dot"></div>
+        </div>
+        <ion-item class="location-item">
+          <ion-input label="Pickup" placeholder="Current location" value="Current location"></ion-input>
+        </ion-item>
+      </div>
+      
+      <div class="input-divider"></div>
+      
+      <div class="input-group">
+        <div class="input-icon destination">
+          <ion-icon name="location"></ion-icon>
+        </div>
+        <ion-item class="location-item">
+          <ion-input label="Destination" placeholder="Where to?"></ion-input>
+        </ion-item>
+      </div>
+    </div>
+
+    <ion-button expand="full" class="request-btn" (click)="requestRide()">
+      <ion-icon name="car" slot="start"></ion-icon>
+      Request Ride
+    </ion-button>
+
+    <div class="safety-notice">
+      <ion-icon name="shield-checkmark"></ion-icon>
+      <span>Your safety is our priority. Ride with confidence.</span>
+    </div>
+  </div>
+</ion-content>

@@ -1,0 +1,275 @@
+<ion-content [fullscreen]="true" class="logistics-content">
+  <!-- Enhanced Header Section -->
+  <div class="header-section">
+    <div class="header-background">
+      <div class="floating-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+      </div>
+    </div>
+    
+    <div class="header-top">
+      <div class="header-left">
+        <div class="go-text">GO</div>
+        <div class="delivery-time">Fast & Reliable Delivery</div>
+        <div class="location">
+          <ion-icon name="cube" class="location-icon"></ion-icon>
+          Shipment Hub • 24/7 Operations
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="avatar-container">
+          <ion-avatar class="profile-avatar">
+            <img [src]="profileAvatarUrl" />
+          </ion-avatar>
+          <div class="online-indicator"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Enhanced Search Bar -->
+    <div class="search-section">
+      <div class="search-container">
+        <ion-searchbar
+          [placeholder]="currentPlaceholder"
+          animated="true"
+          class="custom-searchbar"
+          debounce="500">
+        </ion-searchbar>
+        <div class="search-decoration">
+          <div class="pulse-dot"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Enhanced Categories -->
+    <div class="categories-section">
+      <div class="categories-scroll">
+        <ion-chip 
+          *ngFor="let category of categories" 
+          [class.active]="category.name === 'All'"
+          class="category-chip">
+          <div class="chip-icon-wrapper">
+            <ion-icon [name]="category.icon"></ion-icon>
+          </div>
+          <ion-label>{{ category.name }}</ion-label>
+        </ion-chip>
+      </div>
+    </div>
+  </div>
+
+  <!-- Enhanced Segment Control -->
+  <div class="segment-container">
+    <ion-segment [(ngModel)]="selectedSegment" (ionChange)="segmentChanged($event)" class="logistics-segment">
+      <ion-segment-button value="track" class="segment-btn">
+        <div class="segment-content">
+          <ion-icon name="location" class="segment-icon"></ion-icon>
+          <ion-label>Track</ion-label>
+        </div>
+      </ion-segment-button>
+      <ion-segment-button value="pickup" class="segment-btn">
+        <div class="segment-content">
+          <ion-icon name="calendar" class="segment-icon"></ion-icon>
+          <ion-label>Pickup</ion-label>
+        </div>
+      </ion-segment-button>
+      <ion-segment-button value="service" class="segment-btn">
+        <div class="segment-content">
+          <ion-icon name="business" class="segment-icon"></ion-icon>
+          <ion-label>Service</ion-label>
+        </div>
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+
+  <!-- Enhanced Content Sections -->
+  <div class="content-container" [ngSwitch]="selectedSegment">
+    
+    <!-- Track Shipment Section -->
+    <div *ngSwitchCase="'track'" class="content-section">
+      <div class="section-card">
+        <div class="card-header">
+          <div class="card-title">
+            <ion-icon name="search" class="title-icon"></ion-icon>
+            Track Your Shipment
+          </div>
+          <div class="card-subtitle">Enter tracking ID to get real-time updates</div>
+        </div>
+        
+        <div class="card-content">
+          <div class="input-group">
+            <div class="input-icon">
+              <ion-icon name="barcode"></ion-icon>
+            </div>
+            <ion-item class="custom-item">
+              <ion-input 
+                label="Tracking ID" 
+                placeholder="e.g., DEL123456789"
+                class="custom-input">
+              </ion-input>
+            </ion-item>
+          </div>
+          
+          <ion-button expand="full" class="action-btn track-btn" (click)="trackShipment()">
+            <ion-icon name="navigate" slot="start"></ion-icon>
+            Track Shipment
+          </ion-button>
+        </div>
+      </div>
+
+      <!-- Recent Shipments -->
+      <div class="recent-shipments">
+        <div class="section-header">
+          <h3>Recent Shipments</h3>
+          <button class="view-all-btn">View All</button>
+        </div>
+        
+        <div class="shipments-list">
+          <div class="shipment-card" *ngFor="let shipment of recentShipments" (click)="viewShipmentDetails(shipment.id)">
+            <div class="shipment-info">
+              <div class="shipment-id">{{ shipment.id }}</div>
+              <div class="shipment-status" [class]="getStatusClass(shipment.status)">
+                {{ shipment.status }}
+              </div>
+              <div class="shipment-date">{{ shipment.date }}</div>
+            </div>
+            <div class="shipment-actions">
+              <ion-icon name="chevron-forward" class="arrow-icon"></ion-icon>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Schedule Pickup Section -->
+    <div *ngSwitchCase="'pickup'" class="content-section">
+      <div class="section-card">
+        <div class="card-header">
+          <div class="card-title">
+            <ion-icon name="time" class="title-icon"></ion-icon>
+            Schedule a Pickup
+          </div>
+          <div class="card-subtitle">We'll pick up your package within 2 hours</div>
+        </div>
+        
+        <div class="card-content">
+          <div class="input-group">
+            <div class="input-icon">
+              <ion-icon name="home"></ion-icon>
+            </div>
+            <ion-item class="custom-item">
+              <ion-input 
+                label="Pickup Address" 
+                placeholder="Enter complete address"
+                class="custom-input">
+              </ion-input>
+            </ion-item>
+          </div>
+          
+          <div class="input-group">
+            <div class="input-icon">
+              <ion-icon name="person"></ion-icon>
+            </div>
+            <ion-item class="custom-item">
+              <ion-input 
+                label="Contact Person" 
+                placeholder="Enter contact name"
+                class="custom-input">
+              </ion-input>
+            </ion-item>
+          </div>
+          
+          <div class="input-group">
+            <div class="input-icon">
+              <ion-icon name="call"></ion-icon>
+            </div>
+            <ion-item class="custom-item">
+              <ion-input 
+                label="Phone Number" 
+                placeholder="Enter phone number"
+                type="tel"
+                class="custom-input">
+              </ion-input>
+            </ion-item>
+          </div>
+
+          <ion-button expand="full" class="action-btn schedule-btn" (click)="schedulePickup()">
+            <ion-icon name="calendar" slot="start"></ion-icon>
+            Schedule Pickup
+          </ion-button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Service Points Section -->
+    <div *ngSwitchCase="'service'" class="content-section">
+      <div class="section-card">
+        <div class="card-header">
+          <div class="card-title">
+            <ion-icon name="business" class="title-icon"></ion-icon>
+            Find Service Points
+          </div>
+          <div class="card-subtitle">Locate nearest drop-off and pickup centers</div>
+        </div>
+        
+        <div class="card-content">
+          <div class="input-group">
+            <div class="input-icon">
+              <ion-icon name="location"></ion-icon>
+            </div>
+            <ion-item class="custom-item">
+              <ion-input 
+                label="Your Location" 
+                placeholder="Enter your current location"
+                class="custom-input">
+              </ion-input>
+            </ion-item>
+          </div>
+
+          <div class="service-features">
+            <div class="feature-item">
+              <ion-icon name="time" class="feature-icon"></ion-icon>
+              <span>24/7 Available</span>
+            </div>
+            <div class="feature-item">
+              <ion-icon name="card" class="feature-icon"></ion-icon>
+              <span>Multiple Payment Options</span>
+            </div>
+            <div class="feature-item">
+              <ion-icon name="shield-checkmark" class="feature-icon"></ion-icon>
+              <span>Secure Handling</span>
+            </div>
+          </div>
+
+          <ion-button expand="full" class="action-btn service-btn" (click)="findServicePoints()">
+            <ion-icon name="search" slot="start"></ion-icon>
+            Find Service Points
+          </ion-button>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="quick-actions">
+        <div class="action-card" (click)="findDropOff()">
+          <div class="action-icon dropoff-icon">
+            <ion-icon name="archive"></ion-icon>
+          </div>
+          <div class="action-text">Drop-off Points</div>
+        </div>
+        <div class="action-card" (click)="findPickup()">
+          <div class="action-icon pickup-icon">
+            <ion-icon name="cube"></ion-icon>
+          </div>
+          <div class="action-text">Pickup Centers</div>
+        </div>
+        <div class="action-card" (click)="contactSupport()">
+          <div class="action-icon support-icon">
+            <ion-icon name="headset"></ion-icon>
+          </div>
+          <div class="action-text">Support</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

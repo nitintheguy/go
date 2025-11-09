@@ -1,0 +1,159 @@
+// Import Google Fonts at the top of the SCSS file
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Montserrat:wght@400;600;700&display=swap');
+
+.welcome-content {
+  --background: linear-gradient(135deg, #3dc14d 0%, #00c853 100%);
+
+  .container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+    text-align: center;
+  }
+
+  .logo-section {
+    .animated-lottie-container {
+      margin-bottom: 30px;
+
+      .lottie-animation {
+        width: 200px;
+        height: 200px;
+        animation: fastBounce 1s infinite ease-in-out;
+        margin: 0 auto 20px;
+      }
+
+      .animation-label {
+        color: white;
+        font-size: 1.4rem;
+        font-weight: 600;
+        animation: fadeIn 0.3s ease-in-out;
+        font-family: 'Poppins', sans-serif;
+        letter-spacing: 0.5px;
+      }
+    }
+
+    .app-name {
+      color: white;
+      font-size: 2.8rem; // Slightly larger for impact
+      font-weight: 700; // Bold
+      margin: 0 0 12px 0;
+      animation: slideIn 0.8s ease-out;
+      font-family: 'Montserrat', sans-serif;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .tagline {
+      color: rgba(255, 255, 255, 0.95);
+      font-size: 1.2rem;
+      margin: 0;
+      animation: slideIn 1s ease-out;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 400;
+      letter-spacing: 0.3px;
+    }
+  }
+
+  .loading-section {
+    margin-top: 40px;
+
+    .loading-text {
+      color: rgba(255, 255, 255, 0.85);
+      font-size: 1rem;
+      margin: 0;
+      animation: pulseText 2s infinite;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 400;
+      letter-spacing: 0.5px;
+    }
+  }
+}
+
+// Faster bouncing animation
+@keyframes fastBounce {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  25% {
+    transform: translateY(-12px) scale(1.05);
+  }
+  50% {
+    transform: translateY(-6px) scale(1.02);
+  }
+  75% {
+    transform: translateY(-8px) scale(1.03);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulseText {
+  0%, 100% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+// Responsive adjustments
+@media (max-height: 700px) {
+  .lottie-animation {
+    width: 150px !important;
+    height: 150px !important;
+  }
+  
+  .logo-section {
+    .app-name {
+      font-size: 2.2rem !important;
+    }
+    
+    .animation-label {
+      font-size: 1.2rem !important;
+    }
+    
+    .tagline {
+      font-size: 1rem !important;
+    }
+  }
+}
+
+@media (max-width: 380px) {
+  .logo-section {
+    .app-name {
+      font-size: 2.2rem !important;
+    }
+    
+    .animation-label {
+      font-size: 1.1rem !important;
+    }
+  }
+}
+.app-logo{
+    width: 120px;
+    height: 120px;
+    margin-bottom: 20px;
+}

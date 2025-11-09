@@ -1,0 +1,90 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/tab1" text="Back"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ categoryName }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button>
+        <ion-icon name="search" slot="icon-only"></ion-icon>
+      </ion-button>
+      <ion-button>
+        <ion-icon name="cart" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="category-content">
+  <!-- Category Header -->
+  <div class="category-header">
+    <div class="category-info">
+      <h1 class="category-title">{{ categoryName }}</h1>
+      <p class="category-subtitle">{{ items.length }} items available • Free delivery</p>
+    </div>
+    <div class="category-stats">
+      <div class="stat-item">
+        <ion-icon name="star" class="stat-icon"></ion-icon>
+        <span>4.5+</span>
+      </div>
+      <div class="stat-item">
+        <ion-icon name="time" class="stat-icon"></ion-icon>
+        <span>15 min</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Filters -->
+  <div class="filters-section">
+    <div class="filters-scroll">
+      <button class="filter-chip active">All</button>
+      <button class="filter-chip">Popular</button>
+      <button class="filter-chip">Discount</button>
+      <button class="filter-chip">New</button>
+      <button class="filter-chip">Budget</button>
+    </div>
+    <button class="sort-btn">
+      <ion-icon name="filter"></ion-icon>
+      Sort
+    </button>
+  </div>
+
+  <!-- Items Grid -->
+  <div class="items-container">
+    <div class="items-grid">
+      <div *ngFor="let item of items" class="grocery-item" (click)="viewItem(item)">
+        <div class="item-badge" *ngIf="item.discount">-{{item.discount}}%</div>
+        <div class="item-badge favorite" *ngIf="item.isFavorite">
+          <ion-icon name="heart"></ion-icon>
+        </div>
+        <img [src]="item.image" class="item-image" />
+        <div class="item-info">
+          <div class="item-details">
+            <div class="item-name">{{ item.name }}</div>
+            <div class="item-weight">{{ item.weight }}</div>
+            <div class="item-price">
+              <span class="current-price">{{ item.price }}</span>
+              <span class="original-price" *ngIf="item.originalPrice">{{ item.originalPrice }}</span>
+            </div>
+            <div class="item-rating">
+              <ion-icon name="star" class="rating-icon"></ion-icon>
+              {{ item.rating }}
+              <span class="rating-count">({{ item.ratingCount }})</span>
+            </div>
+          </div>
+          <button class="add-btn" (click)="addToCart(item, $event)">
+            <ion-icon name="add"></ion-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Load More -->
+  <div class="load-more" *ngIf="items.length > 0">
+    <ion-button expand="block" fill="clear" class="load-more-btn">
+      Load More Items
+      <ion-icon name="chevron-down" slot="end"></ion-icon>
+    </ion-button>
+  </div>
+</ion-content>

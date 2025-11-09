@@ -1,0 +1,530 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+.ride-content {
+  --background: #f8f9fa;
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.header-section {
+  background: linear-gradient(135deg, #4a00e0 0%, #8e2de2 100%);
+  color: white;
+  padding: 25px 20px 15px 20px;
+  border-radius: 0 0 30px 30px;
+  box-shadow: 0 8px 32px rgba(74, 0, 224, 0.3);
+  position: relative;
+  overflow: hidden;
+  z-index: 10;
+
+  .header-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    
+    .floating-shapes {
+      .shape {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        
+        &.shape-1 {
+          width: 80px;
+          height: 80px;
+          top: -20px;
+          right: 10%;
+          animation: float 6s ease-in-out infinite;
+        }
+        
+        &.shape-2 {
+          width: 120px;
+          height: 120px;
+          bottom: -40px;
+          left: -30px;
+          animation: float 8s ease-in-out infinite reverse;
+        }
+        
+        &.shape-3 {
+          width: 60px;
+          height: 60px;
+          top: 50%;
+          right: -20px;
+          animation: float 5s ease-in-out infinite;
+        }
+      }
+    }
+  }
+
+  .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 2;
+
+    .header-left {
+      .go-text {
+        font-size: 2.8rem;
+        font-weight: 800;
+        line-height: 1;
+        margin-bottom: 8px;
+        text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        background: linear-gradient(135deg, #fff 0%, #e6e6ff 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .delivery-time {
+        font-size: 1.1rem;
+        opacity: 0.95;
+        margin-bottom: 8px;
+        font-weight: 500;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      .location {
+        font-size: 0.95rem;
+        opacity: 0.9;
+        display: flex;
+        align-items: center;
+        font-weight: 400;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+
+        .location-icon {
+          font-size: 1.1rem;
+          margin-right: 6px;
+        }
+      }
+    }
+
+    .header-right {
+      .avatar-container {
+        position: relative;
+        
+        .profile-avatar {
+          width: 55px;
+          height: 55px;
+          border: 3px solid rgba(255, 255, 255, 0.3);
+          box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+          transition: all 0.3s ease;
+          
+          &:active {
+            transform: scale(0.95);
+          }
+        }
+        
+        .online-indicator {
+          position: absolute;
+          bottom: 2px;
+          right: 2px;
+          width: 14px;
+          height: 14px;
+          background: #4caf50;
+          border: 2px solid #4a00e0;
+          border-radius: 50%;
+        }
+      }
+    }
+  }
+
+  .search-section {
+    margin-bottom: 15px;
+    position: relative;
+    z-index: 2;
+
+    .search-container {
+      position: relative;
+      
+      .custom-searchbar {
+        --background: rgba(255, 255, 255, 0.95);
+        --border-radius: 18px;
+        --box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+        --placeholder-color: #666;
+        --color: #333;
+        --placeholder-font-weight: 500;
+        height: 56px;
+        
+        ::ng-deep .searchbar-input {
+          font-size: 1.1rem !important;
+          padding-left: 50px !important;
+          backdrop-filter: blur(20px);
+        }
+        
+        ::ng-deep .searchbar-search-icon {
+          color: #4a00e0 !important;
+        }
+      }
+      
+      .search-decoration {
+        .pulse-dot {
+          position: absolute;
+          top: 50%;
+          right: 20px;
+          transform: translateY(-50%);
+          width: 8px;
+          height: 8px;
+          background: #4a00e0;
+          border-radius: 50%;
+          animation: pulse 2s infinite;
+        }
+      }
+    }
+  }
+
+  .categories-section {
+    position: relative;
+    z-index: 2;
+
+    .categories-scroll {
+      display: flex;
+      overflow-x: auto;
+      gap: 12px;
+      padding-bottom: 15px;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+
+      .category-chip {
+        --background: rgba(255, 255, 255, 0.2);
+        --color: white;
+        --border-radius: 25px;
+        flex-shrink: 0;
+        height: 48px;
+        padding: 0 18px;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s ease;
+
+        &:active {
+          transform: scale(0.95);
+        }
+
+        &.active {
+          --background: rgba(255, 255, 255, 0.95);
+          --color: #4a00e0;
+          font-weight: 600;
+          box-shadow: 0 8px 25px rgba(74, 0, 224, 0.3);
+        }
+
+        .chip-icon-wrapper {
+          display: flex;
+          align-items: center;
+          margin-right: 8px;
+          
+          ion-icon {
+            font-size: 1.3rem;
+          }
+        }
+
+        ion-label {
+          font-size: 0.95rem;
+          font-weight: 500;
+        }
+      }
+    }
+  }
+}
+
+.map-section {
+  padding: 0;
+  margin-top: -10px; /* Small overlap for seamless transition */
+}
+
+.map-container {
+  height: 40vh; /* Increased height for larger animation */
+  position: relative;
+  border-radius: 25px 25px 0 0;
+  overflow: hidden;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.map-placeholder {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  
+  /* Make Lottie animation larger */
+  ::ng-deep svg {
+    transform: scale(1.2); /* Scale up the animation */
+    width: 120% !important;
+    height: 120% !important;
+  }
+}
+.map-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  
+  .current-location-marker {
+    position: absolute;
+    top: 50%;
+    left: 60%; /* Changed from 50% to 60% to shift right */
+    transform: translate(-50%, -50%);
+    
+    .pulse-ring {
+      width: 40px;
+      height: 40px;
+      border: 2px solid #4a00e0;
+      border-radius: 50%;
+      animation: pulse-ring 2s infinite;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    
+    .marker-center {
+      width: 12px;
+      height: 12px;
+      background: #4a00e0;
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 2px 8px rgba(74, 0, 224, 0.5);
+    }
+  }
+}
+  
+
+
+.ride-options {
+  background: white;
+  border-radius: 25px 25px 0 0;
+  padding: 20px;
+  margin-top: -5px;
+  position: relative;
+  z-index: 5;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+
+  .options-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+
+    h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin: 0;
+    }
+
+    .price-estimate {
+      font-size: 0.85rem;
+      color: #666;
+      font-weight: 500;
+    }
+  }
+
+  .ride-segment {
+    margin-bottom: 24px;
+    --background: #f8f9fa;
+    border-radius: 15px;
+    padding: 4px;
+
+    .segment-btn {
+      --background: transparent;
+      --background-checked: white;
+      --color: #666;
+      --color-checked: #4a00e0;
+      --border-radius: 12px;
+      min-height: 80px;
+
+      .segment-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 4px;
+
+        .segment-icon {
+          font-size: 1.5rem;
+          margin-bottom: 4px;
+        }
+
+        ion-label {
+          font-size: 0.85rem;
+          font-weight: 600;
+          margin: 0;
+        }
+
+        .segment-price {
+          font-size: 0.9rem;
+          font-weight: 700;
+          color: inherit;
+        }
+      }
+
+      &::part(indicator) {
+        background: white;
+        box-shadow: 0 4px 15px rgba(74, 0, 224, 0.2);
+        border-radius: 12px;
+      }
+    }
+  }
+
+  .location-inputs {
+    background: #f8f9fa;
+    border-radius: 15px;
+    padding: 16px;
+    margin-bottom: 20px;
+
+    .input-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      .input-icon {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+
+        &.pickup {
+          .dot {
+            width: 12px;
+            height: 12px;
+            background: #4a00e0;
+            border-radius: 50%;
+          }
+        }
+
+        &.destination {
+          ion-icon {
+            font-size: 1.2rem;
+            color: #ff6b6b;
+          }
+        }
+      }
+
+      .location-item {
+        --background: transparent;
+        --inner-padding-end: 0;
+        --padding-start: 0;
+        flex: 1;
+
+        ion-input {
+          --padding-start: 0;
+          --padding-end: 0;
+          font-size: 1rem;
+        }
+      }
+    }
+
+    .input-divider {
+      height: 1px;
+      background: #e0e0e0;
+      margin: 12px 0 12px 24px;
+      width: calc(100% - 24px);
+    }
+  }
+
+  .request-btn {
+    --background: linear-gradient(135deg, #4a00e0 0%, #8e2de2 100%);
+    --background-activated: linear-gradient(135deg, #3a00b0 0%, #7e1de2 100%);
+    --background-hover: linear-gradient(135deg, #3a00b0 0%, #7e1de2 100%);
+    --box-shadow: 0 8px 25px rgba(74, 0, 224, 0.3);
+    --border-radius: 15px;
+    height: 56px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 16px;
+
+    ion-icon {
+      font-size: 1.2rem;
+    }
+  }
+
+  .safety-notice {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 0.8rem;
+    color: #666;
+    text-align: center;
+
+    ion-icon {
+      color: #4caf50;
+      font-size: 1rem;
+    }
+  }
+}
+
+// Animations
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse {
+  0% { transform: translateY(-50%) scale(1); opacity: 1; }
+  50% { transform: translateY(-50%) scale(1.2); opacity: 0.7; }
+  100% { transform: translateY(-50%) scale(1); opacity: 1; }
+}
+
+@keyframes pulse-ring {
+  0% { transform: translate(-50%, -50%) scale(0.8); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(2); opacity: 0; }
+}
+
+// Responsive adjustments
+@media (max-width: 480px) {
+  .header-section {
+    padding: 20px 15px 10px 15px;
+    
+    .header-top {
+      .header-left {
+        .go-text {
+          font-size: 2.5rem;
+        }
+      }
+      
+      .header-right {
+        .profile-avatar {
+          width: 50px;
+          height: 50px;
+        }
+      }
+    }
+  }
+
+  .map-container {
+    height: 35vh;
+  }
+
+  .ride-options {
+    padding: 16px;
+  }
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+  backface-visibility: hidden;
+}
+
+ion-content {
+  --keyboard-offset: 0px !important;
+}
+
+img, ion-icon {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
