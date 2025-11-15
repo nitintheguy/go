@@ -1,0 +1,107 @@
+<ion-content [fullscreen]="true" class="request-content">
+  <!-- Enhanced Header Section -->
+  <div class="header-section">
+    <div class="header-background">
+      <div class="floating-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+      </div>
+    </div>
+    
+    <div class="header-top">
+      <div class="header-left">
+        <ion-buttons slot="start">
+          <ion-button (click)="goBack()" class="back-button">
+            <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+        <div class="go-text">REQUEST</div>
+        <div class="delivery-time">Ask for money from contacts</div>
+      </div>
+      <div class="header-right">
+        <div class="avatar-container">
+          <ion-avatar class="profile-avatar">
+            <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face" />
+          </ion-avatar>
+          <div class="online-indicator"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Request Money Container -->
+  <div class="request-section">
+    <div class="request-container">
+      <!-- Lottie animation container -->
+      <div #animationContainer class="animation-placeholder"></div>
+    </div>
+  </div>
+
+  <!-- Request Form -->
+  <div class="request-form">
+    <div class="form-group">
+      <label class="form-label">Amount to Request</label>
+      <div class="amount-input">
+        <span class="currency-symbol">₹</span>
+        <input type="number" placeholder="0.00" class="amount-field" />
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">From Contact</label>
+      <ion-item class="contact-input">
+        <ion-input placeholder="Select contact" class="input-field"></ion-input>
+        <ion-button fill="clear" slot="end">
+          <ion-icon name="person-add"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Note (Optional)</label>
+      <ion-textarea 
+        placeholder="Add a note for your request..." 
+        rows="3"
+        class="note-textarea">
+      </ion-textarea>
+    </div>
+  </div>
+
+  <!-- Recent Requests -->
+  <div class="contacts-section">
+    <div class="section-header">
+      <h2>Recent Requests</h2>
+      <ion-button fill="clear" size="small">View All</ion-button>
+    </div>
+
+    <div class="contacts-list">
+      <div class="contact-item" *ngFor="let contact of recentContacts" (click)="requestFromContact(contact)">
+        <ion-avatar class="contact-avatar">
+          <img [src]="contact.avatar" />
+        </ion-avatar>
+        <div class="contact-details">
+          <h3 class="contact-name">{{ contact.name }}</h3>
+          <p class="contact-phone">{{ contact.phone }}</p>
+        </div>
+        <div class="request-amount">
+          {{ contact.amount }}
+        </div>
+        <ion-icon name="arrow-forward" class="forward-icon"></ion-icon>
+      </div>
+    </div>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="action-section">
+    <ion-button expand="block" class="request-button" fill="solid">
+      <ion-icon name="send" slot="start"></ion-icon>
+      Send Request
+    </ion-button>
+    
+    <ion-button expand="block" class="create-link-button" fill="outline" (click)="createPaymentLink()">
+      <ion-icon name="link" slot="start"></ion-icon>
+      Create Payment Link
+    </ion-button>
+  </div>
+</ion-content>

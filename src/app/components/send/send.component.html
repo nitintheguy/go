@@ -1,0 +1,74 @@
+<ion-content [fullscreen]="true" class="send-money-content">
+  <!-- Enhanced Header Section -->
+  <div class="header-section">
+    <div class="header-background">
+      <div class="floating-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+      </div>
+    </div>
+    
+    <div class="header-top">
+      <div class="header-left">
+        <ion-buttons slot="start">
+          <ion-button (click)="goBack()" class="back-button">
+            <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+        <div class="go-text">SEND</div>
+        <div class="delivery-time">Transfer money securely</div>
+      </div>
+      <div class="header-right">
+        <div class="avatar-container">
+          <ion-avatar class="profile-avatar">
+            <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face" />
+          </ion-avatar>
+          <div class="online-indicator"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Send Money Container -->
+  <div class="send-section">
+    <div class="send-container">
+      <!-- Lottie animation container -->
+      <div #animationContainer class="animation-placeholder"></div>
+    </div>
+  </div>
+
+  <!-- Recent Contacts -->
+  <div class="contacts-section">
+    <div class="section-header">
+      <h2>Recent Contacts</h2>
+      <ion-button fill="clear" size="small">View All</ion-button>
+    </div>
+
+    <div class="contacts-list">
+      <div class="contact-item" *ngFor="let contact of recentContacts" (click)="sendToContact(contact)">
+        <ion-avatar class="contact-avatar">
+          <img [src]="contact.avatar" />
+        </ion-avatar>
+        <div class="contact-details">
+          <h3 class="contact-name">{{ contact.name }}</h3>
+          <p class="contact-phone">{{ contact.phone }}</p>
+        </div>
+        <ion-icon name="arrow-forward" class="forward-icon"></ion-icon>
+      </div>
+    </div>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="action-section">
+    <ion-button expand="block" class="send-button" fill="solid">
+      <ion-icon name="add" slot="start"></ion-icon>
+      New Contact
+    </ion-button>
+    
+    <ion-button expand="block" class="bank-transfer-button" fill="outline">
+      <ion-icon name="business" slot="start"></ion-icon>
+      Bank Transfer
+    </ion-button>
+  </div>
+</ion-content>

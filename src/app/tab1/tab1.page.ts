@@ -1,9 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { Subscription } from 'rxjs';
+import { CartService, CartItem } from '../services/cart';
 
 interface GroceryItem {
+  id: string;
   name: string;
   image: string;
   category?: string;
@@ -25,9 +29,9 @@ interface GroceryCategory {
   templateUrl: 'tab1.page.html',
   styleUrls: ['tab1.page.scss'],
   standalone: true,
-  imports: [CommonModule, IonicModule, RouterModule]
+  imports: [CommonModule, IonicModule, RouterModule, FormsModule]
 })
-export class Tab1Page implements OnInit {
+export class Tab1Page implements OnInit, OnDestroy {
   searchPlaceholders = [
     'Search "Snacks"',
     'Search "Coke"',
@@ -38,6 +42,18 @@ export class Tab1Page implements OnInit {
   ];
   currentPlaceholder = '';
   placeholderIndex = 0;
+  
+  cartItems: CartItem[] = [];
+  cartTotal = 0;
+  cartItemCount = 0;
+  showCartBubble = false;
+  isCartPulsing = false;
+
+  // Search functionality
+  searchText = '';
+  searchResults: GroceryItem[] = [];
+  isSearching = false;
+  showSearchResults = false;
 
   categories = [
     { name: 'All', icon: 'apps' },
@@ -63,6 +79,7 @@ export class Tab1Page implements OnInit {
 
   frequentItems: GroceryItem[] = [
     { 
+      id: '1',
       name: 'Amul Milk', 
       image: 'assets/milk.jpeg', 
       category: 'dairy',
@@ -73,6 +90,7 @@ export class Tab1Page implements OnInit {
       discount: 8
     },
     { 
+      id: '2',
       name: 'Britannia Bread', 
       image: 'assets/bread.jpg', 
       category: 'bakery',
@@ -83,6 +101,7 @@ export class Tab1Page implements OnInit {
       discount: 11
     },
     { 
+      id: '3',
       name: 'Fresh Eggs', 
       image: 'assets/egg.jpeg', 
       category: 'dairy',
@@ -91,6 +110,7 @@ export class Tab1Page implements OnInit {
       rating: 4.7
     },
     { 
+      id: '4',
       name: 'Banana', 
       image: 'assets/banana.jpeg', 
       category: 'fruits',
@@ -99,6 +119,7 @@ export class Tab1Page implements OnInit {
       rating: 4.4
     },
     { 
+      id: '5',
       name: 'Coca Cola', 
       image: 'assets/coke.jpeg', 
       category: 'beverages',
@@ -109,6 +130,7 @@ export class Tab1Page implements OnInit {
       discount: 9
     },
     { 
+      id: '6',
       name: 'Lays Chips', 
       image: 'assets/chips.jpeg', 
       category: 'snacks',
@@ -121,9 +143,10 @@ export class Tab1Page implements OnInit {
   groceryCategories: GroceryCategory[] = [
     {
       name: 'Grocery & Kitchen',
-      icon: '',
+      icon: 'restaurant',
       items: [
         { 
+          id: '7',
           name: 'Basmati Rice', 
           image: 'assets/rice.jpg', 
           price: 120, 
@@ -133,6 +156,7 @@ export class Tab1Page implements OnInit {
           discount: 14
         },
         { 
+          id: '8',
           name: 'Aashirvaad Atta', 
           image: 'assets/aata.jpeg', 
           price: 280, 
@@ -140,6 +164,7 @@ export class Tab1Page implements OnInit {
           rating: 4.6 
         },
         { 
+          id: '9',
           name: 'Fortune Oil', 
           image: 'assets/oil.webp', 
           price: 180, 
@@ -149,6 +174,7 @@ export class Tab1Page implements OnInit {
           discount: 10
         },
         { 
+          id: '10',
           name: 'Tata Salt', 
           image: 'assets/salt.jpg', 
           price: 25, 
@@ -156,6 +182,7 @@ export class Tab1Page implements OnInit {
           rating: 4.7 
         },
         { 
+          id: '11',
           name: 'Sugar', 
           image: 'assets/sugar.jpeg', 
           price: 45, 
@@ -165,6 +192,7 @@ export class Tab1Page implements OnInit {
           discount: 10
         },
         { 
+          id: '12',
           name: 'Taj Mahal Tea', 
           image: 'assets/tea.jpeg', 
           price: 150, 
@@ -175,9 +203,10 @@ export class Tab1Page implements OnInit {
     },
     {
       name: 'Snacks & Drinks',
-      icon: '',
+      icon: 'fast-food',
       items: [
         { 
+          id: '13',
           name: 'Parle-G Biscuits', 
           image: 'assets/biscuit.webp', 
           price: 30, 
@@ -185,6 +214,7 @@ export class Tab1Page implements OnInit {
           rating: 4.5 
         },
         { 
+          id: '14',
           name: 'Cadbury Chocolate', 
           image: 'assets/chocolate.jpeg', 
           price: 50, 
@@ -194,6 +224,7 @@ export class Tab1Page implements OnInit {
           discount: 17
         },
         { 
+          id: '15',
           name: 'Real Juice', 
           image: 'assets/juice.jpeg', 
           price: 99, 
@@ -201,6 +232,7 @@ export class Tab1Page implements OnInit {
           rating: 4.4 
         },
         { 
+          id: '16',
           name: 'Maggi Noodles', 
           image: 'assets/noodles.jpeg', 
           price: 60, 
@@ -210,6 +242,7 @@ export class Tab1Page implements OnInit {
           discount: 14
         },
         { 
+          id: '17',
           name: 'Popcorn', 
           image: 'assets/popcorn.jpeg', 
           price: 35, 
@@ -217,6 +250,7 @@ export class Tab1Page implements OnInit {
           rating: 4.2 
         },
         { 
+          id: '18',
           name: 'Monster Energy', 
           image: 'assets/monster.jpeg', 
           price: 120, 
@@ -227,9 +261,10 @@ export class Tab1Page implements OnInit {
     },
     {
       name: 'Personal Care',
-      icon: '',
+      icon: 'body',
       items: [
         { 
+          id: '19',
           name: 'Dove Shampoo', 
           image: 'assets/shampoo.jpeg', 
           price: 240, 
@@ -239,6 +274,7 @@ export class Tab1Page implements OnInit {
           discount: 14
         },
         { 
+          id: '20',
           name: 'Lux Soap', 
           image: 'assets/soap.jpeg', 
           price: 45, 
@@ -246,6 +282,7 @@ export class Tab1Page implements OnInit {
           rating: 4.4 
         },
         { 
+          id: '21',
           name: 'Colgate Paste', 
           image: 'assets/toothpaste.jpeg', 
           price: 85, 
@@ -255,6 +292,7 @@ export class Tab1Page implements OnInit {
           discount: 11
         },
         { 
+          id: '22',
           name: 'Pond\'s Cream', 
           image: 'assets/cream.jpeg', 
           price: 120, 
@@ -262,6 +300,7 @@ export class Tab1Page implements OnInit {
           rating: 4.3 
         },
         { 
+          id: '23',
           name: 'Nivea Deo', 
           image: 'assets/deo.jpeg', 
           price: 180, 
@@ -271,6 +310,7 @@ export class Tab1Page implements OnInit {
           discount: 10
         },
         { 
+          id: '24',
           name: 'Gillette Razor', 
           image: 'assets/razor.jpeg', 
           price: 220, 
@@ -281,10 +321,29 @@ export class Tab1Page implements OnInit {
     }
   ];
 
-  searchText = '';
+  private cartSubscription!: Subscription;
+
+  constructor(
+    private router: Router,
+    private cartService: CartService
+  ) {}
 
   ngOnInit() {
     this.startPlaceholderAnimation();
+    this.subscribeToCartUpdates();
+  }
+
+  ngOnDestroy() {
+    if (this.cartSubscription) {
+      this.cartSubscription.unsubscribe();
+    }
+  }
+
+  subscribeToCartUpdates() {
+    this.cartSubscription = this.cartService.cartItems$.subscribe((items: CartItem[]) => {
+      this.cartItems = items;
+      this.updateCartTotals();
+    });
   }
 
   startPlaceholderAnimation() {
@@ -297,12 +356,44 @@ export class Tab1Page implements OnInit {
   }
 
   onSearchInput(event: any) {
-    this.searchText = event.target.value;
-    console.log('Searching for:', this.searchText);
+    const searchTerm = event.target.value.toLowerCase().trim();
+    this.searchText = searchTerm;
+    
+    if (searchTerm.length === 0) {
+      this.showSearchResults = false;
+      this.searchResults = [];
+      return;
+    }
+
+    this.isSearching = true;
+    
+    setTimeout(() => {
+      this.performSearch(searchTerm);
+      this.isSearching = false;
+    }, 300);
+  }
+
+  performSearch(searchTerm: string) {
+    const allItems = [
+      ...this.frequentItems,
+      ...this.groceryCategories.reduce((acc: GroceryItem[], category: GroceryCategory) => {
+        return acc.concat(category.items);
+      }, [])
+    ];
+
+    this.searchResults = allItems.filter((item: GroceryItem) => 
+      item.name.toLowerCase().includes(searchTerm) ||
+      (item.category && item.category.toLowerCase().includes(searchTerm)) ||
+      item.weight.toLowerCase().includes(searchTerm)
+    );
+
+    this.showSearchResults = true;
   }
 
   clearSearch() {
     this.searchText = '';
+    this.showSearchResults = false;
+    this.searchResults = [];
   }
 
   filterByCategory(category: string) {
@@ -318,12 +409,57 @@ export class Tab1Page implements OnInit {
   }
 
   viewItem(item: GroceryItem) {
-    console.log('Viewing item:', item.name);
+    this.router.navigate(['/item', item.id]);
   }
 
-  addToCart(item: GroceryItem, event: Event) {
+ addToCart(item: GroceryItem, event: Event) {
+  event.stopPropagation();
+  
+  // Use the main addToCart method with default quantity of 1
+  this.cartService.addToCart(item, 1);
+  this.showCartAnimation();
+  
+  console.log('Added to cart:', item.name);
+}
+
+  decrementQuantity(itemId: string, event: Event) {
     event.stopPropagation();
-    console.log('Added to cart:', item.name);
-    // Add cart logic here
+    
+    const currentQuantity = this.cartService.getItemQuantity(itemId);
+    
+    if (currentQuantity > 1) {
+      this.cartService.updateQuantity(itemId, currentQuantity - 1);
+    } else {
+      this.cartService.removeFromCart(itemId);
+    }
+  }
+
+  getItemQuantity(itemId: string): number {
+    return this.cartService.getItemQuantity(itemId);
+  }
+
+  updateCartTotals() {
+    this.cartItemCount = this.cartService.getCartItemCount();
+    this.cartTotal = this.cartService.getCartTotal();
+    this.showCartBubble = this.cartItemCount > 0;
+  }
+
+  showCartAnimation() {
+    this.isCartPulsing = true;
+    setTimeout(() => {
+      this.isCartPulsing = false;
+    }, 600);
+  }
+
+  clearCart() {
+    this.cartService.clearCart();
+  }
+
+  viewCart() {
+    console.log('Viewing cart with', this.cartItemCount, 'items');
+  }
+
+  isItemInCart(itemId: string): boolean {
+    return this.cartService.isItemInCart(itemId);
   }
 }

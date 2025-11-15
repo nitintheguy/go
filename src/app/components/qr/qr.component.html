@@ -1,0 +1,71 @@
+<ion-content [fullscreen]="true" class="qr-scanner-content">
+  <!-- Enhanced Header Section -->
+  <div class="header-section">
+    <div class="header-background">
+      <div class="floating-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+      </div>
+    </div>
+    
+    <div class="header-top">
+      <div class="header-left">
+        <ion-buttons slot="start">
+          <ion-button (click)="goBack()" class="back-button">
+            <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+        <div class="go-text">SCAN</div>
+        <div class="delivery-time">Position QR code in frame</div>
+      </div>
+      <div class="header-right">
+        <div class="avatar-container">
+          <ion-avatar class="profile-avatar">
+            <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face" />
+          </ion-avatar>
+          <div class="online-indicator"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QR Scanner Container -->
+  <div class="scanner-section">
+    <div class="scanner-container">
+      <!-- Lottie animation container -->
+      <div #qrContainer class="qr-animation-placeholder"></div>
+      <div class="scanner-overlay">
+        <div class="corner top-left"></div>
+        <div class="corner top-right"></div>
+        <div class="corner bottom-left"></div>
+        <div class="corner bottom-right"></div>
+        <div class="scanning-line"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scanner Actions -->
+  <div class="scanner-actions-section">
+    <div class="instructions">
+      <h2>Scan QR Code</h2>
+      <p>Point your camera at the QR code to scan automatically</p>
+    </div>
+
+    <div class="action-buttons">
+      <ion-button expand="block" class="flash-button" fill="outline">
+        <ion-icon name="flashlight" slot="start"></ion-icon>
+        Toggle Flash
+      </ion-button>
+      
+      <ion-button expand="block" class="manual-button" fill="clear">
+        Enter Code Manually
+      </ion-button>
+    </div>
+
+    <div class="safety-notice">
+      <ion-icon name="shield-checkmark"></ion-icon>
+      <span>Only scan codes from trusted sources</span>
+    </div>
+  </div>
+</ion-content>

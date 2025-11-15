@@ -1,0 +1,101 @@
+<ion-content [fullscreen]="true" class="item-content">
+  <!-- Header -->
+  <div class="item-header">
+    <button class="back-btn" (click)="goBack()">
+      <ion-icon name="arrow-back"></ion-icon>
+    </button>
+    <h1 class="item-title">{{ item?.name }}</h1>
+    <div class="header-spacer"></div>
+  </div>
+
+  <!-- Product Image -->
+  <div class="product-image-section">
+    <div class="image-container">
+      <img [src]="item?.image" [alt]="item?.name" class="product-image" />
+      <div class="item-badge" *ngIf="item?.discount">-{{item?.discount}}%</div>
+    </div>
+  </div>
+
+  <!-- Product Info -->
+  <div class="product-info">
+    <div class="product-header">
+      <h2 class="product-name">{{ item?.name }}</h2>
+      <div class="product-rating">
+        <ion-icon name="star" class="rating-icon"></ion-icon>
+        <span class="rating-value">{{ item?.rating }}</span>
+      </div>
+    </div>
+
+    <p class="product-description">{{ item?.description }}</p>
+
+    <!-- Size Selection -->
+    <div class="size-section" *ngIf="hasSizes()">
+      <h3 class="section-title">Select Size</h3>
+      <div class="size-options">
+        <button 
+          *ngFor="let size of getSizes()" 
+          [class.active]="selectedSize === size.name"
+          class="size-option"
+          (click)="selectedSize = size.name; onSizeChange()">
+          <div class="size-name">{{ size.name }}</div>
+          <div class="size-weight">{{ size.weight }}</div>
+          <div class="size-price">₹{{ size.price }}</div>
+        </button>
+      </div>
+    </div>
+
+    <!-- Price Section -->
+    <div class="price-section">
+      <div class="price-main">
+        <span class="current-price">₹{{ getCurrentPrice() }}</span>
+        <span class="original-price" *ngIf="getOriginalPrice()">₹{{ getOriginalPrice() }}</span>
+        <span class="discount-badge" *ngIf="item?.discount">Save {{ item?.discount }}%</span>
+      </div>
+      <div class="weight-info">Weight: {{ getSelectedWeight() }}</div>
+    </div>
+
+    <!-- Quantity Selector -->
+    <div class="quantity-section">
+      <h3 class="section-title">Quantity</h3>
+      <div class="quantity-selector">
+        <button class="qty-btn minus" (click)="decrementQuantity()" [disabled]="quantity <= 1">
+          <ion-icon name="remove"></ion-icon>
+        </button>
+        <span class="quantity">{{ quantity }}</span>
+        <button class="qty-btn plus" (click)="incrementQuantity()">
+          <ion-icon name="add"></ion-icon>
+        </button>
+      </div>
+    </div>
+
+    <!-- Add to Cart Button -->
+    <div class="action-section">
+      <button 
+        *ngIf="!currentItemInCart"
+        class="add-to-cart-btn"
+        (click)="addToCart()">
+        <ion-icon name="cart" class="btn-icon"></ion-icon>
+        Add to Cart - ₹{{ getCurrentPrice() * quantity }}
+      </button>
+
+      <div *ngIf="currentItemInCart" class="cart-controls">
+        <button class="remove-btn" (click)="removeFromCart()">
+          <ion-icon name="trash"></ion-icon>
+          Remove
+        </button>
+        <button class="update-cart-btn" (click)="addToCart()">
+          <ion-icon name="refresh"></ion-icon>
+          Update - ₹{{ getCurrentPrice() * quantity }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cart Toast Notification -->
+  <div class="cart-toast" [class.show]="isCartPulsing">
+    <div class="toast-content">
+      <ion-icon name="checkmark-circle" class="toast-icon"></ion-icon>
+      <span class="toast-text">Item {{ currentItemInCart ? 'updated' : 'added' }} to cart!</span>
+    </div>
+  </div>
+</ion-content>

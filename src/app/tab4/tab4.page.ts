@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonContent, IonButton, IonIcon, IonList, IonItem, IonAvatar, IonLabel, IonNote, IonFab, IonFabButton, IonChip, IonSearchbar } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tab4',
@@ -74,11 +75,11 @@ export class Tab4Page {
     },
   ];
 
-  constructor() {}
+  constructor(private router: Router) {}
 
   scanQR() {
     console.log('Scan QR code');
-    // Add your QR code scanning logic here
+    this.router.navigate(['/qr']);
   }
 
   newPayment() {
@@ -88,16 +89,16 @@ export class Tab4Page {
 
   sendMoney() {
     console.log('Send money');
-    // Add send money logic
+    this.router.navigate(['/send']);
   }
 
   requestMoney() {
     console.log('Request money');
-    // Add request money logic
+    this.router.navigate(['/request']);
   }
 
   viewCards() {
     console.log('View cards');
-    // Add view cards logic
+    this.router.navigate(['/card']);
   }
 }

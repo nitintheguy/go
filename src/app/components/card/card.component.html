@@ -1,0 +1,132 @@
+<ion-content [fullscreen]="true" class="card-content">
+  <!-- Enhanced Header Section -->
+  <div class="header-section">
+    <div class="header-background">
+      <div class="floating-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+      </div>
+    </div>
+    
+    <div class="header-top">
+      <div class="header-left">
+        <ion-buttons slot="start">
+          <ion-button (click)="goBack()" class="back-button">
+            <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+        <div class="go-text">CARDS</div>
+        <div class="delivery-time">Manage your payment cards</div>
+      </div>
+      <div class="header-right">
+        <div class="avatar-container">
+          <ion-avatar class="profile-avatar">
+            <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face" />
+          </ion-avatar>
+          <div class="online-indicator"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cards Container -->
+  <div class="cards-section">
+    <div class="cards-container">
+      <!-- Lottie animation container -->
+      <div #animationContainer class="animation-placeholder"></div>
+    </div>
+  </div>
+
+  <!-- My Cards Section -->
+  <div class="my-cards-section">
+    <div class="section-header">
+      <h2>My Cards</h2>
+      <ion-button fill="clear" size="small" (click)="addNewCard()">
+        <ion-icon name="add" slot="start"></ion-icon>
+        Add New
+      </ion-button>
+    </div>
+
+    <div class="cards-list">
+      <div 
+        class="card-item" 
+        *ngFor="let card of cards" 
+        [style.background]="card.color"
+        [class.selected]="selectedCard === card"
+        (click)="selectCard(card)">
+        <div class="card-header">
+          <div class="card-type">{{ card.type }}</div>
+          <div class="card-balance">{{ card.balance }}</div>
+        </div>
+        <div class="card-number">{{ card.number }}</div>
+        <div class="card-footer">
+          <div class="card-info">
+            <div class="card-name">{{ card.name }}</div>
+            <div class="card-expiry">Expires {{ card.expires }}</div>
+          </div>
+          <div class="card-logo">
+            <ion-icon name="card" class="card-icon"></ion-icon>
+          </div>
+        </div>
+
+        <!-- Expanded Card Details -->
+        <div class="card-details" *ngIf="selectedCard === card">
+          <div class="detail-row">
+            <span class="detail-label">Card Holder</span>
+            <span class="detail-value">{{ card.cardHolder }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">CVV</span>
+            <span class="detail-value">{{ card.cvv }}</span>
+          </div>
+          <div class="detail-actions">
+            <ion-button fill="clear" size="small">
+              <ion-icon name="copy" slot="start"></ion-icon>
+              Copy Details
+            </ion-button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card Actions Grid -->
+  <div class="actions-section">
+    <h2 class="actions-title">Card Management</h2>
+    <div class="actions-grid">
+      <div 
+        class="action-item" 
+        *ngFor="let action of cardActions"
+        [class.danger]="action.danger"
+        (click)="performAction(action)">
+        <div class="action-icon" [class.danger]="action.danger">
+          <ion-icon [name]="action.icon"></ion-icon>
+        </div>
+        <div class="action-content">
+          <h3 class="action-title">{{ action.title }}</h3>
+          <p class="action-description">{{ action.description }}</p>
+        </div>
+        <ion-icon name="chevron-forward" class="forward-icon"></ion-icon>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Stats -->
+  <div class="stats-section">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-value">₹1,24,567</div>
+        <div class="stat-label">Total Limit</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">₹78,890</div>
+        <div class="stat-label">Available</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">3</div>
+        <div class="stat-label">Active Cards</div>
+      </div>
+    </div>
+  </div>
+</ion-content>
