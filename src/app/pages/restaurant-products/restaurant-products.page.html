@@ -1,0 +1,134 @@
+<!-- pages/restaurant-products/restaurant-products.page.html -->
+<!-- pages/restaurant-products/restaurant-products.page.html -->
+<ion-header [translucent]="true" class="restaurant-header-bar">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="close()" class="back-button">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title class="restaurant-title">{{ restaurant?.name }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button class="cart-button" (click)="viewCart()" *ngIf="cartItemCount > 0">
+        <div class="cart-indicator">
+          <ion-icon name="cart"></ion-icon>
+          <span class="cart-count">{{ cartItemCount }}</span>
+        </div>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="restaurant-products">
+  <!-- Restaurant Header -->
+  <div class="restaurant-header">
+    <img [src]="restaurant?.image" class="restaurant-image" />
+    <div class="restaurant-info">
+      <h2>{{ restaurant?.name }}</h2>
+      <div class="restaurant-meta">
+        <div class="meta-item">
+          <ion-icon name="star" color="warning"></ion-icon>
+          {{ restaurant?.rating }}
+        </div>
+        <div class="meta-item">
+          <ion-icon name="time"></ion-icon>
+          {{ restaurant?.deliveryTime }}
+        </div>
+        <div class="meta-item">
+          <ion-icon name="location"></ion-icon>
+          {{ restaurant?.distance }}
+        </div>
+      </div>
+      <div class="restaurant-cuisine">{{ restaurant?.cuisine }}</div>
+      <div class="restaurant-tags">
+        <span class="tag" *ngIf="restaurant?.freeDelivery">Free Delivery</span>
+        <span class="tag" *ngIf="restaurant?.pureVeg">Pure Veg</span>
+        <span class="tag" *ngIf="restaurant?.discount">{{ restaurant?.discount }}% OFF</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Category Tabs -->
+  <div class="categories-scroll">
+    <ion-chip 
+      *ngFor="let category of getAvailableCategories()" 
+      [class.active]="selectedCategory === category"
+      class="category-chip"
+      (click)="selectedCategory = category">
+      <ion-label>{{ category }}</ion-label>
+    </ion-chip>
+  </div>
+
+  <!-- Menu Items -->
+  <div class="menu-items">
+    <div *ngFor="let item of filteredMenu" class="menu-item">
+      <div class="item-image-container">
+        <img [src]="item.image" class="item-image" />
+        <div class="veg-indicator" [class.non-veg]="!item.isVeg">
+          <div class="veg-dot" [class.non-veg]="!item.isVeg"></div>
+        </div>
+      </div>
+      
+      <div class="item-content">
+        <div class="item-info">
+          <h3 class="item-name">{{ item.name }}</h3>
+          <p class="item-description">{{ item.description }}</p>
+          <div class="item-price">₹{{ item.price }}</div>
+          
+          <!-- Customizations Preview -->
+          <div *ngIf="item.customizations?.length" class="customizations-preview">
+            <small>Customizable • {{ item.customizations.length }} options</small>
+          </div>
+        </div>
+
+        <!-- Add to Cart / Quantity Controls -->
+        <div class="item-actions">
+          <div *ngIf="!isItemInCart(item.id)" class="add-btn-container">
+            <button class="add-btn" (click)="addToCart(item)">
+              <span>ADD</span>
+            </button>
+          </div>
+
+          <div *ngIf="isItemInCart(item.id)" class="quantity-controls">
+            <button class="qty-btn minus" (click)="decrementQuantity(item)">
+              <ion-icon name="remove"></ion-icon>
+            </button>
+            <span class="quantity">{{ getItemQuantity(item.id) }}</span>
+            <button class="qty-btn plus" (click)="incrementQuantity(item)">
+              <ion-icon name="add"></ion-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty Menu Message -->
+    <div *ngIf="filteredMenu.length === 0" class="empty-menu">
+      <ion-icon name="fast-food-outline" class="empty-icon"></ion-icon>
+      <h4>No items in this category</h4>
+      <p>Try selecting a different category</p>
+    </div>
+  </div>
+
+  <!-- Cart Toast -->
+  <div class="cart-toast" [class.show]="showCartToast">
+    <div class="toast-content">
+      <ion-icon name="checkmark-circle" class="toast-icon"></ion-icon>
+      <span>{{ cartToastMessage }}</span>
+    </div>
+  </div>
+</ion-content>
+
+<!-- Bottom Cart Bar -->
+<div class="bottom-cart-bar" [class.show]="cartItemCount > 0">
+  <div class="cart-bar-content">
+    <div class="cart-info">
+      <div class="cart-count">{{ cartItemCount }} items</div>
+      <div class="cart-total">₹{{ cartTotal }}</div>
+    </div>
+    <button class="view-cart-btn" (click)="viewCart()">
+      View Cart
+      <ion-icon name="arrow-forward"></ion-icon>
+    </button>
+  </div>
+</div>

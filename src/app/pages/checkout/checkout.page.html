@@ -1,0 +1,540 @@
+<ion-content [fullscreen]="true" class="checkout-content" [class.grocery-theme]="isGrocery" [class.food-theme]="!isGrocery">
+  <!-- Header -->
+  <div class="checkout-header">
+    <div class="header-background">
+      <div class="floating-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+      </div>
+    </div>
+    
+    <div class="header-content">
+      <div class="back-button" (click)="goBack()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </div>
+      <h1 class="page-title">Checkout</h1>
+      <div class="header-actions">
+        <ion-icon name="help-circle-outline" class="help-icon"></ion-icon>
+      </div>
+    </div>
+  </div>
+
+  <!-- Checkout Mode Only -->
+  <ng-container *ngIf="view === 'checkout'">
+
+  <!-- Order Summary -->
+  <div class="order-summary-section">
+    <div class="section-header">
+      <h3>Order Summary</h3>
+      <button class="edit-btn" (click)="editOrder()">
+        <ion-icon name="create-outline"></ion-icon>
+        Edit
+      </button>
+    </div>
+
+    <div class="order-items">
+      <div *ngFor="let item of cartItems" class="order-item">
+        <div class="item-image">
+          <img [src]="item.image" [alt]="item.name" />
+        </div>
+        <div class="item-details">
+          <div class="item-name">{{ item.name }}</div>
+          <div class="item-price">₹{{ (item.price || 0) * (item.quantity || 0) }}</div>
+          <div class="item-quantity">
+            <button class="qty-btn" (click)="updateQuantity(item, (item.quantity || 0) - 1)">-</button>
+            <span class="qty">{{ item.quantity }}</span>
+            <button class="qty-btn" (click)="updateQuantity(item, (item.quantity || 0) + 1)">+</button>
+          </div>
+        </div>
+        <div class="item-total">
+          ₹{{ (item.price * item.quantity).toFixed(2) }}
+          <button class="remove-btn" (click)="removeItem(item)">Remove</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="order-totals">
+      <div class="total-row">
+        <span>Subtotal</span>
+        <span>₹{{ subtotal.toFixed(2) }}</span>
+      </div>
+      <div class="total-row">
+        <span>Delivery Fee</span>
+        <span *ngIf="deliveryFee > 0">₹{{ deliveryFee.toFixed(2) }}</span>
+        <span *ngIf="deliveryFee === 0" class="free-text">FREE</span>
+      </div>
+      <div class="total-row">
+        <span>Taxes & Charges</span>
+        <span>₹{{ taxes.toFixed(2) }}</span>
+      </div>
+      <div class="total-row discount">
+        <span>Discount Applied</span>
+        <span class="discount-text">-₹{{ discount.toFixed(2) }}</span>
+      </div>
+      <div class="total-row final-total">
+        <span>Total Amount</span>
+        <span class="total-amount">₹{{ totalAmount.toFixed(2) }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delivery Details -->
+  <div class="delivery-section">
+    <div class="section-header">
+      <h3>{{ isGrocery ? 'Delivery Details' : 'Delivery Information' }}</h3>
+      <button class="edit-btn" (click)="editAddress()">
+        <ion-icon name="location-outline"></ion-icon>
+        Change
+      </button>
+    </div>
+
+    <div class="delivery-info">
+      <div class="delivery-address">
+        <div class="address-type">Home</div>
+        <div class="address-details">
+          <div class="address-line">Floor 1st, ASG Apartments</div>
+          <div class="address-line">Sector 15, Gandhinagar</div>
+          <div class="address-line">Gujarat - 382015</div>
+        </div>
+      </div>
+
+      <div class="delivery-time" *ngIf="!isGrocery">
+        <div class="time-label">Delivery Time</div>
+        <div class="time-slot">30-45 minutes • ASAP</div>
+      </div>
+
+      <div class="delivery-time" *ngIf="isGrocery">
+        <div class="time-label">Delivery Slot</div>
+        <div class="time-slot">Today • 4:00 PM - 6:00 PM</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Payment Methods -->
+  <div class="payment-section">
+    <div class="section-header">
+      <h3>Payment Method</h3>
+    </div>
+
+    <div class="payment-methods">
+      <!-- goPay Option -->
+      <div class="payment-method" (click)="selectPaymentMethod('gopay')" [class.active]="selectedPaymentMethod === 'gopay'">
+        <div class="method-left">
+          <div class="method-icon gopay-icon">
+            <ion-icon name="flash"></ion-icon>
+          </div>
+          <div class="method-details">
+            <div class="method-name">goPay Wallet</div>
+            <div class="method-balance">Balance: ₹{{ goPayBalance.toFixed(2) }}</div>
+          </div>
+        </div>
+        <div class="method-right">
+          <div class="radio-checkbox" [class.checked]="selectedPaymentMethod === 'gopay'"></div>
+        </div>
+      </div>
+
+      <!-- Credit/Debit Cards -->
+      <div class="payment-method" (click)="selectPaymentMethod('card')" [class.active]="selectedPaymentMethod === 'card'">
+        <div class="method-left">
+          <div class="method-icon card-icon">
+            <ion-icon name="card"></ion-icon>
+          </div>
+          <div class="method-details">
+            <div class="method-name">Credit/Debit Card</div>
+            <div class="method-info">Visa, Mastercard, Rupay</div>
+          </div>
+        </div>
+        <div class="method-right">
+          <div class="radio-checkbox" [class.checked]="selectedPaymentMethod === 'card'"></div>
+        </div>
+      </div>
+      <div class="payment-form" *ngIf="selectedPaymentMethod === 'card'">
+        <div class="form-row">
+          <ion-input placeholder="Card Number (#### #### #### ####)" [(ngModel)]="card.number" type="tel" inputmode="numeric" maxlength="19" autocomplete="cc-number"></ion-input>
+        </div>
+        <div class="form-row two">
+          <ion-input placeholder="Name on Card" [(ngModel)]="card.name" autocomplete="cc-name"></ion-input>
+          <ion-input placeholder="Expiry (MM/YY)" [(ngModel)]="card.expiry" inputmode="numeric" maxlength="5" autocomplete="cc-exp"></ion-input>
+        </div>
+        <div class="form-row">
+          <ion-input placeholder="CVV (3–4 digits)" [(ngModel)]="card.cvv" type="password" inputmode="numeric" maxlength="4" autocomplete="cc-csc"></ion-input>
+        </div>
+        <div class="form-error" *ngIf="showPaymentErrors">Please fill all card details.</div>
+      </div>
+
+      <!-- UPI -->
+      <div class="payment-method" (click)="selectPaymentMethod('upi')" [class.active]="selectedPaymentMethod === 'upi'">
+        <div class="method-left">
+          <div class="method-icon upi-icon">
+            <ion-icon name="phone-portrait"></ion-icon>
+          </div>
+          <div class="method-details">
+            <div class="method-name">UPI</div>
+            <div class="method-info">Google Pay, PhonePe, Paytm</div>
+          </div>
+        </div>
+        <div class="method-right">
+          <div class="radio-checkbox" [class.checked]="selectedPaymentMethod === 'upi'"></div>
+        </div>
+      </div>
+      <div class="payment-form" *ngIf="selectedPaymentMethod === 'upi'">
+        <div class="form-row">
+          <ion-input placeholder="Enter UPI ID (e.g., name@bank)" [(ngModel)]="upi.id" inputmode="email"></ion-input>
+        </div>
+        <div class="form-error" *ngIf="showPaymentErrors">Enter a valid UPI ID.</div>
+      </div>
+
+      <!-- Net Banking -->
+      <div class="payment-method" (click)="selectPaymentMethod('netbanking')" [class.active]="selectedPaymentMethod === 'netbanking'">
+        <div class="method-left">
+          <div class="method-icon bank-icon">
+            <ion-icon name="business"></ion-icon>
+          </div>
+          <div class="method-details">
+            <div class="method-name">Net Banking</div>
+            <div class="method-info">All major banks</div>
+          </div>
+        </div>
+        <div class="method-right">
+          <div class="radio-checkbox" [class.checked]="selectedPaymentMethod === 'netbanking'"></div>
+        </div>
+      </div>
+
+      <!-- Cash on Delivery -->
+      <div class="payment-method" (click)="selectPaymentMethod('cod')" [class.active]="selectedPaymentMethod === 'cod'">
+        <div class="method-left">
+          <div class="method-icon cod-icon">
+            <ion-icon name="cash"></ion-icon>
+          </div>
+          <div class="method-details">
+            <div class="method-name">Cash on Delivery</div>
+            <div class="method-info">Pay when you receive</div>
+          </div>
+        </div>
+        <div class="method-right">
+          <div class="radio-checkbox" [class.checked]="selectedPaymentMethod === 'cod'"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- goPay Promo -->
+    <div class="gopay-promo" *ngIf="selectedPaymentMethod === 'gopay'">
+      <div class="promo-content">
+        <ion-icon name="gift" class="promo-icon"></ion-icon>
+        <div class="promo-text">
+          <strong>5% Cashback</strong> on using goPay for this order!
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Apply Coupon -->
+  <div class="coupon-section" [class.fixed-footer]="true" [class.open]="showCoupons">
+    <div class="section-header">
+      <h3>Apply Coupon</h3>
+    </div>
+
+    <div class="coupon-input-container">
+      <div class="coupon-input">
+        <ion-input 
+          placeholder="Enter coupon code" 
+          [(ngModel)]="couponCode"
+          class="custom-input">
+        </ion-input>
+        <button class="apply-btn" (click)="applyCoupon()" [class.applied]="couponApplied">
+          {{ couponApplied ? 'Applied' : 'Apply' }}
+        </button>
+      </div>
+    </div>
+
+    <div class="available-coupons">
+      <div class="coupon-card" *ngFor="let coupon of availableCoupons" 
+           (click)="selectCoupon(coupon)"
+           [class.selected]="coupon.code === couponCode">
+        <div class="coupon-left">
+          <div class="coupon-code">{{ coupon.code }}</div>
+          <div class="coupon-desc">{{ coupon.description }}</div>
+          <div class="coupon-validity">Valid till {{ coupon.validTill }}</div>
+        </div>
+        <div class="coupon-right">
+          <div class="coupon-discount">{{ coupon.discount }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Order Instructions -->
+  <div class="instructions-section">
+    <div class="section-header">
+      <h3>Delivery Instructions</h3>
+    </div>
+
+    <div class="instructions-input">
+      <ion-textarea
+        placeholder="Add delivery instructions (optional)"
+        rows="3"
+        [(ngModel)]="deliveryInstructions"
+        class="custom-textarea">
+      </ion-textarea>
+    </div>
+
+    <div class="quick-instructions">
+      <div class="instruction-chip" 
+           *ngFor="let instruction of quickInstructions"
+           (click)="toggleInstruction(instruction)"
+           [class.active]="selectedInstructions.includes(instruction)">
+        {{ instruction }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Action Bar -->
+  <div class="bottom-action-bar">
+    <div class="action-content">
+      <div class="price-summary">
+        <div class="total-label">Total Payable</div>
+        <div class="total-price">₹{{ totalAmount.toFixed(2) }}</div>
+      </div>
+      <button class="coupon-toggle-btn" (click)="toggleCoupons()">
+        <ion-icon name="pricetag"></ion-icon>
+        Coupons
+      </button>
+      <button class="place-order-btn" (click)="placeOrder()">
+        <span class="btn-text">Place Order</span>
+        <span class="btn-subtext">{{ isGrocery ? 'Grocery Order' : 'Food Order' }}</span>
+      </button>
+    </div>
+  </div>
+
+  </ng-container>
+
+  <!-- Success Banner -->
+  <div class="order-success-banner" *ngIf="view !== 'checkout'">
+    <ion-icon name="checkmark-circle"></ion-icon>
+    <div class="text">
+      <div class="title">Order placed successfully</div>
+      <div class="subtitle">Order ID: {{ orderId }} • {{ orderTime | date:'short' }}</div>
+    </div>
+  </div>
+
+  <!-- Enhanced Invoice Section -->
+  <div class="invoice-section" *ngIf="view !== 'checkout'">
+    <div class="section-header">
+      <h3>Order Invoice</h3>
+      <button class="download-btn" (click)="downloadInvoice()">
+        <ion-icon name="download-outline"></ion-icon>
+        Download
+      </button>
+    </div>
+
+    <!-- Order Summary -->
+    <div class="invoice-summary">
+      <div class="summary-grid">
+        <div class="summary-item">
+          <div class="summary-label">Order ID</div>
+          <div class="summary-value">{{ orderId }}</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-label">Order Date</div>
+          <div class="summary-value">{{ orderTime | date:'medium' }}</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-label">Payment Method</div>
+          <div class="summary-value payment-method">
+            <ion-icon [name]="getPaymentMethodIcon()"></ion-icon>
+            {{ getPaymentMethodName() }}
+          </div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-label">Delivery Address</div>
+          <div class="summary-value address">
+            Floor 1st, ASG Apartments<br>
+            Sector 15, Gandhinagar<br>
+            Gujarat - 382015
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Order Timeline -->
+    <div class="order-timeline">
+      <h4>Order Status</h4>
+      <div class="timeline">
+        <div class="timeline-item completed">
+          <div class="timeline-marker">
+            <ion-icon name="checkmark-circle"></ion-icon>
+          </div>
+          <div class="timeline-content">
+            <div class="timeline-title">Order Placed</div>
+            <div class="timeline-time">{{ orderTime | date:'shortTime' }}</div>
+          </div>
+        </div>
+        <div class="timeline-item" [class.completed]="view === 'tracking'">
+          <div class="timeline-marker">
+            <ion-icon [name]="view === 'tracking' ? 'checkmark-circle' : 'time'"></ion-icon>
+          </div>
+          <div class="timeline-content">
+            <div class="timeline-title">Preparing Your Order</div>
+            <div class="timeline-time" *ngIf="view === 'tracking'">{{ getCurrentTime() | date:'shortTime' }}</div>
+          </div>
+        </div>
+        <div class="timeline-item" [class.completed]="view === 'tracking'">
+          <div class="timeline-marker">
+            <ion-icon [name]="view === 'tracking' ? 'checkmark-circle' : 'car'"></ion-icon>
+          </div>
+          <div class="timeline-content">
+            <div class="timeline-title">On the Way</div>
+            <div class="timeline-time" *ngIf="view === 'tracking'">Estimated: {{ getDeliveryTime() | date:'shortTime' }}</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-marker">
+            <ion-icon name="cube"></ion-icon>
+          </div>
+          <div class="timeline-content">
+            <div class="timeline-title">Delivered</div>
+            <div class="timeline-time">Estimated: {{ getEstimatedDeliveryTime() | date:'shortTime' }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Order Items -->
+    <div class="invoice-items-section">
+      <h4>Order Details</h4>
+      <div class="invoice-items">
+        <div *ngFor="let item of invoiceItems" class="invoice-item">
+          <div class="item-left">
+            <img [src]="item.image" class="item-image" [alt]="item.name" />
+            <div class="item-details">
+              <div class="item-name">{{ item.name }}</div>
+              <div class="item-meta">
+                <span class="item-quantity">Qty: {{ item.quantity }}</span>
+                <span class="item-price">₹{{ item.price | number:'1.0-0' }} each</span>
+              </div>
+            </div>
+          </div>
+          <div class="item-right">
+            <div class="item-total">₹{{ (item.price * item.quantity) | number:'1.0-0' }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Price Breakdown -->
+    <div class="price-breakdown">
+      <h4>Price Breakdown</h4>
+      <div class="breakdown-grid">
+        <div class="breakdown-row">
+          <span>Items Total</span>
+          <span>₹{{ invoiceTotals.subtotal | number:'1.0-0' }}</span>
+        </div>
+        <div class="breakdown-row">
+          <span>Delivery Fee</span>
+          <span *ngIf="invoiceTotals.deliveryFee > 0">₹{{ invoiceTotals.deliveryFee | number:'1.0-0' }}</span>
+          <span *ngIf="invoiceTotals.deliveryFee === 0" class="free-text">FREE</span>
+        </div>
+        <div class="breakdown-row">
+          <span>Taxes & Charges</span>
+          <span>₹{{ invoiceTotals.taxes | number:'1.0-0' }}</span>
+        </div>
+        <div class="breakdown-row discount">
+          <span>Discount Applied</span>
+          <span class="discount-text">-₹{{ invoiceTotals.discount | number:'1.0-0' }}</span>
+        </div>
+        <div class="breakdown-row total">
+          <span>Total Amount</span>
+          <span class="total-amount">₹{{ invoiceTotals.total | number:'1.0-0' }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Delivery Information -->
+    <div class="delivery-info-section">
+      <h4>Delivery Information</h4>
+      <div class="delivery-info-grid">
+        <div class="info-item">
+          <ion-icon name="time-outline" class="info-icon"></ion-icon>
+          <div class="info-content">
+            <div class="info-label">Delivery Time</div>
+            <div class="info-value">{{ getEstimatedDeliveryTime() | date:'shortTime' }}</div>
+          </div>
+        </div>
+        <div class="info-item">
+          <ion-icon name="location-outline" class="info-icon"></ion-icon>
+          <div class="info-content">
+            <div class="info-label">Delivery Address</div>
+            <div class="info-value">Home - ASG Apartments</div>
+          </div>
+        </div>
+        <div class="info-item">
+          <ion-icon name="person-outline" class="info-icon"></ion-icon>
+          <div class="info-content">
+            <div class="info-label">Contact Person</div>
+            <div class="info-value">+91 98765 43210</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Order Instructions -->
+    <div class="instructions-section" *ngIf="deliveryInstructions">
+      <h4>Delivery Instructions</h4>
+      <div class="instructions-content">
+        <ion-icon name="information-circle-outline" class="instructions-icon"></ion-icon>
+        <span>{{ deliveryInstructions }}</span>
+      </div>
+    </div>
+
+    <!-- Support Section -->
+    <div class="support-section">
+      <h4>Need Help?</h4>
+      <div class="support-actions">
+        <button class="support-btn" (click)="contactSupport()">
+          <ion-icon name="headset-outline"></ion-icon>
+          Contact Support
+        </button>
+        <button class="support-btn" (click)="trackOrder()">
+          <ion-icon name="navigate-outline"></ion-icon>
+          Track Order
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Order Placed View -->
+  <ng-container *ngIf="view === 'orderPlaced'">
+    <div class="order-placed">
+      <ion-icon name="checkmark-circle" class="success-icon"></ion-icon>
+      <h2>Order Placed!</h2>
+      <p>Your order is being prepared...</p>
+    </div>
+  </ng-container>
+
+  <!-- Tracking View with Lottie -->
+  <ng-container *ngIf="view === 'tracking'">
+    <div class="tracking-view">
+      <div id="trackingMap" class="map-lottie-canvas"></div>
+      <div class="status onway">Status: On the way</div>
+    </div>
+  </ng-container>
+
+  <!-- Security Footer -->
+  <div class="security-footer">
+    <div class="security-features">
+      <div class="security-item">
+        <ion-icon name="shield-checkmark"></ion-icon>
+        <span>100% Secure Payment</span>
+      </div>
+      <div class="security-item">
+        <ion-icon name="lock-closed"></ion-icon>
+        <span>SSL Encrypted</span>
+      </div>
+      <div class="security-item">
+        <ion-icon name="refresh"></ion-icon>
+        <span>Easy Returns</span>
+      </div>
+    </div>
+  </div>
+</ion-content>

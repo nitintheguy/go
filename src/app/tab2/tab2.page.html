@@ -36,7 +36,8 @@
           animated="true"
           class="custom-searchbar"
           debounce="500"
-          (ionInput)="onSearchInput($event)">
+          (ionInput)="onSearchInput($event)"
+          [value]="searchText">
         </ion-searchbar>
         <div class="search-decoration">
           <div class="pulse-dot"></div>
@@ -61,8 +62,17 @@
     </div>
   </div>
 
+  <!-- Search Results Header -->
+  <div *ngIf="isSearching" class="search-results-header">
+    <h3>Search Results for "{{searchText}}"</h3>
+    <button class="clear-search-btn" (click)="clearSearch()">
+      Clear
+      <ion-icon name="close-circle"></ion-icon>
+    </button>
+  </div>
+
   <!-- Promo Banner -->
-  <div class="promo-banner">
+  <div class="promo-banner" *ngIf="!isSearching">
     <div class="banner-content">
       <div class="banner-text">
         <div class="banner-title">Free Delivery!</div>
@@ -75,16 +85,18 @@
   </div>
 
   <!-- Hero Section - Top Restaurants -->
-  <div class="hero-section">
+  <div class="hero-section" *ngIf="!isSearching || filteredTopRestaurants.length > 0">
     <div class="section-header">
       <h2>🔥 Top Restaurants</h2>
-      <button class="see-all-btn" (click)="viewAllTopRestaurants()">
+      <button class="see-all-btn" (click)="viewAllTopRestaurants()" *ngIf="!isSearching">
         See All
         <ion-icon name="chevron-forward"></ion-icon>
       </button>
     </div>
     <div class="restaurants-scroll">
-      <div *ngFor="let restaurant of topRestaurants" class="restaurant-card featured">
+      <div *ngFor="let restaurant of (isSearching ? filteredTopRestaurants : topRestaurants)" 
+           class="restaurant-card featured"
+           (click)="openRestaurant(restaurant)">
         <div class="restaurant-badge">Popular</div>
         <img [src]="restaurant.image" class="restaurant-image" />
         <div class="restaurant-info">
@@ -113,36 +125,58 @@
           </div>
         </div>
       </div>
+
+      <!-- No Results Message for Top Restaurants -->
+      <div *ngIf="isSearching && filteredTopRestaurants.length === 0" class="no-results-message">
+        <div class="no-results-content">
+          <ion-icon name="restaurant-outline" class="no-results-icon"></ion-icon>
+          <h4>No top restaurants found</h4>
+          <p>Try searching for something else</p>
+        </div>
+      </div>
     </div>
   </div>
 
   <!-- Quick Categories -->
-  <div class="quick-categories">
+  <div class="quick-categories" *ngIf="!isSearching || filteredQuickCategories.length > 0">
     <div class="section-header">
       <h3>🍕 Quick Bites</h3>
     </div>
     <div class="categories-grid">
-      <div *ngFor="let quickCat of quickCategories" class="quick-category" (click)="filterByCategory(quickCat.name)">
+      <div *ngFor="let quickCat of (isSearching ? filteredQuickCategories : quickCategories)" 
+           class="quick-category" 
+           (click)="selectQuickCategory(quickCat.name)">
         <div class="category-icon" [style.background]="quickCat.color">
           <ion-icon [name]="quickCat.icon"></ion-icon>
         </div>
         <div class="category-name">{{ quickCat.name }}</div>
       </div>
+
+      <!-- No Results Message for Quick Categories -->
+      <div *ngIf="isSearching && filteredQuickCategories.length === 0" class="no-results-message">
+        <div class="no-results-content">
+          <ion-icon name="fast-food-outline" class="no-results-icon"></ion-icon>
+          <h4>No categories found</h4>
+          <p>Try a different search term</p>
+        </div>
+      </div>
     </div>
   </div>
 
   <!-- All Restaurants -->
-  <div class="main-categories">
+  <div class="main-categories" *ngIf="!isSearching || filteredAllRestaurants.length > 0">
     <div class="category-section">
       <div class="section-header">
-        <h3>🍴 All Restaurants</h3>
-        <button class="see-all-btn" (click)="viewAllRestaurants()">
+        <h3>🍴 {{ isSearching ? 'Matching Restaurants' : 'All Restaurants' }}</h3>
+        <button class="see-all-btn" (click)="viewAllRestaurants()" *ngIf="!isSearching">
           View All
           <ion-icon name="chevron-forward"></ion-icon>
         </button>
       </div>
       <div class="restaurants-grid">
-        <div *ngFor="let restaurant of allRestaurants" class="restaurant-card">
+        <div *ngFor="let restaurant of (isSearching ? filteredAllRestaurants : allRestaurants)" 
+             class="restaurant-card"
+             (click)="openRestaurant(restaurant)">
           <img [src]="restaurant.image" class="restaurant-image" />
           <div class="restaurant-info">
             <div class="restaurant-header">
@@ -170,12 +204,44 @@
             </div>
           </div>
         </div>
+
+        <!-- No Results Message for All Restaurants -->
+        <div *ngIf="isSearching && filteredAllRestaurants.length === 0" class="no-results-message">
+          <div class="no-results-content">
+            <ion-icon name="search-outline" class="no-results-icon"></ion-icon>
+            <h4>No restaurants found for "{{searchText}}"</h4>
+            <p>Try searching for different food items or restaurants</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
+  <!-- No Search Results Section -->
+  <div *ngIf="isSearching && !hasSearchResults()" class="no-search-results">
+    <div class="no-results-container">
+      <div class="no-results-illustration">
+        <ion-icon name="search-outline" class="empty-state-icon"></ion-icon>
+      </div>
+      <h3>No results found</h3>
+      <p>We couldn't find any restaurants or food items matching "{{searchText}}"</p>
+      <div class="suggestions">
+        <p><strong>Suggestions:</strong></p>
+        <ul>
+          <li>Try different keywords</li>
+          <li>Check for spelling errors</li>
+          <li>Search for broader categories like "Pizza" or "Burger"</li>
+        </ul>
+      </div>
+      <button class="try-again-btn" (click)="clearSearch()">
+        <ion-icon name="refresh"></ion-icon>
+        Try Again
+      </button>
+    </div>
+  </div>
+
   <!-- Enhanced Footer -->
-  <div class="footer">
+  <div class="footer" *ngIf="!isSearching">
     <div class="footer-content">
       <div class="footer-logo">
         <div class="go-text-small">GO</div>
@@ -188,5 +254,28 @@
       </div>
     </div>
     <p class="footer-copyright">Made with ❤️ by Go Food Team</p>
+  </div>
+
+  <!-- Cart Toast for Tab2 -->
+  <div class="cart-toast-tab2" [class.show]="isCartPulsing">
+    <div class="toast-content">
+      <ion-icon name="checkmark-circle" class="toast-icon"></ion-icon>
+      <span class="toast-text">Item added to cart!</span>
+    </div>
+  </div>
+
+  <!-- Bottom Cart Bar -->
+  <div class="bottom-cart-bar" [class.show]="showCartBubble" (click)="openCart()">
+    <div class="cart-bar-content">
+      <div class="cart-info">
+        <div class="cart-count-badge">{{ cartItemCount }} items</div>
+        <div class="cart-total-text">₹{{ cartTotal }}</div>
+      </div>
+      <button class="view-cart-btn">
+        View Cart
+        <ion-icon name="arrow-forward"></ion-icon>
+      </button>
+    </div>
+    <div class="cart-pulse-effect" [class.pulsing]="isCartPulsing"></div>
   </div>
 </ion-content>

@@ -1,10 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, ModalController } from '@ionic/angular';
 import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { CartService, CartItem } from '../services/cart';
+import { CheckoutPage } from '../pages/checkout/checkout.page'; // Add this import
 
 interface GroceryItem {
   id: string;
@@ -325,7 +326,8 @@ export class Tab1Page implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
-    private cartService: CartService
+    private cartService: CartService,
+    private modalCtrl: ModalController // Add this
   ) {}
 
   ngOnInit() {
@@ -412,15 +414,15 @@ export class Tab1Page implements OnInit, OnDestroy {
     this.router.navigate(['/item', item.id]);
   }
 
- addToCart(item: GroceryItem, event: Event) {
-  event.stopPropagation();
-  
-  // Use the main addToCart method with default quantity of 1
-  this.cartService.addToCart(item, 1);
-  this.showCartAnimation();
-  
-  console.log('Added to cart:', item.name);
-}
+  addToCart(item: GroceryItem, event: Event) {
+    event.stopPropagation();
+    
+    // Use the main addToCart method with default quantity of 1
+    this.cartService.addToCart(item, 1);
+    this.showCartAnimation();
+    
+    console.log('Added to cart:', item.name);
+  }
 
   decrementQuantity(itemId: string, event: Event) {
     event.stopPropagation();
@@ -439,8 +441,10 @@ export class Tab1Page implements OnInit, OnDestroy {
   }
 
   updateCartTotals() {
-    this.cartItemCount = this.cartService.getCartItemCount();
-    this.cartTotal = this.cartService.getCartTotal();
+    const count = Number(this.cartService.getCartItemCount());
+    const total = Number(this.cartService.getCartTotal());
+    this.cartItemCount = isNaN(count) ? 0 : count;
+    this.cartTotal = isNaN(total) ? 0 : total;
     this.showCartBubble = this.cartItemCount > 0;
   }
 
@@ -455,11 +459,49 @@ export class Tab1Page implements OnInit, OnDestroy {
     this.cartService.clearCart();
   }
 
-  viewCart() {
-    console.log('Viewing cart with', this.cartItemCount, 'items');
+  // UPDATED: Open checkout for grocery
+  async openCheckout() {
+    if (this.cartItems.length === 0) {
+      console.log('Cart is empty');
+      return;
+    }
+
+    const modal = await this.modalCtrl.create({
+      component: CheckoutPage,
+      componentProps: {
+        isGrocery: true,
+        cartItems: this.cartItems
+      },
+      breakpoints: [0, 0.75, 1],
+      initialBreakpoint: 1
+    });
+    
+    await modal.present();
+  }
+
+  // UPDATED: View cart with option to checkout
+  async viewCart() {
+    if (this.cartItems.length === 0) {
+      console.log('Cart is empty');
+      return;
+    }
+    
+    // For now, directly open checkout
+    // You can create a cart modal first if needed
+    this.openCheckout();
   }
 
   isItemInCart(itemId: string): boolean {
     return this.cartService.isItemInCart(itemId);
+  }
+
+  // NEW: Get cart item count for display
+  getCartItemCount(): number {
+    return this.cartService.getCartItemCount();
+  }
+
+  // NEW: Get cart total for display
+  getCartTotal(): number {
+    return this.cartService.getCartTotal();
   }
 }
