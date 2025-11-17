@@ -51,5 +51,55 @@ export const routes: Routes = [
   {
     path: 'checkout',
     loadComponent: () => import('./pages/checkout/checkout.page').then( m => m.CheckoutPage)
+  },
+  // Profile routes
+  {
+    path: 'profile',
+    loadComponent: () => import('./pages/profile/profile.page').then( m => m.ProfilePage)
+  },
+  {
+    path: 'edit-profile',
+    loadComponent: () => import('./pages/profile/edit-profile/edit-profile.page').then( m => m.EditProfilePage)
+  },
+  {
+    path: 'settings',
+    loadComponent: () => import('./pages/profile/settings/settings.page').then( m => m.SettingsPage)
+  },
+  {
+    path: 'addresses',
+    loadComponent: () => import('./pages/profile/addresses/addresses.page').then( m => m.AddressesPage)
+  },
+  {
+    path: 'favorites',
+    loadComponent: () => import('./pages/profile/favorites/favorites.page').then( m => m.FavoritesPage)
+  },
+  {
+    path: 'help',
+    loadComponent: () => import('./pages/profile/help/help.page').then( m => m.HelpPage)
+  },
+  {
+    path: 'about',
+    loadComponent: () => import('./pages/profile/about/about.page').then( m => m.AboutPage)
+  },
+  {
+    path: 'order-details/:id',
+    loadComponent: () => import('./pages/profile/order-details/order-details.page').then( m => m.OrderDetailsPage)
+  },
+  // Logistics routes
+  {
+    path: 'logistics/packages',
+    loadComponent: () => import('./pages/logistics/packages/packages.page').then( m => m.PackagesPage)
+  },
+  {
+    path: 'logistics/documents',
+    loadComponent: () => import('./pages/logistics/documents/documents.page').then( m => m.DocumentsPage)
+  },
+  {
+    path: 'logistics/freight',
+    loadComponent: () => import('./pages/logistics/freight/freight.page').then( m => m.FreightPage)
+  },
+  {
+    path: 'logistics/express',
+    loadComponent: () => import('./pages/logistics/express/express.page').then( m => m.ExpressPage)
   }
 ];

@@ -32,7 +32,7 @@ import {
   time,
   closeCircle
 } from 'ionicons/icons';
-import { UserProfileService, UserProfile } from '../services/user-profile.service';
+import { UserProfileService, UserProfile } from '../../services/user-profile.service';
 
 interface OrderItem {
   name: string;
@@ -166,7 +166,7 @@ export class ProfilePage implements OnInit, OnDestroy {
     
     // Subscribe to profile updates
     this.profileSubscription = this.userProfileService.profile$.subscribe(
-      (profile) => {
+      (profile: UserProfile) => {
         this.userProfile = profile;
       }
     );

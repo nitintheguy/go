@@ -19,7 +19,7 @@ import {
   camera,
   checkmark
 } from 'ionicons/icons';
-import { UserProfileService } from '../../services/user-profile.service';
+import { UserProfileService } from '../../../services/user-profile.service';
 
 @Component({
   selector: 'app-edit-profile',

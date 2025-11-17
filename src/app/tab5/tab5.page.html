@@ -107,6 +107,7 @@
               <ion-input 
                 label="Tracking ID" 
                 placeholder="e.g., DEL123456789"
+                [(ngModel)]="trackingId"
                 class="custom-input">
               </ion-input>
             </ion-item>
@@ -163,6 +164,7 @@
               <ion-input 
                 label="Pickup Address" 
                 placeholder="Enter complete address"
+                [(ngModel)]="pickupAddress"
                 class="custom-input">
               </ion-input>
             </ion-item>
@@ -176,6 +178,7 @@
               <ion-input 
                 label="Contact Person" 
                 placeholder="Enter contact name"
+                [(ngModel)]="contactPerson"
                 class="custom-input">
               </ion-input>
             </ion-item>
@@ -190,6 +193,7 @@
                 label="Phone Number" 
                 placeholder="Enter phone number"
                 type="tel"
+                [(ngModel)]="phoneNumber"
                 class="custom-input">
               </ion-input>
             </ion-item>
@@ -223,6 +227,7 @@
               <ion-input 
                 label="Your Location" 
                 placeholder="Enter your current location"
+                [(ngModel)]="serviceLocation"
                 class="custom-input">
               </ion-input>
             </ion-item>
