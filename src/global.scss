@@ -35,3 +35,28 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import '@ionic/angular/css/palettes/dark.system.css';
+
+/* Payment Modal Styles */
+.payment-modal {
+  --width: 100%;
+  --max-width: 500px;
+  --height: 100%;
+  --max-height: 90vh;
+  --border-radius: 20px 20px 0 0;
+}
+
+/* PIN Entry Modal Styles */
+.pin-modal {
+  --width: 100%;
+  --max-width: 100%;
+  --height: 100%;
+  --border-radius: 0;
+  --backdrop-opacity: 0.8;
+  
+  .modal-wrapper {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    padding: 0;
+  }
+}

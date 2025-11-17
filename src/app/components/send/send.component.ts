@@ -1,8 +1,9 @@
 import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, ModalController, ToastController } from '@ionic/angular';
 import { RouterModule } from '@angular/router';
 import lottie from 'lottie-web';
+import { PinEntryComponent } from '../pin-entry/pin-entry.component';
 
 @Component({
   selector: 'app-send',
@@ -37,7 +38,13 @@ export class Send implements AfterViewInit {
     }
   ];
 
-  constructor() {}
+  amount: number = 0;
+  selectedContact: any = null;
+
+  constructor(
+    private modalCtrl: ModalController,
+    private toastCtrl: ToastController
+  ) {}
 
   ngAfterViewInit() {
     this.loadLottieAnimation();
@@ -69,7 +76,59 @@ export class Send implements AfterViewInit {
     }
   }
 
-  sendToContact(contact: any) {
-    console.log('Sending money to:', contact.name);
+  async sendToContact(contact: any) {
+    this.selectedContact = contact;
+    
+    // In a real app, you'd show an amount input dialog first
+    // For now, we'll use a default amount
+    this.amount = 1000; // Default amount, in real app this would come from user input
+
+    // Show PIN entry modal
+    const pinModal = await this.modalCtrl.create({
+      component: PinEntryComponent,
+      componentProps: {
+        paymentMethod: 'send',
+        amount: this.amount,
+        primaryColor: '#d32f2f',
+        recipientName: contact.name,
+        tabTheme: 'tab4' // Pay tab theme
+      },
+      cssClass: 'pin-modal',
+      backdropDismiss: false
+    });
+
+    await pinModal.present();
+
+    const { data } = await pinModal.onWillDismiss();
+
+    if (data && data.verified) {
+      // PIN verified, proceed with sending money
+      this.processSendMoney(contact);
+    } else {
+      // PIN cancelled or invalid
+      if (data && data.cancelled) {
+        this.presentToast('Transaction cancelled');
+      }
+    }
+  }
+
+  private async processSendMoney(contact: any) {
+    console.log('Sending money to:', contact.name, 'Amount:', this.amount);
+    const toast = await this.toastCtrl.create({
+      message: `₹${this.amount} sent to ${contact.name} successfully!`,
+      duration: 2000,
+      position: 'bottom',
+      color: 'success'
+    });
+    await toast.present();
+  }
+
+  private async presentToast(message: string) {
+    const toast = await this.toastCtrl.create({
+      message,
+      duration: 2000,
+      position: 'bottom'
+    });
+    await toast.present();
   }
 }

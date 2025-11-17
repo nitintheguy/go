@@ -19,7 +19,7 @@
         </div>
       </div>
       <div class="header-right">
-        <div class="avatar-container">
+        <div class="avatar-container" (click)="openProfile()">
           <ion-avatar class="profile-avatar">
             <img [src]="profileAvatarUrl" />
           </ion-avatar>
@@ -35,7 +35,9 @@
           [placeholder]="currentPlaceholder"
           animated="true"
           class="custom-searchbar"
-          debounce="500">
+          debounce="500"
+          [(ngModel)]="searchQuery"
+          (ionInput)="onSearchChange($event)">
         </ion-searchbar>
         <div class="search-decoration">
           <div class="pulse-dot"></div>
@@ -48,8 +50,9 @@
       <div class="categories-scroll">
         <ion-chip 
           *ngFor="let category of categories" 
-          [class.active]="category.name === 'All'"
-          class="category-chip">
+          [class.active]="category.name === selectedCategory"
+          class="category-chip"
+          (click)="filterByCategory(category.name)">
           <div class="chip-icon-wrapper">
             <ion-icon [name]="category.icon"></ion-icon>
           </div>
@@ -81,25 +84,14 @@
     </div>
 
     <ion-segment [(ngModel)]="rideType" (ionChange)="segmentChanged($event)" class="ride-segment">
-      <ion-segment-button value="uberx" class="segment-btn">
+      <ion-segment-button 
+        *ngFor="let rideKey of getAvailableRideKeys()" 
+        [value]="rideKey" 
+        class="segment-btn">
         <div class="segment-content">
-          <ion-icon name="car-sport" class="segment-icon"></ion-icon>
-          <ion-label>UberX</ion-label>
-          <div class="segment-price">₹149</div>
-        </div>
-      </ion-segment-button>
-      <ion-segment-button value="uberblack" class="segment-btn">
-        <div class="segment-content">
-          <ion-icon name="diamond" class="segment-icon"></ion-icon>
-          <ion-label>Uber Black</ion-label>
-          <div class="segment-price">₹249</div>
-        </div>
-      </ion-segment-button>
-      <ion-segment-button value="uberxl" class="segment-btn">
-        <div class="segment-content">
-          <ion-icon name="people" class="segment-icon"></ion-icon>
-          <ion-label>UberXL</ion-label>
-          <div class="segment-price">₹199</div>
+          <ion-icon [name]="availableRideTypes[rideKey].icon" class="segment-icon"></ion-icon>
+          <ion-label>{{ availableRideTypes[rideKey].name }}</ion-label>
+          <div class="segment-price">₹{{ availableRideTypes[rideKey].price }}</div>
         </div>
       </ion-segment-button>
     </ion-segment>
@@ -110,7 +102,11 @@
           <div class="dot"></div>
         </div>
         <ion-item class="location-item">
-          <ion-input label="Pickup" placeholder="Current location" value="Current location"></ion-input>
+          <ion-input 
+            label="Pickup" 
+            placeholder="Current location" 
+            [value]="pickupLocation"
+            (ionInput)="updatePickup($event)"></ion-input>
         </ion-item>
       </div>
       
@@ -121,7 +117,11 @@
           <ion-icon name="location"></ion-icon>
         </div>
         <ion-item class="location-item">
-          <ion-input label="Destination" placeholder="Where to?"></ion-input>
+          <ion-input 
+            label="Destination" 
+            placeholder="Where to?"
+            [(ngModel)]="destination"
+            (ionInput)="updateDestination($event)"></ion-input>
         </ion-item>
       </div>
     </div>

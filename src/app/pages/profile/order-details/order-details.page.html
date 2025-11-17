@@ -50,6 +50,38 @@
       </div>
     </div>
 
+    <!-- Delivery Driver -->
+    <div class="delivery-card" *ngIf="order.driver">
+      <h3 class="card-title">Delivery Partner</h3>
+      <div class="driver-info-card">
+        <div class="driver-header">
+          <div class="driver-avatar">
+            <img [src]="order.driver.avatar" [alt]="order.driver.name" />
+          </div>
+          <div class="driver-details">
+            <div class="driver-name">{{ order.driver.name }}</div>
+            <div class="driver-rating">
+              <ion-icon name="star"></ion-icon>
+              {{ order.driver.rating }}
+            </div>
+            <div class="driver-vehicle" *ngIf="order.driver.vehicle">
+              {{ order.driver.vehicle.model }} • {{ order.driver.vehicle.plate }}
+            </div>
+          </div>
+        </div>
+        <div class="driver-actions">
+          <ion-button fill="outline" size="small" (click)="callDriver()">
+            <ion-icon name="call" slot="start"></ion-icon>
+            Call
+          </ion-button>
+          <ion-button fill="solid" size="small" (click)="openChat()">
+            <ion-icon name="chatbubble" slot="start"></ion-icon>
+            Chat
+          </ion-button>
+        </div>
+      </div>
+    </div>
+
     <!-- Delivery Address -->
     <div class="delivery-card">
       <h3 class="card-title">Delivery Address</h3>

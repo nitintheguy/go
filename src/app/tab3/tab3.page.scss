@@ -216,16 +216,22 @@
         backdrop-filter: blur(20px);
         border: 1px solid rgba(255, 255, 255, 0.1);
         transition: all 0.3s ease;
+        cursor: pointer;
 
         &:active {
           transform: scale(0.95);
         }
 
+        &:hover {
+          --background: rgba(255, 255, 255, 0.3);
+        }
+
         &.active {
-          --background: rgba(255, 255, 255, 0.95);
-          --color: #4a00e0;
+          --background: rgba(255, 255, 255, 0.95) !important;
+          --color: #4a00e0 !important;
           font-weight: 600;
           box-shadow: 0 8px 25px rgba(74, 0, 224, 0.3);
+          border: 1px solid rgba(255, 255, 255, 0.5);
         }
 
         .chip-icon-wrapper {

@@ -20,6 +20,14 @@
     --primary-light: rgba(255, 111, 0, 0.1);
     --primary-shadow: rgba(255, 111, 0, 0.3);
   }
+
+  // Ride Theme (Purple)
+  &.ride-theme {
+    --primary-color: #4a00e0;
+    --primary-gradient: linear-gradient(135deg, #4a00e0 0%, #8e2de2 100%);
+    --primary-light: rgba(74, 0, 224, 0.1);
+    --primary-shadow: rgba(74, 0, 224, 0.3);
+  }
 }
 
 // Header Section
@@ -155,7 +163,7 @@
   }
 }
 
-// Order Summary Section
+// Order Summary Section - FIXED PRICE BREAKDOWN
 .order-summary-section {
   background: white;
   margin: 0 20px 20px 20px;
@@ -249,15 +257,16 @@
   .order-totals {
     margin-top: 16px;
     padding-top: 16px;
-    border-top: 1px solid #f0f0f0;
+    border-top: 2px solid #f0f0f0;
 
     .total-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 6px 0;
+      padding: 10px 0;
       font-size: 0.95rem;
       color: #333;
+      font-weight: 500;
 
       &.discount {
         color: #1b5e20;
@@ -265,26 +274,40 @@
       }
 
       &.final-total {
-        border-top: 1px solid #e0e0e0;
-        margin-top: 8px;
-        padding-top: 12px;
+        border-top: 2px solid #e0e0e0;
+        margin-top: 12px;
+        padding-top: 16px;
         font-weight: 700;
-        font-size: 1.1rem;
+        font-size: 1.2rem;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        margin-left: -20px;
+        margin-right: -20px;
+        padding-left: 20px;
+        padding-right: 20px;
+        border-radius: 0 0 16px 16px;
 
         .total-amount {
           color: var(--primary-color);
-          font-size: 1.25rem;
+          font-size: 1.4rem;
+          font-weight: 800;
         }
       }
 
       .free-text {
         color: #1b5e20 !important;
-        font-weight: 600;
+        font-weight: 700;
+        background: #e8f5e9;
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-size: 0.8rem;
       }
 
       .discount-text {
         color: #1b5e20 !important;
-        font-weight: 600;
+        font-weight: 700;
+        background: #e8f5e9;
+        padding: 4px 8px;
+        border-radius: 6px;
       }
     }
   }
@@ -335,10 +358,73 @@
         font-weight: 500;
       }
     }
+
+    .ride-route {
+      margin-bottom: 16px;
+
+      .route-point {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        margin-bottom: 12px;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+
+        .route-icon {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 32px;
+          height: 32px;
+          flex-shrink: 0;
+
+          .route-dot {
+            width: 12px;
+            height: 12px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            border: 3px solid var(--primary-light);
+          }
+
+          ion-icon {
+            font-size: 1.2rem;
+            color: #ff6b6b;
+          }
+        }
+
+        .route-details {
+          flex: 1;
+
+          .route-label {
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 4px;
+            font-weight: 500;
+          }
+
+          .route-address {
+            font-size: 0.95rem;
+            color: #1a1a1a;
+            font-weight: 500;
+            line-height: 1.4;
+          }
+        }
+      }
+
+      .route-divider {
+        height: 20px;
+        width: 2px;
+        background: #e0e0e0;
+        margin-left: 15px;
+        margin-bottom: 12px;
+      }
+    }
   }
 }
 
-// Payment Section
+// Payment Section - FIXED CARD COLOR
 .payment-section {
   background: white;
   margin: 0 20px 20px 20px;
@@ -386,7 +472,7 @@
           }
 
           &.card-icon {
-            background: linear-gradient(135deg, #4834d4, #686de0);
+            background: linear-gradient(135deg, #6c757d, #adb5bd);
             color: white;
           }
 
@@ -1111,7 +1197,7 @@
   }
 }
 
-// Price Breakdown
+// Price Breakdown - FIXED VISIBILITY
 .price-breakdown {
   margin-bottom: 25px;
 
@@ -1133,42 +1219,66 @@
   .breakdown-grid {
     background: #f8f9fa;
     border-radius: 12px;
-    padding: 16px;
+    padding: 20px;
     border: 1px solid #e9ecef;
 
     .breakdown-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 8px 0;
-      font-size: 0.9rem;
+      padding: 12px 0;
+      font-size: 1rem;
+      font-weight: 500;
+      color: #333;
+      border-bottom: 1px solid #e9ecef;
+
+      &:last-child {
+        border-bottom: none;
+      }
 
       &.discount {
         color: #1b5e20;
         font-weight: 600;
+        background: #e8f5e9;
+        margin: 0 -20px;
+        padding-left: 20px;
+        padding-right: 20px;
+        border-radius: 8px;
       }
 
       &.total {
         border-top: 2px solid #e9ecef;
-        margin-top: 8px;
-        padding-top: 12px;
+        margin-top: 12px;
+        padding-top: 16px;
         font-weight: 700;
-        font-size: 1.1rem;
+        font-size: 1.2rem;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        margin: 12px -20px -20px -20px;
+        padding: 20px;
+        border-radius: 0 0 12px 12px;
 
         .total-amount {
           color: var(--primary-color);
-          font-size: 1.2rem;
+          font-size: 1.4rem;
+          font-weight: 800;
         }
       }
 
       .free-text {
         color: #1b5e20 !important;
-        font-weight: 600;
+        font-weight: 700;
+        background: #e8f5e9;
+        padding: 6px 12px;
+        border-radius: 8px;
+        font-size: 0.9rem;
       }
 
       .discount-text {
         color: #1b5e20 !important;
-        font-weight: 600;
+        font-weight: 700;
+        background: #e8f5e9;
+        padding: 6px 12px;
+        border-radius: 8px;
       }
     }
   }
@@ -1379,6 +1489,170 @@
   p {
     color: #666;
     margin: 0;
+  }
+}
+
+// Ride Details Section
+.ride-details-section {
+  background: white;
+  margin: 0 20px 20px 20px;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+
+  .driver-card {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+
+    .driver-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      .driver-avatar {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 3px solid var(--primary-color);
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+
+      .driver-info {
+        flex: 1;
+
+        .driver-name {
+          font-size: 1.1rem;
+          font-weight: 600;
+          color: #1a1a1a;
+          margin-bottom: 4px;
+        }
+
+        .driver-rating {
+          display: flex;
+          align-items: center;
+          gap: 4px;
+          font-size: 0.9rem;
+          color: #666;
+
+          ion-icon {
+            color: #ffc107;
+            font-size: 1rem;
+          }
+        }
+      }
+
+      .driver-actions {
+        display: flex;
+        gap: 8px;
+
+        .call-btn,
+        .chat-btn {
+          background: var(--primary-gradient);
+          border: none;
+          border-radius: 50%;
+          width: 44px;
+          height: 44px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 4px 12px var(--primary-shadow);
+          transition: all 0.3s ease;
+
+          &:active {
+            transform: scale(0.9);
+          }
+
+          ion-icon {
+            font-size: 1.2rem;
+            color: white;
+          }
+        }
+      }
+    }
+  }
+
+  .vehicle-card {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+
+    .vehicle-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      .vehicle-icon {
+        font-size: 2.5rem;
+        color: var(--primary-color);
+      }
+
+      .vehicle-details {
+        flex: 1;
+
+        .vehicle-model {
+          font-size: 1.1rem;
+          font-weight: 600;
+          color: #1a1a1a;
+          margin-bottom: 4px;
+        }
+
+        .vehicle-plate {
+          font-size: 0.95rem;
+          color: #666;
+          font-weight: 500;
+          margin-bottom: 2px;
+          letter-spacing: 1px;
+        }
+
+        .vehicle-color {
+          font-size: 0.85rem;
+          color: #999;
+        }
+      }
+    }
+  }
+
+  .ride-status-card {
+    background: var(--primary-light);
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    gap: 20px;
+
+    .status-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: 1;
+
+      .status-icon {
+        font-size: 1.5rem;
+        color: var(--primary-color);
+      }
+
+      .status-text {
+        .status-label {
+          font-size: 0.8rem;
+          color: #666;
+          margin-bottom: 2px;
+        }
+
+        .status-value {
+          font-size: 0.95rem;
+          font-weight: 600;
+          color: #1a1a1a;
+        }
+      }
+    }
   }
 }
 

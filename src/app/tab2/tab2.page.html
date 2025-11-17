@@ -50,7 +50,7 @@
       <div class="categories-scroll">
         <ion-chip 
           *ngFor="let category of categories" 
-          [class.active]="category.name === 'All'"
+          [class.active]="category.name === selectedCategory"
           class="category-chip"
           (click)="filterByCategory(category.name)">
           <div class="chip-icon-wrapper">
@@ -85,7 +85,7 @@
   </div>
 
   <!-- Hero Section - Top Restaurants -->
-  <div class="hero-section" *ngIf="!isSearching || filteredTopRestaurants.length > 0">
+  <div class="hero-section" *ngIf="(!isSearching && selectedCategory === 'All') || (isSearching && filteredTopRestaurants.length > 0) || (selectedCategory !== 'All' && filteredTopRestaurants.length > 0)">
     <div class="section-header">
       <h2>🔥 Top Restaurants</h2>
       <button class="see-all-btn" (click)="viewAllTopRestaurants()" *ngIf="!isSearching">
@@ -94,7 +94,7 @@
       </button>
     </div>
     <div class="restaurants-scroll">
-      <div *ngFor="let restaurant of (isSearching ? filteredTopRestaurants : topRestaurants)" 
+      <div *ngFor="let restaurant of (isSearching || selectedCategory !== 'All' ? filteredTopRestaurants : topRestaurants)" 
            class="restaurant-card featured"
            (click)="openRestaurant(restaurant)">
         <div class="restaurant-badge">Popular</div>
@@ -138,12 +138,12 @@
   </div>
 
   <!-- Quick Categories -->
-  <div class="quick-categories" *ngIf="!isSearching || filteredQuickCategories.length > 0">
+  <div class="quick-categories" *ngIf="(!isSearching && selectedCategory === 'All') || (isSearching && filteredQuickCategories.length > 0) || (selectedCategory !== 'All' && filteredQuickCategories.length > 0)">
     <div class="section-header">
       <h3>🍕 Quick Bites</h3>
     </div>
     <div class="categories-grid">
-      <div *ngFor="let quickCat of (isSearching ? filteredQuickCategories : quickCategories)" 
+      <div *ngFor="let quickCat of (isSearching || selectedCategory !== 'All' ? filteredQuickCategories : quickCategories)" 
            class="quick-category" 
            (click)="selectQuickCategory(quickCat.name)">
         <div class="category-icon" [style.background]="quickCat.color">
@@ -164,7 +164,7 @@
   </div>
 
   <!-- All Restaurants -->
-  <div class="main-categories" *ngIf="!isSearching || filteredAllRestaurants.length > 0">
+  <div class="main-categories" *ngIf="(!isSearching && selectedCategory === 'All') || (isSearching && filteredAllRestaurants.length > 0) || (selectedCategory !== 'All' && filteredAllRestaurants.length > 0)">
     <div class="category-section">
       <div class="section-header">
         <h3>🍴 {{ isSearching ? 'Matching Restaurants' : 'All Restaurants' }}</h3>
@@ -174,7 +174,7 @@
         </button>
       </div>
       <div class="restaurants-grid">
-        <div *ngFor="let restaurant of (isSearching ? filteredAllRestaurants : allRestaurants)" 
+        <div *ngFor="let restaurant of (isSearching || selectedCategory !== 'All' ? filteredAllRestaurants : allRestaurants)" 
              class="restaurant-card"
              (click)="openRestaurant(restaurant)">
           <img [src]="restaurant.image" class="restaurant-image" />

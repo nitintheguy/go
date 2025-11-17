@@ -93,6 +93,75 @@
 
 .order-items-card,
 .order-summary-card,
+.driver-info-card {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 12px;
+
+  .driver-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+
+    .driver-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 3px solid #4caf50;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    .driver-details {
+      flex: 1;
+
+      .driver-name {
+        font-weight: 600;
+        color: #1a1a1a;
+        font-size: 1.1rem;
+        margin-bottom: 4px;
+      }
+
+      .driver-rating {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 0.9rem;
+        color: #666;
+        margin-bottom: 4px;
+
+        ion-icon {
+          color: #ffc107;
+          font-size: 1rem;
+        }
+      }
+
+      .driver-vehicle {
+        font-size: 0.85rem;
+        color: #999;
+      }
+    }
+  }
+
+  .driver-actions {
+    display: flex;
+    gap: 8px;
+
+    ion-button {
+      flex: 1;
+      --border-radius: 8px;
+      font-weight: 500;
+    }
+  }
+}
+
 .delivery-card {
   background: white;
   border-radius: 16px;

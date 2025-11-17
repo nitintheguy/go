@@ -1,19 +1,26 @@
 <ion-content [fullscreen]="true" class="packages-content">
-  <!-- Header -->
-  <div class="packages-header">
-    <ion-button fill="clear" class="back-button" (click)="goBack()">
-      <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
-    </ion-button>
-    <h2>Package Shipping</h2>
-    <div class="header-spacer"></div>
-  </div>
-
-  <!-- Hero Section -->
-  <div class="hero-section">
-    <div class="hero-content">
-      <ion-icon name="cube" class="hero-icon"></ion-icon>
-      <h1>Package Shipping Services</h1>
-      <p>Reliable and secure package delivery across India and worldwide</p>
+  <!-- Enhanced Header Section matching Tab5 -->
+  <div class="header-section">
+    <div class="header-background">
+      <div class="floating-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+      </div>
+    </div>
+    
+    <div class="header-top">
+      <div class="header-left">
+        <button class="back-btn" (click)="goBack()">
+          <ion-icon name="arrow-back"></ion-icon>
+        </button>
+        <div class="go-text">GO</div>
+        <div class="delivery-time">Package Shipping Services</div>
+        <div class="location">
+          <ion-icon name="cube" class="location-icon"></ion-icon>
+          Reliable and secure delivery
+        </div>
+      </div>
     </div>
   </div>
 

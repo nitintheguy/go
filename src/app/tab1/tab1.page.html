@@ -51,7 +51,7 @@
       <div class="categories-scroll">
         <ion-chip 
           *ngFor="let category of categories" 
-          [class.active]="category.name === 'All'"
+          [class.active]="category.name === selectedCategory"
           class="category-chip"
           (click)="filterByCategory(category.name)">
           <div class="chip-icon-wrapper">
@@ -119,8 +119,65 @@
     </div>
   </div>
 
-  <!-- Main Content (Hidden when searching) -->
-  <div *ngIf="!showSearchResults">
+  <!-- Category Filter Results -->
+  <div class="category-filter-results" *ngIf="selectedCategory !== 'All'">
+    <div class="section-header" *ngIf="filteredItems.length > 0">
+      <h3>{{ selectedCategory }} Products</h3>
+      <div class="results-count">{{ filteredItems.length }} items</div>
+    </div>
+    
+    <!-- No Results State -->
+    <div class="no-filter-results" *ngIf="filteredItems.length === 0">
+      <div class="no-results-content">
+        <ion-icon name="search-outline" class="no-results-icon"></ion-icon>
+        <h4>No {{ selectedCategory }} products found</h4>
+        <p>Try selecting a different category</p>
+        <button class="clear-filter-btn" (click)="filterByCategory('All')">
+          <ion-icon name="close-circle"></ion-icon>
+          Clear Filter
+        </button>
+      </div>
+    </div>
+
+    <!-- Results Grid -->
+    <div class="search-results-grid" *ngIf="filteredItems.length > 0">
+      <div *ngFor="let item of filteredItems" class="search-result-item" (click)="viewItem(item)">
+        <div class="item-badge" *ngIf="item.discount">-{{item.discount}}%</div>
+        <img [src]="item.image" class="item-image" />
+        <div class="item-info">
+          <div class="item-name">{{ item.name }}</div>
+          <div class="item-price">
+            <span class="current-price">₹{{ item.price }}</span>
+            <span class="original-price" *ngIf="item.originalPrice">₹{{ item.originalPrice }}</span>
+          </div>
+          <div class="item-weight">{{ item.weight }}</div>
+          <div class="item-rating">
+            <ion-icon name="star" class="rating-icon"></ion-icon>
+            {{ item.rating }}
+          </div>
+        </div>
+        
+        <div class="add-btn-container" *ngIf="!isItemInCart(item.id)">
+          <button class="add-btn" (click)="addToCart(item, $event)">
+            <ion-icon name="add"></ion-icon>
+          </button>
+        </div>
+
+        <div class="quantity-controls" *ngIf="isItemInCart(item.id)">
+          <button class="qty-btn minus" (click)="decrementQuantity(item.id, $event)">
+            <ion-icon name="remove"></ion-icon>
+          </button>
+          <span class="quantity">{{ getItemQuantity(item.id) }}</span>
+          <button class="qty-btn plus" (click)="addToCart(item, $event)">
+            <ion-icon name="add"></ion-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content (Hidden when searching and filtering) -->
+  <div *ngIf="!showSearchResults && selectedCategory === 'All'">
     <!-- Promo Banner -->
     <div class="promo-banner">
       <div class="banner-content">

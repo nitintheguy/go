@@ -1,4 +1,4 @@
-<ion-content [fullscreen]="true" class="checkout-content" [class.grocery-theme]="isGrocery" [class.food-theme]="!isGrocery">
+<ion-content [fullscreen]="true" class="checkout-content" [class.grocery-theme]="isGrocery" [class.food-theme]="!isGrocery && !isRide" [class.ride-theme]="isRide">
   <!-- Header -->
   <div class="checkout-header">
     <div class="header-background">
@@ -26,7 +26,7 @@
   <!-- Order Summary -->
   <div class="order-summary-section">
     <div class="section-header">
-      <h3>Order Summary</h3>
+      <h3>{{ isRide ? 'Ride Summary' : 'Order Summary' }}</h3>
       <button class="edit-btn" (click)="editOrder()">
         <ion-icon name="create-outline"></ion-icon>
         Edit
@@ -60,7 +60,7 @@
         <span>₹{{ subtotal.toFixed(2) }}</span>
       </div>
       <div class="total-row">
-        <span>Delivery Fee</span>
+        <span>{{ isRide ? 'Driver Fee' : 'Delivery Fee' }}</span>
         <span *ngIf="deliveryFee > 0">₹{{ deliveryFee.toFixed(2) }}</span>
         <span *ngIf="deliveryFee === 0" class="free-text">FREE</span>
       </div>
@@ -82,7 +82,7 @@
   <!-- Delivery Details -->
   <div class="delivery-section">
     <div class="section-header">
-      <h3>{{ isGrocery ? 'Delivery Details' : 'Delivery Information' }}</h3>
+      <h3>{{ isRide ? 'Ride Details' : (isGrocery ? 'Delivery Details' : 'Delivery Information') }}</h3>
       <button class="edit-btn" (click)="editAddress()">
         <ion-icon name="location-outline"></ion-icon>
         Change
@@ -90,7 +90,7 @@
     </div>
 
     <div class="delivery-info">
-      <div class="delivery-address">
+      <div class="delivery-address" *ngIf="!isRide">
         <div class="address-type">Home</div>
         <div class="address-details">
           <div class="address-line">Floor 1st, ASG Apartments</div>
@@ -99,7 +99,34 @@
         </div>
       </div>
 
-      <div class="delivery-time" *ngIf="!isGrocery">
+      <div class="ride-route" *ngIf="isRide && cartItems.length > 0">
+        <div class="route-point pickup">
+          <div class="route-icon">
+            <div class="route-dot"></div>
+          </div>
+          <div class="route-details">
+            <div class="route-label">Pickup</div>
+            <div class="route-address">{{ cartItems[0].pickupLocation || 'Current location' }}</div>
+          </div>
+        </div>
+        <div class="route-divider"></div>
+        <div class="route-point destination">
+          <div class="route-icon">
+            <ion-icon name="location"></ion-icon>
+          </div>
+          <div class="route-details">
+            <div class="route-label">Destination</div>
+            <div class="route-address">{{ cartItems[0].destination || 'Destination' }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="delivery-time" *ngIf="isRide">
+        <div class="time-label">Estimated Arrival</div>
+        <div class="time-slot">5-10 minutes • Driver arriving</div>
+      </div>
+
+      <div class="delivery-time" *ngIf="!isGrocery && !isRide">
         <div class="time-label">Delivery Time</div>
         <div class="time-slot">30-45 minutes • ASAP</div>
       </div>
@@ -302,7 +329,7 @@
       </button>
       <button class="place-order-btn" (click)="placeOrder()">
         <span class="btn-text">Place Order</span>
-        <span class="btn-subtext">{{ isGrocery ? 'Grocery Order' : 'Food Order' }}</span>
+        <span class="btn-subtext">{{ isRide ? 'Confirm Ride' : (isGrocery ? 'Grocery Order' : 'Food Order') }}</span>
       </button>
     </div>
   </div>
@@ -313,8 +340,8 @@
   <div class="order-success-banner" *ngIf="view !== 'checkout'">
     <ion-icon name="checkmark-circle"></ion-icon>
     <div class="text">
-      <div class="title">Order placed successfully</div>
-      <div class="subtitle">Order ID: {{ orderId }} • {{ orderTime | date:'short' }}</div>
+      <div class="title">{{ isRide ? 'Ride booked successfully!' : 'Order placed successfully' }}</div>
+      <div class="subtitle">{{ isRide ? 'Ride' : 'Order' }} ID: {{ orderId }} • {{ orderTime | date:'short' }}</div>
     </div>
   </div>
 
@@ -366,7 +393,7 @@
             <ion-icon name="checkmark-circle"></ion-icon>
           </div>
           <div class="timeline-content">
-            <div class="timeline-title">Order Placed</div>
+            <div class="timeline-title">{{ isRide ? 'Ride Booked' : 'Order Placed' }}</div>
             <div class="timeline-time">{{ orderTime | date:'shortTime' }}</div>
           </div>
         </div>
@@ -375,7 +402,7 @@
             <ion-icon [name]="view === 'tracking' ? 'checkmark-circle' : 'time'"></ion-icon>
           </div>
           <div class="timeline-content">
-            <div class="timeline-title">Preparing Your Order</div>
+            <div class="timeline-title">{{ isRide ? 'Driver Assigned' : 'Preparing Your Order' }}</div>
             <div class="timeline-time" *ngIf="view === 'tracking'">{{ getCurrentTime() | date:'shortTime' }}</div>
           </div>
         </div>
@@ -384,7 +411,7 @@
             <ion-icon [name]="view === 'tracking' ? 'checkmark-circle' : 'car'"></ion-icon>
           </div>
           <div class="timeline-content">
-            <div class="timeline-title">On the Way</div>
+            <div class="timeline-title">{{ isRide ? 'Rider on the way' : 'On the Way' }}</div>
             <div class="timeline-time" *ngIf="view === 'tracking'">Estimated: {{ getDeliveryTime() | date:'shortTime' }}</div>
           </div>
         </div>
@@ -431,7 +458,7 @@
           <span>₹{{ invoiceTotals.subtotal | number:'1.0-0' }}</span>
         </div>
         <div class="breakdown-row">
-          <span>Delivery Fee</span>
+          <span>{{ isRide ? 'Driver Fee' : 'Delivery Fee' }}</span>
           <span *ngIf="invoiceTotals.deliveryFee > 0">₹{{ invoiceTotals.deliveryFee | number:'1.0-0' }}</span>
           <span *ngIf="invoiceTotals.deliveryFee === 0" class="free-text">FREE</span>
         </div>
@@ -507,16 +534,84 @@
   <ng-container *ngIf="view === 'orderPlaced'">
     <div class="order-placed">
       <ion-icon name="checkmark-circle" class="success-icon"></ion-icon>
-      <h2>Order Placed!</h2>
-      <p>Your order is being prepared...</p>
+      <h2>{{ isRide ? 'Ride Booked!' : 'Order Placed!' }}</h2>
+      <p>{{ isRide ? 'Finding your driver...' : 'Your order is being prepared...' }}</p>
     </div>
   </ng-container>
+
+  <!-- Delivery/Ride Details Section -->
+  <div class="ride-details-section" *ngIf="view === 'tracking' && ((isRide && driverInfo && vehicleInfo) || (!isRide))">
+    <div class="section-header">
+      <h3>{{ isRide ? 'Ride Details' : 'Delivery Details' }}</h3>
+    </div>
+
+    <!-- Driver Info -->
+    <div class="driver-card">
+      <div class="driver-header">
+        <div class="driver-avatar" *ngIf="isRide && driverInfo">
+          <img [src]="driverInfo.avatar" [alt]="driverInfo.name" />
+        </div>
+        <div class="driver-avatar" *ngIf="!isRide">
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face" alt="Delivery Partner" />
+        </div>
+        <div class="driver-info">
+          <div class="driver-name">{{ isRide && driverInfo ? driverInfo.name : 'Delivery Partner' }}</div>
+          <div class="driver-rating" *ngIf="isRide && driverInfo">
+            <ion-icon name="star"></ion-icon>
+            {{ driverInfo.rating }}
+          </div>
+          <div class="driver-rating" *ngIf="!isRide">
+            <ion-icon name="star"></ion-icon>
+            4.8
+          </div>
+        </div>
+        <div class="driver-actions">
+          <button class="call-btn" (click)="callDriver()">
+            <ion-icon name="call"></ion-icon>
+          </button>
+          <button class="chat-btn" (click)="openChat()">
+            <ion-icon name="chatbubble"></ion-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Vehicle Info (Rides only) -->
+    <div class="vehicle-card" *ngIf="isRide && vehicleInfo">
+      <div class="vehicle-header">
+        <ion-icon [name]="vehicleInfo?.icon || 'car'" class="vehicle-icon"></ion-icon>
+        <div class="vehicle-details">
+          <div class="vehicle-model">{{ vehicleInfo?.model }} ({{ vehicleInfo?.year }})</div>
+          <div class="vehicle-plate">{{ vehicleInfo?.plate }}</div>
+          <div class="vehicle-color">{{ vehicleInfo?.color }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Status Card -->
+    <div class="ride-status-card">
+      <div class="status-item">
+        <ion-icon name="location" class="status-icon"></ion-icon>
+        <div class="status-text">
+          <div class="status-label">Status</div>
+          <div class="status-value">{{ isRide ? 'Rider on the way' : 'Out for delivery' }}</div>
+        </div>
+      </div>
+      <div class="status-item">
+        <ion-icon name="time" class="status-icon"></ion-icon>
+        <div class="status-text">
+          <div class="status-label">ETA</div>
+          <div class="status-value">{{ isRide ? '5-8 minutes' : '15-20 minutes' }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Tracking View with Lottie -->
   <ng-container *ngIf="view === 'tracking'">
     <div class="tracking-view">
       <div id="trackingMap" class="map-lottie-canvas"></div>
-      <div class="status onway">Status: On the way</div>
+      <div class="status onway">{{ isRide ? 'Rider on the way' : 'Status: On the way' }}</div>
     </div>
   </ng-container>
 

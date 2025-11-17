@@ -54,8 +54,9 @@
       <div class="categories-scroll">
         <ion-chip 
           *ngFor="let category of categories" 
-          [class.active]="category.name === 'All'"
-          class="category-chip">
+          [class.active]="category.name === selectedCategory"
+          class="category-chip"
+          (click)="filterByCategory(category.name)">
           <div class="chip-icon-wrapper">
             <ion-icon [name]="category.icon"></ion-icon>
           </div>
@@ -104,7 +105,7 @@
       
       <div class="transactions-list">
         <ion-list>
-          <ion-item *ngFor="let transaction of transactions" class="transaction-item">
+          <ion-item *ngFor="let transaction of filteredTransactions" class="transaction-item">
             <ion-avatar slot="start" class="transaction-avatar">
               <div class="avatar-background" [class]="transaction.type">
                 <img [src]="transaction.avatar" />

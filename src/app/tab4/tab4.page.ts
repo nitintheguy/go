@@ -36,6 +36,9 @@ export class Tab4Page {
     { name: 'Top-up', icon: 'add-circle' },
   ];
 
+  selectedCategory: string = 'All';
+  filteredTransactions: any[] = [];
+
   transactions = [
     {
       name: 'John Doe',
@@ -56,13 +59,22 @@ export class Tab4Page {
       avatar: 'https://ionicframework.com/docs/img/demos/avatar.svg',
     },
     {
-      name: 'Grocery Store',
+      name: 'Electricity Bill',
       date: 'Nov 06, 2025',
       amount: '-₹3,250.50',
       amountClass: 'negative',
-      category: 'Shopping',
-      type: 'shopping',
+      category: 'Bills Payment',
+      type: 'bills',
       avatar: 'https://ionicframework.com/docs/img/demos/card-media.png',
+    },
+    {
+      name: 'Mobile Recharge',
+      date: 'Nov 05, 2025',
+      amount: '-₹299.00',
+      amountClass: 'negative',
+      category: 'Top-up',
+      type: 'top-up',
+      avatar: 'https://ionicframework.com/docs/img/demos/avatar.svg',
     },
     {
       name: 'Salary Credit',
@@ -75,7 +87,36 @@ export class Tab4Page {
     },
   ];
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) {
+    this.filteredTransactions = [...this.transactions];
+  }
+
+  filterByCategory(category: string) {
+    this.selectedCategory = category;
+    
+    if (category === 'All') {
+      this.filteredTransactions = [...this.transactions];
+      return;
+    }
+
+    const categoryMap: { [key: string]: string[] } = {
+      'Send': ['sent', 'send', 'transfer'],
+      'Receive': ['received', 'receive', 'credit', 'salary'],
+      'Bills': ['bills', 'bill', 'payment'],
+      'Top-up': ['top-up', 'topup', 'recharge']
+    };
+
+    const searchTerms = categoryMap[category] || [category.toLowerCase()];
+    
+    this.filteredTransactions = this.transactions.filter((transaction: any) => {
+      const transactionType = (transaction.type || '').toLowerCase();
+      const transactionCategory = (transaction.category || '').toLowerCase();
+      return searchTerms.some(term => 
+        transactionType.includes(term) || 
+        transactionCategory.includes(term)
+      );
+    });
+  }
 
   scanQR() {
     console.log('Scan QR code');

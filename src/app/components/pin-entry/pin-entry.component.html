@@ -1,0 +1,77 @@
+<div class="pin-modal-content" [style.--tab-color]="tabThemeConfig.color" [style.--tab-gradient]="tabThemeConfig.gradient" [style.--tab-rgb]="tabThemeConfig.rgb">
+  <!-- Top Header Bar with Tab Theme Gradient -->
+  <div class="pin-top-bar">
+    <div class="bank-info">
+      <span class="bank-name">{{ getPaymentMethodName() }}</span>
+      <span class="upi-badge">UPI</span>
+    </div>
+    <button class="close-btn" (click)="cancel()">
+      <ion-icon name="close"></ion-icon>
+    </button>
+  </div>
+
+  <!-- Transaction Details -->
+  <div class="transaction-details">
+    <div class="recipient-section">
+      <span class="recipient-label">To</span>
+      <span class="recipient-name">{{ getRecipientName() }}</span>
+    </div>
+    <div class="amount-display">
+      <span class="amount-value">₹{{ amount.toFixed(2) }}</span>
+      <ion-icon name="chevron-down-outline" class="amount-chevron"></ion-icon>
+    </div>
+  </div>
+
+  <!-- PIN Entry Section -->
+  <div class="pin-entry-section">
+    <h3 class="pin-prompt">Enter 6-digit UPI PIN</h3>
+    
+    <div class="pin-input-display">
+      <div class="pin-lines-container">
+        <div 
+          *ngFor="let digit of pin; let i = index" 
+          class="pin-line"
+          [class.filled]="digit !== ''"
+          [class.error]="showError">
+          <span *ngIf="showPin && digit !== ''">{{ digit }}</span>
+        </div>
+      </div>
+      <button class="eye-toggle" (click)="togglePinVisibility()">
+        <ion-icon [name]="showPin ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+      </button>
+    </div>
+
+    <!-- Transaction Info Box -->
+    <div class="transaction-info-box">
+      <ion-icon name="information-circle-outline" class="info-icon"></ion-icon>
+      <span class="info-text">
+        You are transferring ₹{{ amount.toFixed(2) }} from your account xxxxxxx678 to {{ getRecipientName() }}.
+      </span>
+    </div>
+
+    <!-- Error Message -->
+    <div class="pin-error" *ngIf="showError">
+      <ion-icon name="alert-circle"></ion-icon>
+      <span>{{ errorMessage }}</span>
+    </div>
+  </div>
+
+  <!-- Numeric Keypad -->
+  <div class="keypad-section">
+    <div class="keypad-row" *ngFor="let row of keypadRows">
+      <button 
+        *ngFor="let key of row" 
+        class="keypad-key"
+        [class.backspace]="key === 'backspace'"
+        [class.submit]="key === 'submit'"
+        [class.empty]="key === ''"
+        [class.disabled]="key === 'submit' && !canSubmit"
+        (click)="handleKeypadClick(key)"
+        [disabled]="isVerifying || (key === 'submit' && !canSubmit)">
+        <ion-icon *ngIf="key === 'backspace'" name="close"></ion-icon>
+        <ion-icon *ngIf="key === 'submit'" name="checkmark"></ion-icon>
+        <span *ngIf="key !== 'backspace' && key !== 'submit' && key !== ''">{{ key }}</span>
+      </button>
+    </div>
+  </div>
+</div>

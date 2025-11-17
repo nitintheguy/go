@@ -67,6 +67,9 @@ export class Tab1Page implements OnInit, OnDestroy {
     { name: 'Fashion', icon: 'shirt' }
   ];
 
+  selectedCategory: string = 'All';
+  filteredItems: GroceryItem[] = [];
+
   quickCategories = [
     { name: 'Fruits', icon: 'nutrition', color: '#4caf50' },
     { name: 'Vegetables', icon: 'leaf', color: '#8bc34a' },
@@ -140,6 +143,52 @@ export class Tab1Page implements OnInit, OnDestroy {
       rating: 4.2
     }
   ];
+
+  // Category-specific products
+  categoryProducts: { [key: string]: GroceryItem[] } = {
+    'Electronics': [
+      { id: 'e1', name: 'Smartphone', image: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=300', category: 'electronics', price: 15999, originalPrice: 19999, weight: '1 unit', rating: 4.6, discount: 20 },
+      { id: 'e2', name: 'Wireless Earbuds', image: 'https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?w=300', category: 'electronics', price: 2499, originalPrice: 2999, weight: '1 unit', rating: 4.5, discount: 17 },
+      { id: 'e3', name: 'Laptop', image: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=300', category: 'electronics', price: 45999, originalPrice: 54999, weight: '1 unit', rating: 4.7, discount: 16 },
+      { id: 'e4', name: 'Smart Watch', image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300', category: 'electronics', price: 8999, originalPrice: 11999, weight: '1 unit', rating: 4.4, discount: 25 }
+    ],
+    'Beauty': [
+      { id: 'b1', name: 'Face Serum', image: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=300', category: 'beauty', price: 899, originalPrice: 1199, weight: '30ml', rating: 4.5, discount: 25 },
+      { id: 'b2', name: 'Lipstick Set', image: 'https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=300', category: 'beauty', price: 1299, originalPrice: 1799, weight: '1 set', rating: 4.6, discount: 28 },
+      { id: 'b3', name: 'Face Mask', image: 'https://images.unsplash.com/photo-1556229010-6c3f2c9ca5f8?w=300', category: 'beauty', price: 499, originalPrice: 699, weight: '100g', rating: 4.3, discount: 29 },
+      { id: 'b4', name: 'Perfume', image: 'https://images.unsplash.com/photo-1541643600914-78b084683601?w=300', category: 'beauty', price: 1999, originalPrice: 2499, weight: '50ml', rating: 4.7, discount: 20 }
+    ],
+    'Winter': [
+      { id: 'w1', name: 'Woolen Sweater', image: 'https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=300', category: 'winter', price: 1499, originalPrice: 1999, weight: '1 unit', rating: 4.5, discount: 25 },
+      { id: 'w2', name: 'Winter Jacket', image: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=300', category: 'winter', price: 2999, originalPrice: 3999, weight: '1 unit', rating: 4.6, discount: 25 },
+      { id: 'w3', name: 'Woolen Scarf', image: 'https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w=300', category: 'winter', price: 599, originalPrice: 899, weight: '1 unit', rating: 4.4, discount: 33 },
+      { id: 'w4', name: 'Thermal Gloves', image: 'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=300', category: 'winter', price: 799, originalPrice: 1099, weight: '1 pair', rating: 4.5, discount: 27 }
+    ],
+    'Decor': [
+      { id: 'd1', name: 'Wall Clock', image: 'https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=300', category: 'decor', price: 1299, originalPrice: 1799, weight: '1 unit', rating: 4.5, discount: 28 },
+      { id: 'd2', name: 'Table Lamp', image: 'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=300', category: 'decor', price: 899, originalPrice: 1299, weight: '1 unit', rating: 4.4, discount: 31 },
+      { id: 'd3', name: 'Photo Frame Set', image: 'https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=300', category: 'decor', price: 599, originalPrice: 899, weight: '1 set', rating: 4.3, discount: 33 },
+      { id: 'd4', name: 'Vase', image: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=300', category: 'decor', price: 799, originalPrice: 1199, weight: '1 unit', rating: 4.6, discount: 33 }
+    ],
+    'Kitchen': [
+      { id: 'k1', name: 'Non-Stick Pan', image: 'https://images.unsplash.com/photo-1556911220-bff31c812dba?w=300', category: 'kitchen', price: 1299, originalPrice: 1799, weight: '1 unit', rating: 4.6, discount: 28 },
+      { id: 'k2', name: 'Knife Set', image: 'https://images.unsplash.com/photo-1594736797933-d0c2d0e1e0e0?w=300', category: 'kitchen', price: 1999, originalPrice: 2799, weight: '1 set', rating: 4.7, discount: 29 },
+      { id: 'k3', name: 'Mixer Grinder', image: 'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=300', category: 'kitchen', price: 3499, originalPrice: 4499, weight: '1 unit', rating: 4.5, discount: 22 },
+      { id: 'k4', name: 'Dinner Set', image: 'https://images.unsplash.com/photo-1556911220-bff31c812dba?w=300', category: 'kitchen', price: 2499, originalPrice: 3499, weight: '1 set', rating: 4.4, discount: 29 }
+    ],
+    'Pharma': [
+      { id: 'p1', name: 'Vitamin D3', image: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=300', category: 'pharma', price: 299, originalPrice: 399, weight: '60 tablets', rating: 4.5, discount: 25 },
+      { id: 'p2', name: 'Multivitamin', image: 'https://images.unsplash.com/photo-1550572017-edd951b55104?w=300', category: 'pharma', price: 499, originalPrice: 699, weight: '90 tablets', rating: 4.6, discount: 29 },
+      { id: 'p3', name: 'Pain Relief Gel', image: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=300', category: 'pharma', price: 199, originalPrice: 299, weight: '50g', rating: 4.4, discount: 33 },
+      { id: 'p4', name: 'Cough Syrup', image: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=300', category: 'pharma', price: 149, originalPrice: 199, weight: '100ml', rating: 4.3, discount: 25 }
+    ],
+    'Fashion': [
+      { id: 'f1', name: 'Denim Jeans', image: 'https://images.unsplash.com/photo-1542272604-787c3835535d?w=300', category: 'fashion', price: 1999, originalPrice: 2999, weight: '1 unit', rating: 4.6, discount: 33 },
+      { id: 'f2', name: 'Cotton T-Shirt', image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=300', category: 'fashion', price: 599, originalPrice: 899, weight: '1 unit', rating: 4.5, discount: 33 },
+      { id: 'f3', name: 'Sneakers', image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300', category: 'fashion', price: 2999, originalPrice: 3999, weight: '1 pair', rating: 4.7, discount: 25 },
+      { id: 'f4', name: 'Leather Belt', image: 'https://images.unsplash.com/photo-1624222247344-550fb60583fd?w=300', category: 'fashion', price: 799, originalPrice: 1199, weight: '1 unit', rating: 4.4, discount: 33 }
+    ]
+  };
 
   groceryCategories: GroceryCategory[] = [
     {
@@ -333,6 +382,7 @@ export class Tab1Page implements OnInit, OnDestroy {
   ngOnInit() {
     this.startPlaceholderAnimation();
     this.subscribeToCartUpdates();
+    this.filteredItems = [];
   }
 
   ngOnDestroy() {
@@ -399,7 +449,46 @@ export class Tab1Page implements OnInit, OnDestroy {
   }
 
   filterByCategory(category: string) {
+    this.selectedCategory = category;
     console.log('Filtering by category:', category);
+    
+    if (category === 'All') {
+      this.filteredItems = [];
+      return;
+    }
+
+    // Collect all items from frequentItems and groceryCategories
+    const allItems = [
+      ...this.frequentItems,
+      ...this.groceryCategories.reduce((acc: GroceryItem[], category: GroceryCategory) => {
+        return acc.concat(category.items);
+      }, [])
+    ];
+
+    // First check if we have category-specific products
+    if (this.categoryProducts[category]) {
+      this.filteredItems = this.categoryProducts[category];
+      return;
+    }
+
+    // Map category names to item categories
+    const categoryMap: { [key: string]: string[] } = {
+      'Electronics': ['electronics', 'tech', 'mobile', 'laptop'],
+      'Beauty': ['beauty', 'personal care', 'cosmetics', 'skincare'],
+      'Winter': ['winter', 'warm', 'clothing', 'winter wear'],
+      'Decor': ['decor', 'home', 'furniture', 'decoration'],
+      'Kitchen': ['kitchen', 'grocery', 'cooking', 'utensils'],
+      'Pharma': ['pharma', 'medicine', 'health', 'medical'],
+      'Fashion': ['fashion', 'clothing', 'apparel', 'wear']
+    };
+
+    const searchTerms = categoryMap[category] || [category.toLowerCase()];
+    
+    this.filteredItems = allItems.filter((item: GroceryItem) => {
+      const itemCategory = (item.category || '').toLowerCase();
+      const itemName = item.name.toLowerCase();
+      return searchTerms.some(term => itemCategory.includes(term) || itemName.includes(term));
+    });
   }
 
   viewAllFrequent() {

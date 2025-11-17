@@ -1,0 +1,56 @@
+<ion-content [fullscreen]="true" class="chat-content">
+  <!-- Chat Header -->
+  <div class="chat-header">
+    <div class="driver-info">
+      <div class="driver-avatar">
+        <img [src]="driverAvatar" [alt]="driverName" *ngIf="driverAvatar" />
+        <ion-icon name="person" *ngIf="!driverAvatar"></ion-icon>
+      </div>
+      <div class="driver-details">
+        <div class="driver-name">{{ driverName }}</div>
+        <div class="driver-status">Online • Active</div>
+      </div>
+    </div>
+    <button class="call-btn" (click)="callDriver()">
+      <ion-icon name="call"></ion-icon>
+    </button>
+  </div>
+
+  <!-- Messages -->
+  <div #chatContent class="messages-container">
+    <div class="message" *ngFor="let message of messages" [class.user-message]="message.sender === 'user'" [class.driver-message]="message.sender === 'driver'">
+      <div class="message-avatar" *ngIf="message.sender === 'driver'">
+        <img [src]="driverAvatar" [alt]="driverName" *ngIf="driverAvatar" />
+        <ion-icon name="person" *ngIf="!driverAvatar"></ion-icon>
+      </div>
+      <div class="message-content">
+        <div class="message-bubble">
+          <p>{{ message.text }}</p>
+          <span class="message-time">{{ formatTime(message.timestamp) }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Replies -->
+  <div class="quick-replies" *ngIf="showQuickReplies && messages.length <= 2">
+    <div class="quick-reply" *ngFor="let reply of quickReplies" (click)="sendQuickReply(reply.text)">
+      <ion-icon [name]="reply.icon"></ion-icon>
+      <span>{{ reply.text }}</span>
+    </div>
+  </div>
+
+  <!-- Input Area -->
+  <div class="input-area">
+    <ion-input
+      [(ngModel)]="newMessage"
+      placeholder="Type a message..."
+      (keyup.enter)="sendMessage()"
+      class="message-input">
+    </ion-input>
+    <button class="send-btn" (click)="sendMessage()" [disabled]="!newMessage.trim()">
+      <ion-icon name="send"></ion-icon>
+    </button>
+  </div>
+</ion-content>
+

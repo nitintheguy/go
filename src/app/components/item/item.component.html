@@ -1,11 +1,27 @@
 <ion-content [fullscreen]="true" class="item-content">
-  <!-- Header -->
-  <div class="item-header">
-    <button class="back-btn" (click)="goBack()">
-      <ion-icon name="arrow-back"></ion-icon>
-    </button>
-    <h1 class="item-title">{{ item?.name }}</h1>
-    <div class="header-spacer"></div>
+  <!-- Enhanced Header Section matching Tab1 -->
+  <div class="header-section">
+    <div class="header-background">
+      <div class="floating-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+      </div>
+    </div>
+    
+    <div class="header-top">
+      <div class="header-left">
+        <button class="back-btn" (click)="goBack()">
+          <ion-icon name="arrow-back"></ion-icon>
+        </button>
+        <div class="go-text">GO</div>
+        <div class="delivery-time">{{ item?.name }}</div>
+        <div class="location">
+          <ion-icon name="star" class="location-icon"></ion-icon>
+          Rating: {{ item?.rating }} • {{ item?.weight }}
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- Product Image -->

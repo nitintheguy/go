@@ -5,6 +5,8 @@ import { FormsModule } from '@angular/forms';
 import { CartService } from '../../services/cart';
 import { FoodCart } from '../../services/food-cart';
 import lottie, { AnimationItem } from 'lottie-web';
+import { PinEntryComponent } from '../../components/pin-entry/pin-entry.component';
+import { DriverChatComponent } from '../../components/driver-chat/driver-chat.component';
 
 interface CartItem {
   id: string;
@@ -14,6 +16,9 @@ interface CartItem {
   image: string;
   restaurantId?: string;
   restaurantName?: string;
+  rideType?: string;
+  pickupLocation?: string;
+  destination?: string;
 }
 
 interface Coupon {
@@ -34,6 +39,7 @@ interface Coupon {
 })
 export class CheckoutPage implements OnInit, OnDestroy {
   @Input() isGrocery: boolean = false;
+  @Input() isRide: boolean = false;
   @Input() cartItems: CartItem[] = [];
   
   // Order details
@@ -65,6 +71,44 @@ export class CheckoutPage implements OnInit, OnDestroy {
   orderTime: Date | null = null;
   invoiceItems: CartItem[] = [];
   invoiceTotals = { subtotal: 0, deliveryFee: 0, taxes: 0, discount: 0, total: 0 };
+  
+  // Ride-specific data
+  driverInfo: any = null;
+  vehicleInfo: any = null;
+
+  generateDeliveryPartner() {
+    const deliveryPartners = [
+      { name: 'Rajesh Kumar', phone: '+91 98765 43210', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face', rating: 4.8 },
+      { name: 'Amit Sharma', phone: '+91 98765 43211', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=face', rating: 4.9 },
+      { name: 'Vikram Singh', phone: '+91 98765 43212', avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&h=100&fit=crop&crop=face', rating: 4.7 }
+    ];
+    const randomPartner = deliveryPartners[Math.floor(Math.random() * deliveryPartners.length)];
+    this.driverInfo = randomPartner;
+  }
+
+  generateRideData(rideItem: CartItem) {
+    const drivers = [
+      { name: 'Rajesh Kumar', rating: 4.8, phone: '+91 98765 43210', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face' },
+      { name: 'Amit Sharma', rating: 4.9, phone: '+91 98765 43211', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=face' },
+      { name: 'Vikram Singh', rating: 4.7, phone: '+91 98765 43212', avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&h=100&fit=crop&crop=face' }
+    ];
+    
+    const vehicles: { [key: string]: any } = {
+      'uberx': { model: 'Maruti Swift', color: 'White', plate: 'GJ-01-AB-1234', year: '2022', icon: 'car' },
+      'uberblack': { model: 'Toyota Camry', color: 'Black', plate: 'GJ-01-CD-5678', year: '2023', icon: 'car' },
+      'uberxl': { model: 'Toyota Innova', color: 'Silver', plate: 'GJ-01-EF-9012', year: '2022', icon: 'car' },
+      'bike': { model: 'Honda Activa', color: 'Red', plate: 'GJ-01-GH-3456', year: '2023', icon: 'bicycle' },
+      'auto': { model: 'Bajaj Auto Rickshaw', color: 'Yellow', plate: 'GJ-01-IJ-7890', year: '2022', icon: 'car-outline' },
+      'taxi': { model: 'Maruti Dzire', color: 'White', plate: 'GJ-01-KL-1357', year: '2023', icon: 'taxi' }
+    };
+
+    const randomDriver = drivers[Math.floor(Math.random() * drivers.length)];
+    const rideTypeKey = rideItem.rideType || 'uberx';
+    const vehicle = vehicles[rideTypeKey] || vehicles['uberx'];
+
+    this.driverInfo = randomDriver;
+    this.vehicleInfo = vehicle;
+  }
   
   availableCoupons: Coupon[] = [
     {
@@ -115,22 +159,52 @@ export class CheckoutPage implements OnInit, OnDestroy {
   ngOnInit() {
     this.calculateOrderTotals();
     this.setDeliveryFee();
-    this.mapAsset = this.isGrocery ? 'assets/blinkit-map.json' : 'assets/map.json';
+    if (this.isRide) {
+      this.mapAsset = 'assets/map.json';
+      // Generate ride data if cart items exist
+      if (this.cartItems.length > 0) {
+        this.generateRideData(this.cartItems[0]);
+      }
+    } else {
+      this.mapAsset = this.isGrocery ? 'assets/blinkit-map.json' : 'assets/map.json';
+    }
   }
 
   calculateOrderTotals() {
     this.subtotal = this.cartItems.reduce((total, item) => {
       const price = Number(item.price) || 0;
       const qty = Number(item.quantity) || 0;
-      return total + (price * qty);
+      const itemTotal = price * qty;
+      return total + (isNaN(itemTotal) ? 0 : itemTotal);
     }, 0);
     
+    this.subtotal = isNaN(this.subtotal) ? 0 : this.subtotal;
     this.taxes = Number((this.subtotal * 0.05).toFixed(2)); // 5% tax
+    this.taxes = isNaN(this.taxes) ? 0 : this.taxes;
+    this.discount = isNaN(this.discount) ? 0 : this.discount;
+    this.deliveryFee = isNaN(this.deliveryFee) ? 0 : this.deliveryFee;
     this.totalAmount = Number((this.subtotal + this.deliveryFee + this.taxes - this.discount).toFixed(2));
+    this.totalAmount = isNaN(this.totalAmount) ? 0 : this.totalAmount;
   }
 
   setDeliveryFee() {
-    if (this.isGrocery) {
+    if (this.isRide) {
+      // Driver fee based on ride type (20-200 range)
+      const rideItem = this.cartItems[0];
+      if (rideItem && rideItem.rideType) {
+        const driverFees: { [key: string]: number } = {
+          'bike': 20,
+          'auto': 30,
+          'uberx': 50,
+          'taxi': 60,
+          'uberxl': 80,
+          'uberblack': 200
+        };
+        this.deliveryFee = driverFees[rideItem.rideType] || 50;
+      } else {
+        this.deliveryFee = 50; // Default driver fee
+      }
+    } else if (this.isGrocery) {
       this.deliveryFee = this.subtotal > 299 ? 0 : 40;
     } else {
       this.deliveryFee = this.subtotal > 199 ? 0 : 25;
@@ -188,6 +262,47 @@ export class CheckoutPage implements OnInit, OnDestroy {
     console.log('Edit address clicked');
   }
 
+  callDriver() {
+    if (this.driverInfo && this.driverInfo.phone) {
+      window.open(`tel:${this.driverInfo.phone}`, '_self');
+    }
+  }
+
+  async openChat() {
+    // For rides, use driverInfo. For grocery/food, generate delivery partner info
+    let driverName = 'Delivery Partner';
+    let driverAvatar = 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face';
+    
+    if (this.isRide && this.driverInfo) {
+      driverName = this.driverInfo.name;
+      driverAvatar = this.driverInfo.avatar;
+    } else if (!this.isRide) {
+      // Generate delivery partner for grocery/food orders
+      const deliveryPartners = [
+        { name: 'Rajesh Kumar', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face' },
+        { name: 'Amit Sharma', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=face' },
+        { name: 'Vikram Singh', avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&h=100&fit=crop&crop=face' }
+      ];
+      const randomPartner = deliveryPartners[Math.floor(Math.random() * deliveryPartners.length)];
+      driverName = randomPartner.name;
+      driverAvatar = randomPartner.avatar;
+    }
+
+    const modal = await this.modalCtrl.create({
+      component: DriverChatComponent,
+      componentProps: {
+        driverName: driverName,
+        driverAvatar: driverAvatar,
+        orderId: this.orderId,
+        orderStatus: this.view === 'tracking' ? 'In Transit' : 'Processing'
+      },
+      breakpoints: [0, 0.75, 1],
+      initialBreakpoint: 1
+    });
+
+    await modal.present();
+  }
+
   goBack() {
     this.modalCtrl.getTop().then(top => {
       if (top) {
@@ -212,13 +327,51 @@ export class CheckoutPage implements OnInit, OnDestroy {
     return true;
   }
 
-  placeOrder() {
+  async placeOrder() {
     if (!this.validatePayment()) {
       return;
     }
 
+    // Skip PIN for Cash on Delivery
+    if (this.selectedPaymentMethod === 'cod') {
+      this.processOrder();
+      return;
+    }
+
+    // Show PIN entry modal
+    const pinModal = await this.modalCtrl.create({
+      component: PinEntryComponent,
+      componentProps: {
+        paymentMethod: this.selectedPaymentMethod,
+        amount: this.totalAmount,
+        primaryColor: this.isGrocery ? '#00aa13' : '#ff6f00',
+        recipientName: this.isGrocery ? 'Grocery Store' : 'Restaurant',
+        tabTheme: this.isGrocery ? 'tab1' : 'tab2' // tab1 for grocery, tab2 for food
+      },
+      cssClass: 'pin-modal',
+      backdropDismiss: false
+    });
+
+    await pinModal.present();
+
+    const { data } = await pinModal.onWillDismiss();
+
+    if (data && data.verified) {
+      // PIN verified, proceed with order
+      this.processOrder();
+    } else {
+      // PIN cancelled or invalid
+      if (data && data.cancelled) {
+        this.presentToast('Transaction cancelled');
+      }
+    }
+  }
+
+  private processOrder() {
     // Build invoice snapshot
-    const snapshotItems: CartItem[] = this.isGrocery
+    const snapshotItems: CartItem[] = this.isRide
+      ? [...this.cartItems]
+      : this.isGrocery
       ? this.groceryCart.getCartItems().map(ci => ({
           id: ci.item.id, 
           name: ci.item.name, 
@@ -237,7 +390,26 @@ export class CheckoutPage implements OnInit, OnDestroy {
         }));
     
     const sSubtotal = Number(snapshotItems.reduce((t, it) => t + (Number(it.price)||0)*(Number(it.quantity)||0), 0).toFixed(2));
-    const sDelivery = this.isGrocery ? (sSubtotal > 299 ? 0 : 40) : (sSubtotal > 199 ? 0 : 25);
+    let sDelivery = 0;
+    if (this.isRide) {
+      // Driver fee based on ride type
+      const rideItem = snapshotItems[0];
+      if (rideItem && rideItem.rideType) {
+        const driverFees: { [key: string]: number } = {
+          'bike': 20,
+          'auto': 30,
+          'uberx': 50,
+          'taxi': 60,
+          'uberxl': 80,
+          'uberblack': 200
+        };
+        sDelivery = driverFees[rideItem.rideType] || 50;
+      } else {
+        sDelivery = 50;
+      }
+    } else {
+      sDelivery = this.isGrocery ? (sSubtotal > 299 ? 0 : 40) : (sSubtotal > 199 ? 0 : 25);
+    }
     const sTaxes = Number((sSubtotal * 0.05).toFixed(2));
     const sTotal = Number((sSubtotal + sDelivery + sTaxes - this.discount).toFixed(2));
     
@@ -249,8 +421,17 @@ export class CheckoutPage implements OnInit, OnDestroy {
       discount: this.discount, 
       total: sTotal 
     };
+
+    // Generate ride-specific data
+    if (this.isRide && snapshotItems.length > 0) {
+      const rideItem = snapshotItems[0];
+      this.generateRideData(rideItem);
+    } else if (!this.isRide) {
+      // Generate delivery partner for grocery/food orders
+      this.generateDeliveryPartner();
+    }
     
-    this.orderId = (this.isGrocery ? 'GRY' : 'FOD') + Date.now();
+    this.orderId = this.isRide ? `RIDE${Date.now().toString().slice(-8)}` : (this.isGrocery ? 'GRY' : 'FOD') + Date.now();
     this.orderTime = new Date();
 
     console.log('Placing order:', {

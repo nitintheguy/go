@@ -866,7 +866,10 @@ export class Tab2Page implements OnInit {
     this.resetFilters();
   }
 
+  selectedCategory: string = 'All';
+
   filterByCategory(category: string) {
+    this.selectedCategory = category;
     console.log('Filtering by category:', category);
     
     if (category === 'All') {
@@ -876,15 +879,26 @@ export class Tab2Page implements OnInit {
 
     const categoryLower = category.toLowerCase();
     
-    this.filteredTopRestaurants = this.topRestaurants.filter(restaurant =>
-      restaurant.cuisine.toLowerCase().includes(categoryLower) ||
-      restaurant.name.toLowerCase().includes(categoryLower)
+    // Filter restaurants by cuisine or menu items
+    this.filteredTopRestaurants = this.topRestaurants.filter(restaurant => {
+      const cuisineMatch = restaurant.cuisine.toLowerCase().includes(categoryLower);
+      const nameMatch = restaurant.name.toLowerCase().includes(categoryLower);
+      const menuMatch = restaurant.menu?.some(item => 
+        item.category?.toLowerCase().includes(categoryLower) ||
+        item.name.toLowerCase().includes(categoryLower)
     );
+      return cuisineMatch || nameMatch || menuMatch;
+    });
 
-    this.filteredAllRestaurants = this.allRestaurants.filter(restaurant =>
-      restaurant.cuisine.toLowerCase().includes(categoryLower) ||
-      restaurant.name.toLowerCase().includes(categoryLower)
+    this.filteredAllRestaurants = this.allRestaurants.filter(restaurant => {
+      const cuisineMatch = restaurant.cuisine.toLowerCase().includes(categoryLower);
+      const nameMatch = restaurant.name.toLowerCase().includes(categoryLower);
+      const menuMatch = restaurant.menu?.some(item => 
+        item.category?.toLowerCase().includes(categoryLower) ||
+        item.name.toLowerCase().includes(categoryLower)
     );
+      return cuisineMatch || nameMatch || menuMatch;
+    });
 
     this.filteredQuickCategories = this.quickCategories.filter(cat =>
       cat.name.toLowerCase().includes(categoryLower)

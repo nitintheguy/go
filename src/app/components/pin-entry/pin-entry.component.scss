@@ -1,0 +1,380 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+.pin-modal-content {
+  background: #1a1a2e;
+  width: 100%;
+  max-width: 100%;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 100vh;
+  color: white;
+  position: relative;
+}
+
+// Top Bar with Tab Theme Gradient
+.pin-top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  background: var(--tab-gradient);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+  .bank-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    .bank-name {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: white;
+    }
+
+    .upi-badge {
+      background: rgba(255, 255, 255, 0.25);
+      color: white;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(10px);
+    }
+  }
+
+  .close-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(10px);
+
+    &:active {
+      transform: scale(0.9);
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    ion-icon {
+      font-size: 18px;
+      color: white;
+    }
+  }
+}
+
+// Transaction Details
+.transaction-details {
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.2);
+
+  .recipient-section {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    .recipient-label {
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.6);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .recipient-name {
+      font-size: 1rem;
+      font-weight: 600;
+      color: white;
+    }
+  }
+
+  .amount-display {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    .amount-value {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: white;
+    }
+
+    .amount-chevron {
+      font-size: 1.2rem;
+      color: rgba(255, 255, 255, 0.6);
+    }
+  }
+}
+
+// PIN Entry Section
+.pin-entry-section {
+  padding: 32px 20px;
+  text-align: center;
+  flex: 1;
+
+  .pin-prompt {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: white;
+    margin: 0 0 24px 0;
+  }
+
+  .pin-input-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 24px;
+
+    .pin-lines-container {
+      display: flex;
+      gap: 12px;
+
+      .pin-line {
+        width: 40px;
+        height: 2px;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 2px;
+        position: relative;
+        transition: all 0.2s ease;
+
+        &.filled {
+          background: var(--tab-color);
+          height: 3px;
+          box-shadow: 0 0 8px rgba(var(--tab-rgb), 0.5);
+
+          span {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--tab-color);
+          }
+        }
+
+        &.error {
+          background: #d32f2f;
+          animation: shake 0.5s ease;
+        }
+      }
+    }
+
+    .eye-toggle {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      &:active {
+        transform: scale(0.9);
+        background: rgba(255, 255, 255, 0.15);
+      }
+
+      ion-icon {
+        font-size: 20px;
+        color: rgba(255, 255, 255, 0.7);
+      }
+    }
+  }
+
+  .transaction-info-box {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 16px;
+    text-align: left;
+
+    .info-icon {
+      font-size: 1.2rem;
+      color: rgba(255, 255, 255, 0.6);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .info-text {
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.7);
+      line-height: 1.4;
+    }
+  }
+
+  .pin-error {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: #ff6b6b;
+    font-size: 0.85rem;
+    margin-top: 12px;
+    padding: 8px 16px;
+    background: rgba(211, 47, 47, 0.15);
+    border-radius: 8px;
+    font-weight: 500;
+
+    ion-icon {
+      font-size: 1rem;
+    }
+  }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-8px); }
+  75% { transform: translateX(8px); }
+}
+
+// Keypad Section
+.keypad-section {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 14px;
+  background: #16213e;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+
+  .keypad-row {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+
+    .keypad-key {
+      flex: 1;
+      max-width: 90px;
+      height: 64px;
+      border: none;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.1);
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: white;
+      transition: all 0.1s ease;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Poppins', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      backdrop-filter: blur(10px);
+
+      &:active {
+        transform: scale(0.95);
+        background: rgba(255, 255, 255, 0.2);
+      }
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      &.backspace {
+        background: rgba(255, 255, 255, 0.15);
+        font-size: 1.2rem;
+
+        ion-icon {
+          font-size: 24px;
+          color: white;
+        }
+
+        &:active {
+          background: rgba(255, 255, 255, 0.25);
+        }
+      }
+
+      &.submit {
+        background: var(--tab-color);
+        box-shadow: 0 4px 16px rgba(var(--tab-rgb), 0.4);
+
+        ion-icon {
+          font-size: 28px;
+          color: white;
+        }
+
+        &:active:not(:disabled) {
+          background: rgba(var(--tab-rgb), 0.9);
+          transform: scale(0.95);
+        }
+
+        &.disabled {
+          opacity: 0.5;
+          background: rgba(255, 255, 255, 0.1);
+          box-shadow: none;
+          cursor: not-allowed;
+        }
+      }
+
+      &.empty {
+        background: transparent;
+        cursor: default;
+        pointer-events: none;
+      }
+    }
+  }
+}
+
+// Responsive Design
+@media (max-width: 480px) {
+  .pin-modal-content {
+    min-height: 100vh;
+  }
+
+  .transaction-details {
+    padding: 16px;
+
+    .amount-display .amount-value {
+      font-size: 1.2rem;
+    }
+  }
+
+  .pin-entry-section {
+    padding: 24px 16px;
+
+    .pin-input-display {
+      .pin-lines-container {
+        gap: 10px;
+
+        .pin-line {
+          width: 36px;
+        }
+      }
+    }
+  }
+
+  .keypad-section {
+    padding: 16px;
+    gap: 12px;
+
+    .keypad-row {
+      gap: 12px;
+
+      .keypad-key {
+        max-width: 80px;
+        height: 60px;
+        font-size: 1.5rem;
+      }
+    }
+  }
+}

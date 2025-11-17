@@ -1,56 +1,142 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
 .documents-content {
-  --background: #f5f7fa;
+  --background: #f8f9fa;
+  font-family: 'Poppins', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-.documents-header {
-  display: flex;
-  align-items: center;
-  padding: 20px;
-  background: white;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-
-  .back-button {
-    --color: #1a1a1a;
-  }
-
-  h2 {
-    flex: 1;
-    margin: 0;
-    text-align: center;
-    font-size: 20px;
-    font-weight: 600;
-    color: #1a1a1a;
-  }
-
-  .header-spacer {
-    width: 48px;
-  }
-}
-
-.hero-section {
-  background: linear-gradient(135deg, #1565c0 0%, #42a5f5 100%);
-  padding: 40px 20px;
-  text-align: center;
+.header-section {
+  background: linear-gradient(135deg, #004d40 0%, #00897b 100%);
   color: white;
+  padding: 25px 20px 15px 20px;
+  border-radius: 0 0 30px 30px;
+  box-shadow: 0 8px 32px rgba(0, 77, 64, 0.3);
+  position: relative;
+  overflow: hidden;
 
-  .hero-content {
-    .hero-icon {
-      font-size: 64px;
-      margin-bottom: 16px;
-      opacity: 0.9;
+  .header-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    
+    .floating-shapes {
+      .shape {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        
+        &.shape-1 {
+          width: 80px;
+          height: 80px;
+          top: -20px;
+          right: 10%;
+          animation: float 6s ease-in-out infinite;
+        }
+        
+        &.shape-2 {
+          width: 120px;
+          height: 120px;
+          bottom: -40px;
+          left: -30px;
+          animation: float 8s ease-in-out infinite reverse;
+        }
+        
+        &.shape-3 {
+          width: 60px;
+          height: 60px;
+          top: 50%;
+          right: -20px;
+          animation: float 5s ease-in-out infinite;
+        }
+      }
     }
+  }
 
-    h1 {
-      font-size: 28px;
-      font-weight: 700;
-      margin: 0 0 12px;
-    }
+  .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 2;
 
-    p {
-      font-size: 16px;
-      opacity: 0.9;
-      margin: 0;
+    .header-left {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+
+      .back-btn {
+        background: rgba(255, 255, 255, 0.2);
+        border: none;
+        border-radius: 12px;
+        width: 44px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+        margin-bottom: 8px;
+
+        &:active {
+          background: rgba(255, 255, 255, 0.3);
+          transform: scale(0.95);
+        }
+
+        ion-icon {
+          font-size: 1.4rem;
+          color: white;
+        }
+      }
+
+      .go-text {
+        font-size: 2.8rem;
+        font-weight: 800;
+        line-height: 1;
+        margin-bottom: 8px;
+        text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        background: linear-gradient(135deg, #fff 0%, #e6f4f1 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .delivery-time {
+        font-size: 1.1rem;
+        opacity: 0.95;
+        margin-bottom: 8px;
+        font-weight: 500;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      .location {
+        font-size: 0.95rem;
+        opacity: 0.9;
+        display: flex;
+        align-items: center;
+        font-weight: 400;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+
+        .location-icon {
+          font-size: 1.1rem;
+          margin-right: 6px;
+        }
+      }
     }
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
   }
 }
 
@@ -237,5 +323,7 @@
     font-weight: 600;
     border-radius: 12px;
   }
+
 }
+
 

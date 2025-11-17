@@ -1,19 +1,26 @@
 <ion-content [fullscreen]="true" class="documents-content">
-  <!-- Header -->
-  <div class="documents-header">
-    <ion-button fill="clear" class="back-button" (click)="goBack()">
-      <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
-    </ion-button>
-    <h2>Document Shipping</h2>
-    <div class="header-spacer"></div>
-  </div>
-
-  <!-- Hero Section -->
-  <div class="hero-section">
-    <div class="hero-content">
-      <ion-icon name="document-text" class="hero-icon"></ion-icon>
-      <h1>Secure Document Delivery</h1>
-      <p>Fast, secure, and reliable document shipping services</p>
+  <!-- Enhanced Header Section matching Tab5 -->
+  <div class="header-section">
+    <div class="header-background">
+      <div class="floating-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+      </div>
+    </div>
+    
+    <div class="header-top">
+      <div class="header-left">
+        <button class="back-btn" (click)="goBack()">
+          <ion-icon name="arrow-back"></ion-icon>
+        </button>
+        <div class="go-text">GO</div>
+        <div class="delivery-time">Secure Document Delivery</div>
+        <div class="location">
+          <ion-icon name="document-text" class="location-icon"></ion-icon>
+          Fast, secure, and reliable
+        </div>
+      </div>
     </div>
   </div>
 
