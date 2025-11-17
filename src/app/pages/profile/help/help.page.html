@@ -1,0 +1,78 @@
+<ion-content [fullscreen]="true" class="help-content">
+  <!-- Header -->
+  <div class="help-header">
+    <ion-button fill="clear" class="back-button" (click)="goBack()">
+      <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
+    </ion-button>
+    <h2>Help & Support</h2>
+    <div class="header-spacer"></div>
+  </div>
+
+  <!-- Search Section -->
+  <div class="search-section">
+    <ion-searchbar
+      [(ngModel)]="searchQuery"
+      placeholder="Search for help..."
+      (ionInput)="onSearch($event)">
+    </ion-searchbar>
+  </div>
+
+  <!-- Quick Help -->
+  <div class="quick-help-section">
+    <h3>Quick Help</h3>
+    <div class="quick-help-grid">
+      <div class="help-card" (click)="viewTopic('orders')">
+        <ion-icon name="receipt"></ion-icon>
+        <span>Orders</span>
+      </div>
+      <div class="help-card" (click)="viewTopic('payments')">
+        <ion-icon name="card"></ion-icon>
+        <span>Payments</span>
+      </div>
+      <div class="help-card" (click)="viewTopic('delivery')">
+        <ion-icon name="car"></ion-icon>
+        <span>Delivery</span>
+      </div>
+      <div class="help-card" (click)="viewTopic('returns')">
+        <ion-icon name="return-down-back"></ion-icon>
+        <span>Returns</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ Section -->
+  <div class="faq-section">
+    <h3>Frequently Asked Questions</h3>
+    <div class="faq-list">
+      <div class="faq-item" *ngFor="let faq of filteredFAQs" (click)="toggleFAQ(faq)">
+        <div class="faq-question">
+          <span>{{ faq.question }}</span>
+          <ion-icon [name]="faq.isOpen ? 'chevron-up' : 'chevron-down'"></ion-icon>
+        </div>
+        <div class="faq-answer" [class.open]="faq.isOpen">
+          <p>{{ faq.answer }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contact Support -->
+  <div class="contact-section">
+    <h3>Still need help?</h3>
+    <div class="contact-options">
+      <ion-button expand="block" fill="outline" (click)="contactEmail()">
+        <ion-icon name="mail" slot="start"></ion-icon>
+        Email Support
+      </ion-button>
+      <ion-button expand="block" fill="outline" (click)="contactPhone()">
+        <ion-icon name="call" slot="start"></ion-icon>
+        Call Support
+      </ion-button>
+      <ion-button expand="block" fill="outline" (click)="contactChat()">
+        <ion-icon name="chatbubble-ellipses" slot="start"></ion-icon>
+        Live Chat
+      </ion-button>
+    </div>
+  </div>
+</ion-content>
+

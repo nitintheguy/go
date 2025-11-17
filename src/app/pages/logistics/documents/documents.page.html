@@ -1,0 +1,124 @@
+<ion-content [fullscreen]="true" class="documents-content">
+  <!-- Header -->
+  <div class="documents-header">
+    <ion-button fill="clear" class="back-button" (click)="goBack()">
+      <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
+    </ion-button>
+    <h2>Document Shipping</h2>
+    <div class="header-spacer"></div>
+  </div>
+
+  <!-- Hero Section -->
+  <div class="hero-section">
+    <div class="hero-content">
+      <ion-icon name="document-text" class="hero-icon"></ion-icon>
+      <h1>Secure Document Delivery</h1>
+      <p>Fast, secure, and reliable document shipping services</p>
+    </div>
+  </div>
+
+  <!-- Service Options -->
+  <div class="services-section">
+    <h3 class="section-title">Document Services</h3>
+    <div class="service-cards">
+      <div class="service-card" (click)="selectService('standard')">
+        <div class="service-icon standard">
+          <ion-icon name="document-text"></ion-icon>
+        </div>
+        <h4>Standard Document</h4>
+        <p class="service-desc">2-3 business days</p>
+        <p class="service-price">Starting from ₹49</p>
+        <div class="service-features">
+          <span class="feature-tag">Secure</span>
+          <span class="feature-tag">Trackable</span>
+        </div>
+      </div>
+
+      <div class="service-card" (click)="selectService('express')">
+        <div class="service-icon express">
+          <ion-icon name="rocket"></ion-icon>
+        </div>
+        <h4>Express Document</h4>
+        <p class="service-desc">Next day delivery</p>
+        <p class="service-price">Starting from ₹149</p>
+        <div class="service-features">
+          <span class="feature-tag">Urgent</span>
+          <span class="feature-tag">Priority</span>
+        </div>
+      </div>
+
+      <div class="service-card" (click)="selectService('registered')">
+        <div class="service-icon registered">
+          <ion-icon name="mail"></ion-icon>
+        </div>
+        <h4>Registered Post</h4>
+        <p class="service-desc">3-5 business days</p>
+        <p class="service-price">Starting from ₹29</p>
+        <div class="service-features">
+          <span class="feature-tag">Economical</span>
+          <span class="feature-tag">Proof of Delivery</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Document Types -->
+  <div class="document-types-section">
+    <h3 class="section-title">Document Types We Handle</h3>
+    <div class="document-types-grid">
+      <div class="document-type-card" *ngFor="let type of documentTypes">
+        <ion-icon [name]="type.icon" class="type-icon"></ion-icon>
+        <h4>{{ type.name }}</h4>
+        <p>{{ type.description }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Features -->
+  <div class="features-section">
+    <h3 class="section-title">Why Choose Our Document Service?</h3>
+    <div class="features-list">
+      <div class="feature-item">
+        <ion-icon name="lock-closed" class="feature-icon"></ion-icon>
+        <div>
+          <h4>Secure & Confidential</h4>
+          <p>Your documents are handled with utmost confidentiality</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <ion-icon name="checkmark-circle" class="feature-icon"></ion-icon>
+        <div>
+          <h4>Proof of Delivery</h4>
+          <p>Get digital confirmation when documents are delivered</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <ion-icon name="time" class="feature-icon"></ion-icon>
+        <div>
+          <h4>Fast Processing</h4>
+          <p>Same-day pickup and processing available</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <ion-icon name="shield-checkmark" class="feature-icon"></ion-icon>
+        <div>
+          <h4>Insured Delivery</h4>
+          <p>All documents are insured against loss or damage</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA Section -->
+  <div class="cta-section">
+    <ion-button expand="block" class="cta-button" (click)="schedulePickup()">
+      <ion-icon name="send" slot="start"></ion-icon>
+      Send Document
+    </ion-button>
+    <ion-button expand="block" fill="outline" class="track-button" (click)="trackDocument()">
+      <ion-icon name="search" slot="start"></ion-icon>
+      Track Document
+    </ion-button>
+  </div>
+</ion-content>
+

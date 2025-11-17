@@ -1,0 +1,200 @@
+<ion-content [fullscreen]="true" class="profile-content">
+  <!-- Header with Gradient Background -->
+  <div class="profile-header">
+    <div class="header-background">
+      <div class="gradient-overlay"></div>
+      <div class="floating-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+      </div>
+    </div>
+    
+    <div class="header-content">
+      <ion-button fill="clear" class="back-button" (click)="goBack()">
+        <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
+      </ion-button>
+      
+      <div class="profile-avatar-section">
+        <div class="avatar-wrapper">
+          <ion-avatar class="main-avatar">
+            <img [src]="userProfile.avatar" />
+          </ion-avatar>
+          <div class="online-indicator"></div>
+          <div class="edit-avatar-btn" (click)="editProfile()">
+            <ion-icon name="camera"></ion-icon>
+          </div>
+        </div>
+        <h2 class="user-name">{{ userProfile.name }}</h2>
+        <p class="user-email">{{ userProfile.email }}</p>
+        <div class="user-stats">
+          <div class="stat-item">
+            <div class="stat-value">{{ userProfile.totalOrders }}</div>
+            <div class="stat-label">Orders</div>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <div class="stat-value">₹{{ userProfile.totalSpent | number:'1.0-0' }}</div>
+            <div class="stat-label">Spent</div>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <div class="stat-value">{{ userProfile.memberSince }}</div>
+            <div class="stat-label">Member</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- User Details Section -->
+  <div class="content-section">
+    <div class="section-card">
+      <div class="card-header">
+        <ion-icon name="person-circle" class="section-icon"></ion-icon>
+        <h3>Personal Information</h3>
+      </div>
+      <div class="card-content">
+        <div class="info-item">
+          <div class="info-label">
+            <ion-icon name="person"></ion-icon>
+            <span>Full Name</span>
+          </div>
+          <div class="info-value">{{ userProfile.name }}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">
+            <ion-icon name="mail"></ion-icon>
+            <span>Email</span>
+          </div>
+          <div class="info-value">{{ userProfile.email }}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">
+            <ion-icon name="call"></ion-icon>
+            <span>Phone</span>
+          </div>
+          <div class="info-value">{{ userProfile.phone }}</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">
+            <ion-icon name="location"></ion-icon>
+            <span>Address</span>
+          </div>
+          <div class="info-value">{{ userProfile.address }}</div>
+        </div>
+        <ion-button expand="block" fill="outline" class="edit-btn" (click)="editProfile()">
+          <ion-icon name="create" slot="start"></ion-icon>
+          Edit Profile
+        </ion-button>
+      </div>
+    </div>
+
+    <!-- Orders Section -->
+    <div class="section-card">
+      <div class="card-header">
+        <ion-icon name="receipt" class="section-icon"></ion-icon>
+        <h3>My Orders</h3>
+        <span class="order-count">{{ orders.length }} orders</span>
+      </div>
+      <div class="card-content">
+        <div class="orders-list" *ngIf="orders.length > 0">
+          <div class="order-card" *ngFor="let order of orders" (click)="viewOrderDetails(order)">
+            <div class="order-header">
+              <div class="order-info">
+                <div class="order-id">Order #{{ order.id }}</div>
+                <div class="order-date">{{ order.date }}</div>
+              </div>
+              <div class="order-status" [class]="getStatusClass(order.status)">
+                <ion-icon [name]="getStatusIcon(order.status)"></ion-icon>
+                {{ order.status }}
+              </div>
+            </div>
+            <div class="order-items">
+              <div class="items-preview">
+                <span *ngFor="let item of order.items.slice(0, 3)" class="item-tag">
+                  {{ item.name }}
+                </span>
+                <span *ngIf="order.items.length > 3" class="item-tag more">
+                  +{{ order.items.length - 3 }} more
+                </span>
+              </div>
+            </div>
+            <div class="order-footer">
+              <div class="order-total">
+                <span class="total-label">Total:</span>
+                <span class="total-amount">₹{{ order.total }}</span>
+              </div>
+              <ion-button fill="clear" size="small" class="view-order-btn">
+                View Details
+                <ion-icon name="chevron-forward" slot="end"></ion-icon>
+              </ion-button>
+            </div>
+          </div>
+        </div>
+        <div class="no-orders" *ngIf="orders.length === 0">
+          <ion-icon name="receipt-outline" class="no-orders-icon"></ion-icon>
+          <p>No orders yet</p>
+          <ion-button fill="outline" (click)="goToShop()">Start Shopping</ion-button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="section-card">
+      <div class="card-header">
+        <ion-icon name="apps" class="section-icon"></ion-icon>
+        <h3>Quick Actions</h3>
+      </div>
+      <div class="card-content">
+        <div class="quick-actions-grid">
+          <div class="action-item" (click)="goToAddresses()">
+            <div class="action-icon addresses">
+              <ion-icon name="location"></ion-icon>
+            </div>
+            <span>Addresses</span>
+          </div>
+          <div class="action-item" (click)="goToPaymentMethods()">
+            <div class="action-icon payment">
+              <ion-icon name="card"></ion-icon>
+            </div>
+            <span>Payment</span>
+          </div>
+          <div class="action-item" (click)="goToFavorites()">
+            <div class="action-icon favorites">
+              <ion-icon name="heart"></ion-icon>
+            </div>
+            <span>Favorites</span>
+          </div>
+          <div class="action-item" (click)="goToSettings()">
+            <div class="action-icon settings">
+              <ion-icon name="settings"></ion-icon>
+            </div>
+            <span>Settings</span>
+          </div>
+          <div class="action-item" (click)="goToHelp()">
+            <div class="action-icon help">
+              <ion-icon name="help-circle"></ion-icon>
+            </div>
+            <span>Help</span>
+          </div>
+          <div class="action-item" (click)="goToAbout()">
+            <div class="action-icon about">
+              <ion-icon name="information-circle"></ion-icon>
+            </div>
+            <span>About</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Logout Button -->
+  <div class="logout-section">
+    <ion-button expand="block" fill="outline" class="logout-btn" (click)="logout()">
+      <ion-icon name="log-out" slot="start"></ion-icon>
+      Logout
+    </ion-button>
+  </div>
+</ion-content>
+

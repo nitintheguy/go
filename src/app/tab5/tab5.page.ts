@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonContent, IonSegment, IonSegmentButton, IonLabel, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonItem, IonInput, IonButton, IonList, IonListHeader, IonAvatar, IonChip, IonSearchbar, IonIcon } from '@ionic/angular/standalone';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tab5',
@@ -49,7 +50,7 @@ export class Tab5Page {
     { id: 'DEL555444333', status: 'Out for Delivery', date: '2025-11-08' },
   ];
 
-  constructor() {}
+  constructor(private router: Router) {}
 
   segmentChanged(event: any) {
     console.log('Segment changed to', event.detail.value);
@@ -98,5 +99,24 @@ export class Tab5Page {
   contactSupport() {
     console.log('Contacting support...');
     // Add support contact logic
+  }
+
+  goToProfile() {
+    this.router.navigate(['/profile']);
+  }
+
+  navigateToCategory(categoryName: string) {
+    const routeMap: { [key: string]: string } = {
+      'Packages': '/logistics/packages',
+      'Documents': '/logistics/documents',
+      'Freight': '/logistics/freight',
+      'Express': '/logistics/express'
+    };
+
+    const route = routeMap[categoryName];
+    if (route) {
+      this.router.navigate([route]);
+    }
+    // 'All' category doesn't navigate anywhere
   }
 }

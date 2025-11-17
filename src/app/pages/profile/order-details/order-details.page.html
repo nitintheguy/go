@@ -1,0 +1,84 @@
+<ion-content [fullscreen]="true" class="order-details-content">
+  <!-- Header -->
+  <div class="order-header">
+    <ion-button fill="clear" class="back-button" (click)="goBack()">
+      <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
+    </ion-button>
+    <h2>Order Details</h2>
+    <div class="header-spacer"></div>
+  </div>
+
+  <!-- Order Info -->
+  <div class="order-info-section" *ngIf="order">
+    <div class="order-status-card">
+      <div class="status-icon" [class]="getStatusClass(order.status)">
+        <ion-icon [name]="getStatusIcon(order.status)"></ion-icon>
+      </div>
+      <h3 class="status-text">{{ order.status }}</h3>
+      <p class="order-id">Order #{{ order.id }}</p>
+      <p class="order-date">{{ order.date }}</p>
+    </div>
+
+    <!-- Order Items -->
+    <div class="order-items-card">
+      <h3 class="card-title">Order Items</h3>
+      <div class="items-list">
+        <div class="item-row" *ngFor="let item of order.items">
+          <div class="item-info">
+            <span class="item-name">{{ item.name }}</span>
+            <span class="item-quantity">Qty: {{ item.quantity }}</span>
+          </div>
+          <span class="item-price">₹{{ item.price * item.quantity }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Order Summary -->
+    <div class="order-summary-card">
+      <h3 class="card-title">Order Summary</h3>
+      <div class="summary-row">
+        <span>Subtotal</span>
+        <span>₹{{ getSubtotal() }}</span>
+      </div>
+      <div class="summary-row">
+        <span>Delivery Charges</span>
+        <span>Free</span>
+      </div>
+      <div class="summary-row total">
+        <span>Total</span>
+        <span>₹{{ order.total }}</span>
+      </div>
+    </div>
+
+    <!-- Delivery Address -->
+    <div class="delivery-card">
+      <h3 class="card-title">Delivery Address</h3>
+      <div class="address-info">
+        <p class="address-name">John Doe</p>
+        <p class="address-details">Home - Floor 1st, ASG</p>
+        <p class="address-details">Mumbai, Maharashtra 400001</p>
+        <p class="address-phone">
+          <ion-icon name="call"></ion-icon>
+          +91 98765 43210
+        </p>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="actions-section">
+      <ion-button expand="block" fill="outline" *ngIf="order.status === 'Delivered'" (click)="reorder()">
+        <ion-icon name="refresh" slot="start"></ion-icon>
+        Reorder
+      </ion-button>
+      <ion-button expand="block" fill="outline" color="danger" *ngIf="order.status === 'Processing' || order.status === 'In Transit'" (click)="cancelOrder()">
+        <ion-icon name="close-circle" slot="start"></ion-icon>
+        Cancel Order
+      </ion-button>
+      <ion-button expand="block" fill="outline" *ngIf="order.status === 'Delivered'" (click)="downloadInvoice()">
+        <ion-icon name="download" slot="start"></ion-icon>
+        Download Invoice
+      </ion-button>
+    </div>
+  </div>
+</ion-content>
+

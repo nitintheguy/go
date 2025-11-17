@@ -19,7 +19,7 @@
         </div>
       </div>
       <div class="header-right">
-        <div class="avatar-container">
+        <div class="avatar-container" (click)="goToProfile()" style="cursor: pointer;">
           <ion-avatar class="profile-avatar">
             <img [src]="profileAvatarUrl" />
           </ion-avatar>
@@ -49,7 +49,8 @@
         <ion-chip 
           *ngFor="let category of categories" 
           [class.active]="category.name === 'All'"
-          class="category-chip">
+          class="category-chip"
+          (click)="navigateToCategory(category.name)">
           <div class="chip-icon-wrapper">
             <ion-icon [name]="category.icon"></ion-icon>
           </div>

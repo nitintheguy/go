@@ -1,0 +1,173 @@
+.help-content {
+  --background: #f5f7fa;
+}
+
+.help-header {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+  .back-button {
+    --color: #1a1a1a;
+  }
+
+  h2 {
+    flex: 1;
+    margin: 0;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 600;
+    color: #1a1a1a;
+  }
+
+  .header-spacer {
+    width: 48px;
+  }
+}
+
+.search-section {
+  padding: 20px;
+  background: white;
+  border-bottom: 1px solid #f0f0f0;
+
+  ion-searchbar {
+    --background: #f5f7fa;
+    --border-radius: 12px;
+    --box-shadow: none;
+    padding: 0;
+  }
+}
+
+.quick-help-section {
+  padding: 20px;
+
+  h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 16px;
+  }
+
+  .quick-help-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .help-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    cursor: pointer;
+    transition: transform 0.2s;
+
+    &:active {
+      transform: scale(0.98);
+    }
+
+    ion-icon {
+      font-size: 32px;
+      color: #667eea;
+    }
+
+    span {
+      font-size: 14px;
+      font-weight: 600;
+      color: #1a1a1a;
+    }
+  }
+}
+
+.faq-section {
+  padding: 20px;
+
+  h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 16px;
+  }
+
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .faq-item {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    cursor: pointer;
+
+    .faq-question {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 20px;
+      font-size: 16px;
+      font-weight: 600;
+      color: #1a1a1a;
+
+      ion-icon {
+        color: #667eea;
+        font-size: 20px;
+      }
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+      padding: 0 20px;
+
+      &.open {
+        max-height: 500px;
+        padding: 0 20px 16px;
+      }
+
+      p {
+        font-size: 14px;
+        color: #666;
+        line-height: 1.6;
+        margin: 0;
+      }
+    }
+  }
+}
+
+.contact-section {
+  padding: 20px;
+  padding-bottom: 40px;
+
+  h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+
+  .contact-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    ion-button {
+      --border-color: #667eea;
+      --color: #667eea;
+      height: 48px;
+      font-weight: 600;
+      border-radius: 12px;
+    }
+  }
+}
+

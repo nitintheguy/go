@@ -1,0 +1,116 @@
+<ion-content [fullscreen]="true" class="about-content">
+  <!-- Header -->
+  <div class="about-header">
+    <ion-button fill="clear" class="back-button" (click)="goBack()">
+      <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
+    </ion-button>
+    <h2>About</h2>
+    <div class="header-spacer"></div>
+  </div>
+
+  <!-- App Info -->
+  <div class="app-info-section">
+    <div class="app-logo">
+      <div class="logo-circle">
+        <span class="logo-text">GO</span>
+      </div>
+    </div>
+    <h1 class="app-name">GO App</h1>
+    <p class="app-version">Version 1.0.0</p>
+    <p class="app-tagline">Your All-in-One Delivery Solution</p>
+  </div>
+
+  <!-- About Content -->
+  <div class="about-content-section">
+    <div class="content-card">
+      <h3>About GO</h3>
+      <p>
+        GO is a comprehensive delivery platform that brings together grocery shopping, 
+        food delivery, ride services, logistics, and digital payments in one convenient app. 
+        We're committed to making your life easier with fast, reliable, and affordable services.
+      </p>
+    </div>
+
+    <div class="content-card">
+      <h3>Our Mission</h3>
+      <p>
+        To revolutionize the way people access essential services by providing a seamless, 
+        integrated platform that saves time and enhances convenience. We believe in making 
+        quality services accessible to everyone.
+      </p>
+    </div>
+
+    <div class="content-card">
+      <h3>Features</h3>
+      <div class="features-list">
+        <div class="feature-item">
+          <ion-icon name="storefront"></ion-icon>
+          <span>Grocery Delivery</span>
+        </div>
+        <div class="feature-item">
+          <ion-icon name="restaurant"></ion-icon>
+          <span>Food Delivery</span>
+        </div>
+        <div class="feature-item">
+          <ion-icon name="car"></ion-icon>
+          <span>Ride Services</span>
+        </div>
+        <div class="feature-item">
+          <ion-icon name="cube"></ion-icon>
+          <span>Logistics & Shipping</span>
+        </div>
+        <div class="feature-item">
+          <ion-icon name="wallet"></ion-icon>
+          <span>Digital Payments</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-card">
+      <h3>Contact Us</h3>
+      <div class="contact-info">
+        <div class="contact-item">
+          <ion-icon name="mail"></ion-icon>
+          <div>
+            <span class="contact-label">Email</span>
+            <span class="contact-value">support@goapp.com</span>
+          </div>
+        </div>
+        <div class="contact-item">
+          <ion-icon name="call"></ion-icon>
+          <div>
+            <span class="contact-label">Phone</span>
+            <span class="contact-value">+91 1800-123-4567</span>
+          </div>
+        </div>
+        <div class="contact-item">
+          <ion-icon name="location"></ion-icon>
+          <div>
+            <span class="contact-label">Address</span>
+            <span class="contact-value">Mumbai, Maharashtra, India</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-card">
+      <h3>Legal</h3>
+      <div class="legal-links">
+        <div class="legal-item" (click)="viewPrivacyPolicy()">
+          <span>Privacy Policy</span>
+          <ion-icon name="chevron-forward"></ion-icon>
+        </div>
+        <div class="legal-item" (click)="viewTerms()">
+          <span>Terms of Service</span>
+          <ion-icon name="chevron-forward"></ion-icon>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-info">
+      <p>&copy; 2024 GO App. All rights reserved.</p>
+      <p>Made with ❤️ in India</p>
+    </div>
+  </div>
+</ion-content>
+

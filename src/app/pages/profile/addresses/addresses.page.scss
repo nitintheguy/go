@@ -1,0 +1,147 @@
+.addresses-content {
+  --background: #f5f7fa;
+}
+
+.addresses-header {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+  .back-button,
+  .add-button {
+    --color: #1a1a1a;
+  }
+
+  h2 {
+    flex: 1;
+    margin: 0;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 600;
+    color: #1a1a1a;
+  }
+}
+
+.addresses-list {
+  padding: 20px;
+  padding-bottom: 100px;
+}
+
+.address-card {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.2s;
+
+  &.default {
+    border: 2px solid #667eea;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  .address-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+
+    .address-type {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      color: #1a1a1a;
+      font-size: 16px;
+
+      ion-icon {
+        color: #667eea;
+        font-size: 20px;
+      }
+
+      .default-chip {
+        margin-left: 8px;
+        font-size: 11px;
+        height: 20px;
+      }
+    }
+
+    .address-actions {
+      display: flex;
+      gap: 4px;
+    }
+  }
+
+  .address-body {
+    .address-name {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 8px;
+    }
+
+    .address-details {
+      font-size: 14px;
+      color: #666;
+      line-height: 1.6;
+      margin-bottom: 4px;
+    }
+
+    .address-phone {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      color: #666;
+      margin-top: 12px;
+
+      ion-icon {
+        color: #667eea;
+        font-size: 16px;
+      }
+    }
+  }
+
+  .address-footer {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #f0f0f0;
+  }
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+
+  .empty-icon {
+    font-size: 80px;
+    color: #d1d5db;
+    margin-bottom: 20px;
+  }
+
+  h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 8px;
+  }
+
+  p {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 24px;
+  }
+}
+
+.fab-container {
+  ion-fab-button {
+    --background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  }
+}
+

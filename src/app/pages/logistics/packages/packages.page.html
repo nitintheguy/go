@@ -1,0 +1,128 @@
+<ion-content [fullscreen]="true" class="packages-content">
+  <!-- Header -->
+  <div class="packages-header">
+    <ion-button fill="clear" class="back-button" (click)="goBack()">
+      <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
+    </ion-button>
+    <h2>Package Shipping</h2>
+    <div class="header-spacer"></div>
+  </div>
+
+  <!-- Hero Section -->
+  <div class="hero-section">
+    <div class="hero-content">
+      <ion-icon name="cube" class="hero-icon"></ion-icon>
+      <h1>Package Shipping Services</h1>
+      <p>Reliable and secure package delivery across India and worldwide</p>
+    </div>
+  </div>
+
+  <!-- Service Options -->
+  <div class="services-section">
+    <h3 class="section-title">Choose Your Service</h3>
+    <div class="service-cards">
+      <div class="service-card" (click)="selectService('standard')">
+        <div class="service-icon standard">
+          <ion-icon name="cube-outline"></ion-icon>
+        </div>
+        <h4>Standard Delivery</h4>
+        <p class="service-desc">3-5 business days</p>
+        <p class="service-price">Starting from ₹99</p>
+        <div class="service-features">
+          <span class="feature-tag">Trackable</span>
+          <span class="feature-tag">Insured</span>
+        </div>
+      </div>
+
+      <div class="service-card" (click)="selectService('express')">
+        <div class="service-icon express">
+          <ion-icon name="rocket"></ion-icon>
+        </div>
+        <h4>Express Delivery</h4>
+        <p class="service-desc">1-2 business days</p>
+        <p class="service-price">Starting from ₹199</p>
+        <div class="service-features">
+          <span class="feature-tag">Fast</span>
+          <span class="feature-tag">Priority</span>
+        </div>
+      </div>
+
+      <div class="service-card" (click)="selectService('overnight')">
+        <div class="service-icon overnight">
+          <ion-icon name="flash"></ion-icon>
+        </div>
+        <h4>Overnight Delivery</h4>
+        <p class="service-desc">Next day delivery</p>
+        <p class="service-price">Starting from ₹399</p>
+        <div class="service-features">
+          <span class="feature-tag">Urgent</span>
+          <span class="feature-tag">Guaranteed</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Package Types -->
+  <div class="package-types-section">
+    <h3 class="section-title">Package Types</h3>
+    <div class="package-types-grid">
+      <div class="package-type-card" *ngFor="let type of packageTypes">
+        <ion-icon [name]="type.icon" class="type-icon"></ion-icon>
+        <h4>{{ type.name }}</h4>
+        <p>{{ type.description }}</p>
+        <div class="type-specs">
+          <span>Max: {{ type.maxWeight }}</span>
+          <span>Size: {{ type.maxSize }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Features -->
+  <div class="features-section">
+    <h3 class="section-title">Why Choose Our Package Service?</h3>
+    <div class="features-list">
+      <div class="feature-item">
+        <ion-icon name="shield-checkmark" class="feature-icon"></ion-icon>
+        <div>
+          <h4>Fully Insured</h4>
+          <p>All packages are insured up to ₹50,000</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <ion-icon name="location" class="feature-icon"></ion-icon>
+        <div>
+          <h4>Real-time Tracking</h4>
+          <p>Track your package every step of the way</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <ion-icon name="time" class="feature-icon"></ion-icon>
+        <div>
+          <h4>24/7 Support</h4>
+          <p>Round-the-clock customer assistance</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <ion-icon name="cash" class="feature-icon"></ion-icon>
+        <div>
+          <h4>Cash on Delivery</h4>
+          <p>Pay when you receive your package</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA Section -->
+  <div class="cta-section">
+    <ion-button expand="block" class="cta-button" (click)="schedulePickup()">
+      <ion-icon name="calendar" slot="start"></ion-icon>
+      Schedule Package Pickup
+    </ion-button>
+    <ion-button expand="block" fill="outline" class="track-button" (click)="trackPackage()">
+      <ion-icon name="search" slot="start"></ion-icon>
+      Track Your Package
+    </ion-button>
+  </div>
+</ion-content>
+

@@ -1,0 +1,70 @@
+<ion-content [fullscreen]="true" class="addresses-content">
+  <!-- Header -->
+  <div class="addresses-header">
+    <ion-button fill="clear" class="back-button" (click)="goBack()">
+      <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
+    </ion-button>
+    <h2>My Addresses</h2>
+    <ion-button fill="clear" class="add-button" (click)="addAddress()">
+      <ion-icon name="add" slot="icon-only"></ion-icon>
+    </ion-button>
+  </div>
+
+  <!-- Addresses List -->
+  <div class="addresses-list">
+    <div class="address-card" *ngFor="let address of addresses; let i = index" [class.default]="address.isDefault">
+      <div class="address-header">
+        <div class="address-type">
+          <ion-icon [name]="getAddressIcon(address.type)"></ion-icon>
+          <span>{{ address.type }}</span>
+          <ion-chip *ngIf="address.isDefault" color="primary" class="default-chip">
+            Default
+          </ion-chip>
+        </div>
+        <div class="address-actions">
+          <ion-button fill="clear" size="small" (click)="editAddress(address, i)">
+            <ion-icon name="create" slot="icon-only"></ion-icon>
+          </ion-button>
+          <ion-button fill="clear" size="small" color="danger" (click)="deleteAddress(i)">
+            <ion-icon name="trash" slot="icon-only"></ion-icon>
+          </ion-button>
+        </div>
+      </div>
+      <div class="address-body">
+        <div class="address-name">{{ address.name }}</div>
+        <div class="address-details">{{ address.street }}</div>
+        <div class="address-details">{{ address.city }}, {{ address.state }} {{ address.pincode }}</div>
+        <div class="address-phone">
+          <ion-icon name="call"></ion-icon>
+          {{ address.phone }}
+        </div>
+      </div>
+      <div class="address-footer" *ngIf="!address.isDefault">
+        <ion-button fill="outline" size="small" (click)="setAsDefault(i)">
+          Set as Default
+        </ion-button>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="addresses.length === 0">
+      <ion-icon name="location-outline" class="empty-icon"></ion-icon>
+      <h3>No addresses saved</h3>
+      <p>Add your first address to get started</p>
+      <ion-button (click)="addAddress()">
+        <ion-icon name="add" slot="start"></ion-icon>
+        Add Address
+      </ion-button>
+    </div>
+  </div>
+
+  <!-- Add Address Button -->
+  <div class="fab-container" *ngIf="addresses.length > 0">
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab-button (click)="addAddress()">
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  </div>
+</ion-content>
+

@@ -1,0 +1,51 @@
+<ion-content [fullscreen]="true" class="favorites-content">
+  <!-- Header -->
+  <div class="favorites-header">
+    <ion-button fill="clear" class="back-button" (click)="goBack()">
+      <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
+    </ion-button>
+    <h2>My Favorites</h2>
+    <div class="header-spacer"></div>
+  </div>
+
+  <!-- Favorites Grid -->
+  <div class="favorites-grid" *ngIf="favorites.length > 0">
+    <div class="favorite-item" *ngFor="let item of favorites" (click)="viewItem(item)">
+      <div class="item-image-container">
+        <img [src]="item.image" [alt]="item.name" class="item-image" />
+        <div class="item-badge" *ngIf="item.discount">-{{ item.discount }}%</div>
+        <button class="remove-favorite" (click)="removeFavorite(item.id, $event)">
+          <ion-icon name="heart"></ion-icon>
+        </button>
+      </div>
+      <div class="item-info">
+        <div class="item-name">{{ item.name }}</div>
+        <div class="item-price">
+          <span class="current-price">₹{{ item.price }}</span>
+          <span class="original-price" *ngIf="item.originalPrice">₹{{ item.originalPrice }}</span>
+        </div>
+        <div class="item-weight">{{ item.weight }}</div>
+        <div class="item-rating">
+          <ion-icon name="star" class="rating-icon"></ion-icon>
+          {{ item.rating }}
+        </div>
+      </div>
+      <ion-button expand="block" fill="solid" class="add-to-cart-btn" (click)="addToCart(item, $event)">
+        <ion-icon name="cart" slot="start"></ion-icon>
+        Add to Cart
+      </ion-button>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div class="empty-state" *ngIf="favorites.length === 0">
+    <ion-icon name="heart-outline" class="empty-icon"></ion-icon>
+    <h3>No favorites yet</h3>
+    <p>Start adding items to your favorites</p>
+    <ion-button (click)="goToShop()">
+      <ion-icon name="storefront" slot="start"></ion-icon>
+      Start Shopping
+    </ion-button>
+  </div>
+</ion-content>
+

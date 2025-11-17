@@ -1,0 +1,149 @@
+<ion-content [fullscreen]="true" class="settings-content">
+  <!-- Header -->
+  <div class="settings-header">
+    <ion-button fill="clear" class="back-button" (click)="goBack()">
+      <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
+    </ion-button>
+    <h2>Settings</h2>
+    <div class="header-spacer"></div>
+  </div>
+
+  <!-- Settings Sections -->
+  <div class="settings-sections">
+    <!-- Account Settings -->
+    <div class="settings-group">
+      <h3 class="group-title">Account</h3>
+      <div class="settings-list">
+        <div class="setting-item" (click)="editProfile()">
+          <div class="setting-left">
+            <ion-icon name="person-circle" class="setting-icon"></ion-icon>
+            <span>Edit Profile</span>
+          </div>
+          <ion-icon name="chevron-forward" class="chevron"></ion-icon>
+        </div>
+        <div class="setting-item" (click)="changePassword()">
+          <div class="setting-left">
+            <ion-icon name="lock-closed" class="setting-icon"></ion-icon>
+            <span>Change Password</span>
+          </div>
+          <ion-icon name="chevron-forward" class="chevron"></ion-icon>
+        </div>
+        <div class="setting-item" (click)="goToAddresses()">
+          <div class="setting-left">
+            <ion-icon name="location" class="setting-icon"></ion-icon>
+            <span>Manage Addresses</span>
+          </div>
+          <ion-icon name="chevron-forward" class="chevron"></ion-icon>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notifications -->
+    <div class="settings-group">
+      <h3 class="group-title">Notifications</h3>
+      <div class="settings-list">
+        <div class="setting-item toggle-item">
+          <div class="setting-left">
+            <ion-icon name="notifications" class="setting-icon"></ion-icon>
+            <span>Push Notifications</span>
+          </div>
+          <ion-toggle [(ngModel)]="settings.pushNotifications"></ion-toggle>
+        </div>
+        <div class="setting-item toggle-item">
+          <div class="setting-left">
+            <ion-icon name="mail" class="setting-icon"></ion-icon>
+            <span>Email Notifications</span>
+          </div>
+          <ion-toggle [(ngModel)]="settings.emailNotifications"></ion-toggle>
+        </div>
+        <div class="setting-item toggle-item">
+          <div class="setting-left">
+            <ion-icon name="megaphone" class="setting-icon"></ion-icon>
+            <span>Promotional Updates</span>
+          </div>
+          <ion-toggle [(ngModel)]="settings.promotionalUpdates"></ion-toggle>
+        </div>
+      </div>
+    </div>
+
+    <!-- App Settings -->
+    <div class="settings-group">
+      <h3 class="group-title">App Settings</h3>
+      <div class="settings-list">
+        <div class="setting-item toggle-item">
+          <div class="setting-left">
+            <ion-icon name="language" class="setting-icon"></ion-icon>
+            <span>Language</span>
+          </div>
+          <span class="setting-value">{{ settings.language }}</span>
+          <ion-icon name="chevron-forward" class="chevron"></ion-icon>
+        </div>
+        <div class="setting-item toggle-item">
+          <div class="setting-left">
+            <ion-icon name="color-palette" class="setting-icon"></ion-icon>
+            <span>Theme</span>
+          </div>
+          <span class="setting-value">{{ settings.theme }}</span>
+          <ion-icon name="chevron-forward" class="chevron"></ion-icon>
+        </div>
+        <div class="setting-item toggle-item">
+          <div class="setting-left">
+            <ion-icon name="location" class="setting-icon"></ion-icon>
+            <span>Location Services</span>
+          </div>
+          <ion-toggle [(ngModel)]="settings.locationServices"></ion-toggle>
+        </div>
+      </div>
+    </div>
+
+    <!-- Privacy & Security -->
+    <div class="settings-group">
+      <h3 class="group-title">Privacy & Security</h3>
+      <div class="settings-list">
+        <div class="setting-item" (click)="viewPrivacyPolicy()">
+          <div class="setting-left">
+            <ion-icon name="shield-checkmark" class="setting-icon"></ion-icon>
+            <span>Privacy Policy</span>
+          </div>
+          <ion-icon name="chevron-forward" class="chevron"></ion-icon>
+        </div>
+        <div class="setting-item" (click)="viewTerms()">
+          <div class="setting-left">
+            <ion-icon name="document-text" class="setting-icon"></ion-icon>
+            <span>Terms of Service</span>
+          </div>
+          <ion-icon name="chevron-forward" class="chevron"></ion-icon>
+        </div>
+      </div>
+    </div>
+
+    <!-- Support -->
+    <div class="settings-group">
+      <h3 class="group-title">Support</h3>
+      <div class="settings-list">
+        <div class="setting-item" (click)="goToHelp()">
+          <div class="setting-left">
+            <ion-icon name="help-circle" class="setting-icon"></ion-icon>
+            <span>Help & Support</span>
+          </div>
+          <ion-icon name="chevron-forward" class="chevron"></ion-icon>
+        </div>
+        <div class="setting-item" (click)="contactSupport()">
+          <div class="setting-left">
+            <ion-icon name="chatbubble-ellipses" class="setting-icon"></ion-icon>
+            <span>Contact Us</span>
+          </div>
+          <ion-icon name="chevron-forward" class="chevron"></ion-icon>
+        </div>
+        <div class="setting-item" (click)="goToAbout()">
+          <div class="setting-left">
+            <ion-icon name="information-circle" class="setting-icon"></ion-icon>
+            <span>About</span>
+          </div>
+          <ion-icon name="chevron-forward" class="chevron"></ion-icon>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>
+

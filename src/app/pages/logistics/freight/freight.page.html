@@ -1,0 +1,127 @@
+<ion-content [fullscreen]="true" class="freight-content">
+  <!-- Header -->
+  <div class="freight-header">
+    <ion-button fill="clear" class="back-button" (click)="goBack()">
+      <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
+    </ion-button>
+    <h2>Freight Shipping</h2>
+    <div class="header-spacer"></div>
+  </div>
+
+  <!-- Hero Section -->
+  <div class="hero-section">
+    <div class="hero-content">
+      <ion-icon name="boat" class="hero-icon"></ion-icon>
+      <h1>Freight & Cargo Services</h1>
+      <p>Heavy-duty shipping solutions for businesses and large shipments</p>
+    </div>
+  </div>
+
+  <!-- Service Options -->
+  <div class="services-section">
+    <h3 class="section-title">Freight Services</h3>
+    <div class="service-cards">
+      <div class="service-card" (click)="selectService('road')">
+        <div class="service-icon road">
+          <ion-icon name="car"></ion-icon>
+        </div>
+        <h4>Road Freight</h4>
+        <p class="service-desc">5-7 business days</p>
+        <p class="service-price">Starting from ₹2,999</p>
+        <div class="service-features">
+          <span class="feature-tag">Economical</span>
+          <span class="feature-tag">Door-to-Door</span>
+        </div>
+      </div>
+
+      <div class="service-card" (click)="selectService('rail')">
+        <div class="service-icon rail">
+          <ion-icon name="train"></ion-icon>
+        </div>
+        <h4>Rail Freight</h4>
+        <p class="service-desc">7-10 business days</p>
+        <p class="service-price">Starting from ₹1,999</p>
+        <div class="service-features">
+          <span class="feature-tag">Bulk Shipping</span>
+          <span class="feature-tag">Cost-Effective</span>
+        </div>
+      </div>
+
+      <div class="service-card" (click)="selectService('air')">
+        <div class="service-icon air">
+          <ion-icon name="airplane"></ion-icon>
+        </div>
+        <h4>Air Freight</h4>
+        <p class="service-desc">2-4 business days</p>
+        <p class="service-price">Starting from ₹4,999</p>
+        <div class="service-features">
+          <span class="feature-tag">Fast</span>
+          <span class="feature-tag">International</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Freight Types -->
+  <div class="freight-types-section">
+    <h3 class="section-title">What We Ship</h3>
+    <div class="freight-types-grid">
+      <div class="freight-type-card" *ngFor="let type of freightTypes">
+        <ion-icon [name]="type.icon" class="type-icon"></ion-icon>
+        <h4>{{ type.name }}</h4>
+        <p>{{ type.description }}</p>
+        <div class="type-weight">
+          <span>Up to {{ type.maxWeight }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Features -->
+  <div class="features-section">
+    <h3 class="section-title">Why Choose Our Freight Service?</h3>
+    <div class="features-list">
+      <div class="feature-item">
+        <ion-icon name="cube" class="feature-icon"></ion-icon>
+        <div>
+          <h4>Large Capacity</h4>
+          <p>Handle shipments from 50kg to 10,000kg</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <ion-icon name="shield-checkmark" class="feature-icon"></ion-icon>
+        <div>
+          <h4>Fully Insured</h4>
+          <p>Comprehensive insurance coverage for all shipments</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <ion-icon name="business" class="feature-icon"></ion-icon>
+        <div>
+          <h4>Business Solutions</h4>
+          <p>Dedicated account managers for business clients</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <ion-icon name="globe" class="feature-icon"></ion-icon>
+        <div>
+          <h4>International Shipping</h4>
+          <p>Worldwide freight services available</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA Section -->
+  <div class="cta-section">
+    <ion-button expand="block" class="cta-button" (click)="requestQuote()">
+      <ion-icon name="calculator" slot="start"></ion-icon>
+      Request Quote
+    </ion-button>
+    <ion-button expand="block" fill="outline" class="track-button" (click)="trackFreight()">
+      <ion-icon name="search" slot="start"></ion-icon>
+      Track Freight
+    </ion-button>
+  </div>
+</ion-content>
+
