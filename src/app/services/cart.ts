@@ -97,14 +97,22 @@ export class CartService {
 
   // Get cart total
   getCartTotal(): number {
-    return this.cartItems.reduce((total, cartItem) => 
-      total + (cartItem.item.price * cartItem.quantity), 0
-    );
+    const total = this.cartItems.reduce((total, cartItem) => {
+      const price = Number(cartItem.item.price) || 0;
+      const quantity = Number(cartItem.quantity) || 0;
+      const itemTotal = price * quantity;
+      return total + (isNaN(itemTotal) ? 0 : itemTotal);
+    }, 0);
+    return isNaN(total) ? 0 : Number(total.toFixed(2));
   }
 
   // Get cart item count
   getCartItemCount(): number {
-    return this.cartItems.reduce((total, cartItem) => total + cartItem.quantity, 0);
+    const count = this.cartItems.reduce((total, cartItem) => {
+      const quantity = Number(cartItem.quantity) || 0;
+      return total + (isNaN(quantity) ? 0 : quantity);
+    }, 0);
+    return isNaN(count) ? 0 : count;
   }
 
   // Check if item is in cart

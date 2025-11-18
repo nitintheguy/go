@@ -530,10 +530,10 @@ export class Tab1Page implements OnInit, OnDestroy {
   }
 
   updateCartTotals() {
-    const count = Number(this.cartService.getCartItemCount());
-    const total = Number(this.cartService.getCartTotal());
-    this.cartItemCount = isNaN(count) ? 0 : count;
-    this.cartTotal = isNaN(total) ? 0 : total;
+    const count = this.cartService.getCartItemCount();
+    const total = this.cartService.getCartTotal();
+    this.cartItemCount = (isNaN(count) || count < 0) ? 0 : count;
+    this.cartTotal = (isNaN(total) || total < 0) ? 0 : total;
     this.showCartBubble = this.cartItemCount > 0;
   }
 
@@ -555,11 +555,20 @@ export class Tab1Page implements OnInit, OnDestroy {
       return;
     }
 
+    // Transform cart items to match checkout page structure
+    const transformedItems = this.cartItems.map(ci => ({
+      id: ci.item.id,
+      name: ci.item.name,
+      price: Number(ci.item.price) || 0,
+      quantity: Number(ci.quantity) || 0,
+      image: ci.item.image
+    }));
+
     const modal = await this.modalCtrl.create({
       component: CheckoutPage,
       componentProps: {
         isGrocery: true,
-        cartItems: this.cartItems
+        cartItems: transformedItems
       },
       breakpoints: [0, 0.75, 1],
       initialBreakpoint: 1
@@ -592,5 +601,11 @@ export class Tab1Page implements OnInit, OnDestroy {
   // NEW: Get cart total for display
   getCartTotal(): number {
     return this.cartService.getCartTotal();
+  }
+
+  // Get formatted cart total for display
+  getFormattedCartTotal(): string {
+    const total = this.cartTotal || 0;
+    return isNaN(total) ? '0.00' : total.toFixed(2);
   }
 }

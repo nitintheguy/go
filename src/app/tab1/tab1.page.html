@@ -320,7 +320,7 @@
     <div class="cart-bar-content">
       <div class="cart-info">
         <div class="cart-count-badge">{{ cartItemCount }} items</div>
-        <div class="cart-total-text">₹{{ cartTotal }}</div>
+        <div class="cart-total-text">₹{{ getFormattedCartTotal() }}</div>
       </div>
       <button class="view-cart-btn" (click)="viewCart()">
         View Cart

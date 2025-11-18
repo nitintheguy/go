@@ -40,7 +40,7 @@
         </div>
         <div class="item-details">
           <div class="item-name">{{ item.name }}</div>
-          <div class="item-price">₹{{ (item.price || 0) * (item.quantity || 0) }}</div>
+          <div class="item-price">₹{{ ((item.price || 0) * (item.quantity || 0)).toFixed(2) }}</div>
           <div class="item-quantity">
             <button class="qty-btn" (click)="updateQuantity(item, (item.quantity || 0) - 1)">-</button>
             <span class="qty">{{ item.quantity }}</span>
@@ -48,7 +48,7 @@
           </div>
         </div>
         <div class="item-total">
-          ₹{{ (item.price * item.quantity).toFixed(2) }}
+          ₹{{ ((item.price || 0) * (item.quantity || 0)).toFixed(2) }}
           <button class="remove-btn" (click)="removeItem(item)">Remove</button>
         </div>
       </div>
@@ -548,19 +548,19 @@
     <!-- Driver Info -->
     <div class="driver-card">
       <div class="driver-header">
-        <div class="driver-avatar" *ngIf="isRide && driverInfo">
+        <div class="driver-avatar" *ngIf="driverInfo">
           <img [src]="driverInfo.avatar" [alt]="driverInfo.name" />
         </div>
-        <div class="driver-avatar" *ngIf="!isRide">
+        <div class="driver-avatar" *ngIf="!driverInfo">
           <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face" alt="Delivery Partner" />
         </div>
         <div class="driver-info">
-          <div class="driver-name">{{ isRide && driverInfo ? driverInfo.name : 'Delivery Partner' }}</div>
-          <div class="driver-rating" *ngIf="isRide && driverInfo">
+          <div class="driver-name">{{ driverInfo ? driverInfo.name : 'Delivery Partner' }}</div>
+          <div class="driver-rating" *ngIf="driverInfo">
             <ion-icon name="star"></ion-icon>
-            {{ driverInfo.rating }}
+            {{ driverInfo.rating || 4.8 }}
           </div>
-          <div class="driver-rating" *ngIf="!isRide">
+          <div class="driver-rating" *ngIf="!driverInfo">
             <ion-icon name="star"></ion-icon>
             4.8
           </div>

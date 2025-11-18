@@ -157,6 +157,13 @@ export class CheckoutPage implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    // Ensure all cart items have valid price and quantity
+    this.cartItems = this.cartItems.map(item => ({
+      ...item,
+      price: Number(item.price) || 0,
+      quantity: Number(item.quantity) || 0
+    }));
+    
     this.calculateOrderTotals();
     this.setDeliveryFee();
     if (this.isRide) {
@@ -269,15 +276,15 @@ export class CheckoutPage implements OnInit, OnDestroy {
   }
 
   async openChat() {
-    // For rides, use driverInfo. For grocery/food, generate delivery partner info
+    // Use the same driverInfo that's displayed in the tracking view
     let driverName = 'Delivery Partner';
     let driverAvatar = 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face';
     
-    if (this.isRide && this.driverInfo) {
+    if (this.driverInfo) {
       driverName = this.driverInfo.name;
       driverAvatar = this.driverInfo.avatar;
     } else if (!this.isRide) {
-      // Generate delivery partner for grocery/food orders
+      // Fallback: Generate delivery partner for grocery/food orders if driverInfo not set yet
       const deliveryPartners = [
         { name: 'Rajesh Kumar', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face' },
         { name: 'Amit Sharma', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=face' },
